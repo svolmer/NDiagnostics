@@ -1,0 +1,23 @@
+﻿using NDiagnostics.Metering.Types;
+
+namespace NDiagnostics.Metering.Samples
+{
+    public sealed class TimerInverseSample : Sample
+    {
+        #region Constructors and Destructors
+
+        internal TimerInverseSample(Time elapsedTimeOfInactivity, TimeStamp timeStamp)
+            : base(timeStamp)
+        {
+            this.ElapsedTimeOfInactivity = elapsedTimeOfInactivity;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public Time ElapsedTimeOfInactivity { get; private set; }
+
+        #endregion
+    }
+}
