@@ -1,16 +1,17 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Threading;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NDiagnostics.Metering.Attributes;
 using NDiagnostics.Metering.Extensions;
+using NDiagnostics.Metering.Types;
 
 namespace NDiagnostics.Metering.Test
 {
     [TestClass]
-    public class MonitoringFixture
+    public class InstantMetersFixture
     {
         #region Test methods
-
-        #region Instant Meters
 
         [TestMethod]
         public void CanCreateInstantCount32SingleInstanceMeter()
@@ -126,6 +127,37 @@ namespace NDiagnostics.Metering.Test
 
                     instantRatio.Reset();
                     instantRatio.Current.Value().Should().Be(0.0F);
+                }
+            }
+            finally
+            {
+                MeterCategory.Uninstall<InstantSingleInstance>();
+            }
+        }
+
+        [TestMethod]
+        public void CanCreateInstantTimeSingleInstanceMeter()
+        {
+            MeterCategory.Install<InstantSingleInstance>();
+
+            try
+            {
+                using (var category = MeterCategory.Create<InstantSingleInstance>())
+                {
+                    category.Should().NotBeNull();
+
+                    var instantTime = category[InstantSingleInstance.InstantTime].Cast<IInstantTime>();
+                    instantTime.Should().NotBeNull();
+
+                    instantTime.Set(TimeStamp.Now);
+                    instantTime.Current.Value().Should().BeLessThan(0.1F); 
+
+                    Thread.Sleep(new TimeSpan(0,0,0,1)); // 1 second
+                    instantTime.Current.Value().Should().BeGreaterThan(1.0F);
+                    instantTime.Current.Value().Should().BeLessThan(1.1F);
+
+                    instantTime.Reset(); // = instantTime.Set(TimeStamp.Now);
+                    instantTime.Current.Value().Should().BeLessThan(0.1F);
                 }
             }
             finally
@@ -357,34 +389,55 @@ namespace NDiagnostics.Metering.Test
             }
         }
 
-
-        #endregion
-
-        #region Average Meters
-
         [TestMethod]
-        public void CanCreateAverageCountSingleInstanceMeter()
+        public void CanCreateInstantTimeMultiInstanceMeter()
         {
-            MeterCategory.Install<AverageSingleInstance>();
+            MeterCategory.Install<InstantMultiInstance>();
 
             try
             {
-                using (var category = MeterCategory.Create<AverageSingleInstance>())
+                string[] instanceNames = { "_Total", "0", "1" };
+                using (var category = MeterCategory.Create<InstantMultiInstance>(instanceNames))
                 {
                     category.Should().NotBeNull();
 
-                    var averageCount = category[AverageSingleInstance.AverageCount].Cast<IAverageValue>();
-                    averageCount.Should().NotBeNull();
+                    var instantTimeTotal = category[InstantMultiInstance.InstantTime, instanceNames[0]].Cast<IInstantTime>();
+                    var instantTimeZero = category[InstantMultiInstance.InstantTime, instanceNames[1]].Cast<IInstantTime>();
+                    var instantTimeOne = category[InstantMultiInstance.InstantTime, instanceNames[2]].Cast<IInstantTime>();
+                    instantTimeTotal.Should().NotBeNull();
+                    instantTimeZero.Should().NotBeNull();
+                    instantTimeOne.Should().NotBeNull();
 
+                    instantTimeTotal.Set(TimeStamp.Now);
+                    Thread.Sleep(TimeSpan.FromSeconds(1.0));
+                    instantTimeZero.Set(TimeStamp.Now);
+                    Thread.Sleep(TimeSpan.FromSeconds(1.0));
+                    instantTimeOne.Set(TimeStamp.Now);
+
+                    instantTimeTotal.Current.Value().Should().BeGreaterThan(2.0F);
+                    instantTimeZero.Current.Value().Should().BeGreaterThan(1.0F);
+                    instantTimeOne.Current.Value().Should().BeGreaterThan(0.0F);
+                    instantTimeTotal.Current.Value().Should().BeLessThan(2.1F);
+                    instantTimeZero.Current.Value().Should().BeLessThan(1.1F);
+                    instantTimeOne.Current.Value().Should().BeLessThan(0.1F);
+
+                    instantTimeTotal.Reset();
+                    instantTimeZero.Reset();
+                    instantTimeOne.Reset();
+
+                    instantTimeTotal.Current.Value().Should().BeGreaterThan(0.0F);
+                    instantTimeZero.Current.Value().Should().BeGreaterThan(0.0F);
+                    instantTimeOne.Current.Value().Should().BeGreaterThan(0.0F);
+                    instantTimeTotal.Current.Value().Should().BeLessThan(0.1F);
+                    instantTimeZero.Current.Value().Should().BeLessThan(0.1F);
+                    instantTimeOne.Current.Value().Should().BeLessThan(0.1F);
                 }
             }
             finally
             {
-                MeterCategory.Uninstall<AverageSingleInstance>();
+                MeterCategory.Uninstall<InstantSingleInstance>();
             }
         }
-
-        #endregion
 
         #endregion
 
@@ -399,6 +452,9 @@ namespace NDiagnostics.Metering.Test
 
             [Meter("InstantRatio", "InstantRatio Description", MeterType.InstantRatio)]
             InstantRatio,
+
+            [Meter("InstantTime", "InstantTime Description", MeterType.InstantTime)]
+            InstantTime,
         }
 
         [MeterCategory("Instant Multi Instance", "Instant Multi Instance Description", MeterCategoryType.MultiInstance)]
@@ -412,16 +468,9 @@ namespace NDiagnostics.Metering.Test
 
             [Meter("InstantRatio", "InstantRatio Description", MeterType.InstantRatio)]
             InstantRatio,
-        }
 
-        [MeterCategory("Average Single Instance", "Average Single Instance Description", MeterCategoryType.SingleInstance)]
-        public enum AverageSingleInstance
-        {
-            [Meter("AverageValue1", "AverageValue1 Description", MeterType.AverageValue)]
-            AverageCount,
-
-            [Meter("AverageTime", "AverageTime Description", MeterType.AverageTime)]
-            AverageTime,
+            [Meter("InstantTime", "InstantTime Description", MeterType.InstantTime)]
+            InstantTime,
         }
     }
 }
