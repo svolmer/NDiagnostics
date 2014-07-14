@@ -6,7 +6,7 @@ The library utilizes [Performance Counters](http://msdn.microsoft.com/en-us/libr
 
 The library provides out-of-the-box a more elaborated API than the cumbersome provided by the .NET framework in the [`System.Diagnostics`](http://msdn.microsoft.com/en-us/library/System.Diagnostics(v=vs.110).aspx) namespace. The API allows performance data to be collected and evaluated by using single line statements with minimal pollution of the code. 
 
-## Installation
+# Installation
 
 ~~~shell
 nuget install NDiagnostics.Monitoring
@@ -16,22 +16,15 @@ or
 PM> Install-Package NDiagnostics.Monitoring
 ~~~
 
-## Usage
+# Meter Types
 
-TODO
-
-## Meter Types
-
-### Instantaneous Meters
-
+## Instantaneous Meters
 Instant meters measure the most recent absolute values. Any value can be obtained from a single measurement at any point in time.
 
-|**Type**|**`MeterType.InstantValue`**|
-|--:|:--|
-|Description|measures an integer|
-|Example|total number of web requests|
-|Substitutes|`PerformanceCounterType.NumberOfItems32`, `PerformanceCounterType.NumberOfItems64`, `PerformanceCounterType.NumberOfItemsHEX32`, `PerformanceCounterType.NumberOfItemsHEX64`|
-|Interface|
+### InstantValue
+#### Description
+Measures an integer. Substitutes performance counters of type `NumberOfItems32`, `NumberOfItems64`, `NumberOfItemsHEX32`, `NumberOfItemsHEX64`.
+#### interface 
 ~~~c#
 public interface IInstantValue : IMeter
 {
@@ -47,14 +40,14 @@ public interface IInstantValue : IMeter
 
     new InstantValueSample Current { get; }
 }
-~~~|
+~~~
+#### Example
+Total number of web requests.
 
-|**Type**|**`MeterType.InstantTime`**|
-|--:|:--|
-|Description|measures a period of time in seconds|
-|Example|total elapsed time since application start|
-|Substitutes|`PerformanceCounterType.ElapsedTime`|
-|Interface|
+### InstantTime
+#### Description
+Measures a period of time in seconds. Substitutes performance counters of type `ElapsedTime`.
+#### Interface 
 ~~~c#
 public interface IInstantTime : IMeter
 {
@@ -62,14 +55,14 @@ public interface IInstantTime : IMeter
 
     new InstantTimeSample Current { get; }
 }
-~~~|
+~~~
+#### Example
+Total elapsed time since application start.
 
-|**Type**|**`MeterType.InstantRatio`**|
-|--:|:--|
-|Description|measures a fraction of integers|
-|Example|percentage of free vs. total memory|
-|Substitutes|`PerformanceCounterType.RawFraction`|
-|Interface|
+### InstantRatio
+#### Description
+Measures a fraction of integers. Substitutes performance counters of type `RawFraction`.
+#### Interface 
 ~~~c#
 public interface IInstantRatio : IMeter
 {
@@ -95,18 +88,18 @@ public interface IInstantRatio : IMeter
 
     new InstantRatioSample Current { get; }
 }
-~~~|
+~~~
+#### Example
+Percentage of free vs. total memory.
 
-### Average Meters
+## Average Meters
 
 Average meters measure the average of values within a given time frame. Any value can be obtained from two measurements at different points in time.
 
-|**Type**|**`MeterType.AverageValue`**|
-|--:|:--|
-|Description|measures the average of an integer|
-|Example|average queue length|
-|Substitutes|`PerformanceCounterType.AverageCount64`|
-|Interface|
+### AverageValue
+#### Description
+Measures the average of an integer. Substitutes performance counters of type `AverageCount64`.
+#### Interface 
 ~~~c#
 public interface IAverageValue : IMeter
 {
@@ -114,14 +107,14 @@ public interface IAverageValue : IMeter
 
     new AverageValueSample Current { get; }
 }
-~~~|
+~~~
+#### Example
+Average queue length.
 
-|**Type**|**`MeterType.AverageTime`**|
-|--:|:--|
-|Description|measures the average of a period of time in seconds|
-|Example|average processing time per message|
-|Substitutes|`PerformanceCounterType.AverageTimer32`|
-|Interface|
+### AverageTime
+#### Description
+Measures the average of a period of time in seconds. Substitutes performance counters of type `AverageTimer32`.
+#### Interface 
 ~~~c#
 public interface IAverageTime : IMeter
 {
@@ -129,14 +122,14 @@ public interface IAverageTime : IMeter
 
     new AverageTimeSample Current { get; }
 }
-~~~|
+~~~
+#### Example
+Average processing time per message.
 
-|**Type**|**`MeterType.AverageRatio`**|
-|--:|:--|
-|Description|measures the average of a fraction of integers|
-|Example|average percentage of free vs total memory|
-|Substitutes|`PerformanceCounterType.SampleFraction`|
-|Interface|
+### AverageRatio
+#### Description
+Measures the the average of a fraction of integers. Substitutes performance counters of type `SampleFraction`.
+#### Interface 
 ~~~c#
 public interface IAverageRatio : IMeter
 {
@@ -162,14 +155,14 @@ public interface IAverageRatio : IMeter
 
     new AverageRatioSample Current { get; }
 }
-~~~|
+~~~
+#### Example
+Average percentage of free vs total memory.
 
-|**Type**|**`MeterType.AverageRate`**|
-|--:|:--|
-|Description|measures the average rate of items per second|
-|Example|average number of messages processed per second|
-|Substitutes|`PerformanceCounterType.SampleCounter`, `PerformanceCounterType.RateOfCountsPerSecond32`, `PerformanceCounterType.RateOfCountsPerSecond64`|
-|Interface|
+### AverageRate
+#### Description
+Measures the average rate of items per second. Substitutes performance counters of type `SampleCounter`, `RateOfCountsPerSecond32`, `RateOfCountsPerSecond64`.
+#### Interface 
 ~~~c#
 public interface IAverageRate : IMeter
 {
@@ -177,18 +170,17 @@ public interface IAverageRate : IMeter
 
     new AverageRateSample Current { get; }
 }
-~~~|
+~~~
+#### Example
+Average number of messages processed per second.
 
 ### Differential Meters 
-
 Differential meters measure the difference between values at the beginning and the end of a given time frame. Any value can be obtained from two measurements at different points in time.
 
-|**Type**|**`MeterType.DifferentialValue`**|
-|--:|:--|
-|Description|measures the average rate of items per second|
-|Example|?|
-|Substitutes|`PerformanceCounterType.CounterDelta32`, `PerformanceCounterType.CounterDelta64`|
-|Interface|
+### DifferentialValue
+#### Description
+Measures the average rate of items per second. Substitutes performance counters of type `CounterDelta32`, `CounterDelta64`.
+#### Interface 
 ~~~c#
 public interface IDifferentialValue : IMeter
 {
@@ -204,10 +196,11 @@ public interface IDifferentialValue : IMeter
 
     new DifferentialValueSample Current { get; }
 }
-~~~|
+~~~
+#### Example
+?
 
 ### Percentage of Time Meters
-
 Percentage of time meters measure the difference between values at the beginning and the end of a given time frame. Any value can be obtained from two measurements at different points in time.
 
 ## Contributions
