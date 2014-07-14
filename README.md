@@ -1,4 +1,4 @@
-# NDiagnostics.Monitoring
+# NDiagnostics.Metering
 
 This library makes it easier for developers to gain valuable application insight. This is achieved by using "meters" to measure key performance indicators during runtime.
 
@@ -9,11 +9,11 @@ The library provides out-of-the-box a more elaborated API than the cumbersome pr
 # Installation
 
 ~~~shell
-nuget install NDiagnostics.Monitoring
+nuget install NDiagnostics.Metering
 ~~~
 or
 ~~~shell
-PM> Install-Package NDiagnostics.Monitoring
+PM> Install-Package NDiagnostics.Metering
 ~~~
 
 # Meter Types
