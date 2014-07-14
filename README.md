@@ -203,6 +203,66 @@ public interface IDifferentialValue : IMeter
 ### Percentage of Time Meters
 Percentage of time meters measure the difference between values at the beginning and the end of a given time frame. Any value can be obtained from two measurements at different points in time.
 
+### Timer
+#### Description
+Measures the percentage of elapsed time of activity. Uses `Stopwatch.ElapsedTicks`. Substitutes performance counters of type `CounterTimer`.
+#### Interface 
+~~~c#
+public interface ITimer : IMeter
+{
+    void Sample(Time elapsedTimeOfActivity);
+
+    new TimerSample Current { get; }
+}
+~~~
+#### Example
+Percentage of elapsed time that a method has spent executing.
+
+### TimerInverse
+#### Description
+Measures the percentage of elapsed time of inactivity. Uses `Stopwatch.ElapsedTicks`. Substitutes performance counters of type `CounterTimerInverse`.
+#### Interface 
+~~~c#
+public interface ITimerInverse : IMeter
+{
+    void Sample(Time elapsedTimeOfInactivity);
+
+    new TimerInverseSample Current { get; }
+}
+~~~
+#### Example
+Percentage of idle time that a method has spent waiting.
+
+### Timer100Ns
+#### Description
+Measures the percentage of elapsed time of activity. Uses high precision `DateTime.Ticks`. Substitutes performance counters of type `Timer100Ns`.
+#### Interface 
+~~~c#
+public interface ITimer100Ns : IMeter
+{
+    void Sample(Time100Ns elapsedTimeOfActivity);
+
+    new Timer100NsSample Current { get; }
+}
+~~~
+#### Example
+Percentage of elapsed time for a processor executing instructions in user mode.
+
+### Timer100NsInverse
+#### Description
+Measures the percentage of elapsed time of inactivity. Uses high precision `DateTime.Ticks`. Substitutes performance counters of type `Timer100NsInverse`.
+#### Interface 
+~~~c#
+public interface ITimer100NsInverse : IMeter
+{
+    void Sample(Time100Ns elapsedTimeOfInactivity);
+
+    new Timer100NsInverseSample Current { get; }
+}
+~~~
+#### Example
+Percentage of idle time for a processor.
+
 ## Contributions
 
 Just send a pull request. You will be granted commit access if you send quality pull requests.
