@@ -14,6 +14,21 @@ namespace NDiagnostics.Metering.Meters
 
         #endregion
 
+        #region IMeter
+
+        public override Sample Current
+        {
+            get { return this.GetCurrentSample(); }
+        }
+
+        public override void Reset()
+        {
+            this.ValueCounter.RawValue = 0;
+            this.BaseCounter.RawValue = 0;
+        }
+
+        #endregion
+
         #region ISamplePercentage
 
         SamplePercentageSample ISamplePercentage.Current
@@ -30,21 +45,6 @@ namespace NDiagnostics.Metering.Meters
         public void SampleFailure()
         {
             this.BaseCounter.Increment();
-        }
-
-        #endregion
-
-        #region IMeter
-
-        public override Sample Current
-        {
-            get { return this.GetCurrentSample(); }
-        }
-
-        public override void Reset()
-        {
-            this.ValueCounter.RawValue = 0;
-            this.BaseCounter.RawValue = 0;
         }
 
         #endregion

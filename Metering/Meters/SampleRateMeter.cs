@@ -14,20 +14,6 @@ namespace NDiagnostics.Metering.Meters
 
         #endregion
 
-        #region ISampleRate
-
-        SampleRateSample ISampleRate.Current
-        {
-            get { return this.GetCurrentSample(); }
-        }
-
-        public void Sample()
-        {
-            this.ValueCounter.Increment();
-        }
-
-        #endregion
-
         #region IMeter
 
         public override Sample Current
@@ -38,6 +24,20 @@ namespace NDiagnostics.Metering.Meters
         public override void Reset()
         {
             this.ValueCounter.RawValue = 0;
+        }
+
+        #endregion
+
+        #region ISampleRate
+
+        SampleRateSample ISampleRate.Current
+        {
+            get { return this.GetCurrentSample(); }
+        }
+
+        public void Sample()
+        {
+            this.ValueCounter.Increment();
         }
 
         #endregion

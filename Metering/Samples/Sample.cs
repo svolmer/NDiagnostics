@@ -29,9 +29,9 @@ namespace NDiagnostics.Metering.Samples
 
         #endregion
 
-        #region Public Methods
-
         // Instant Meters 
+
+        #region Public Methods
 
         public static long ComputeValue(InstantValueSample sample)
         {
@@ -48,11 +48,11 @@ namespace NDiagnostics.Metering.Samples
         public static float ComputeValue(InstantPercentageSample sample)
         {
             sample.ThrowIfNull("sample");
-            if (sample.Denominator == 0)
+            if(sample.Denominator == 0)
             {
                 return 0.0F;
             }
-            return (float)sample.Numerator / sample.Denominator * 100.0F;
+            return (float) sample.Numerator / sample.Denominator * 100.0F;
         }
 
         // Average Meters
