@@ -8,7 +8,7 @@ namespace NDiagnostics.Metering
 
         InstantTime = 0x00001001,
 
-        InstantRatio = 0x00001011,
+        InstantPercentage = 0x00001011,
 
         // Average Meters
 
@@ -16,11 +16,13 @@ namespace NDiagnostics.Metering
 
         AverageTime = 0x00010001,
 
-        AverageRate = 0x00010010,
+        // Sample Meters
 
-        AverageRatio = 0x00010011,
+        AverageRate = 0x00010010, // SampleValue
 
-        // Difference Meters 
+        AverageRatio = 0x00010011, // SamplePercentage
+
+        // Differential Meters 
 
         DifferentialValue = 0x00100000,
 

@@ -92,7 +92,7 @@ namespace NDiagnostics.Metering.Test
         }
 
         [TestMethod]
-        public void CanCreateInstantRatioSingleInstanceMeter()
+        public void CanCreateInstantPercentageSingleInstanceMeter()
         {
             MeterCategory.Install<InstantSingleInstance>();
 
@@ -102,31 +102,31 @@ namespace NDiagnostics.Metering.Test
                 {
                     category.Should().NotBeNull();
 
-                    var instantRatio = category[InstantSingleInstance.InstantRatio].Cast<IInstantRatio>();
-                    instantRatio.Should().NotBeNull();
+                    var instantPercentage = category[InstantSingleInstance.InstantPercentage].Cast<IInstantPercentage>();
+                    instantPercentage.Should().NotBeNull();
 
-                    instantRatio.SetNumerator(1L);
-                    instantRatio.SetDenominator(4L);
-                    instantRatio.Current.Value().Should().Be(25.0F); // 1/4
+                    instantPercentage.SetNumerator(1L);
+                    instantPercentage.SetDenominator(4L);
+                    instantPercentage.Current.Value().Should().Be(25.0F); // 1/4
 
-                    instantRatio.IncrementNumerator().Should().Be(2L);
-                    instantRatio.IncrementDenominator().Should().Be(5L);
-                    instantRatio.Current.Value().Should().Be(40.0F); // 2/5
+                    instantPercentage.IncrementNumerator().Should().Be(2L);
+                    instantPercentage.IncrementDenominator().Should().Be(5L);
+                    instantPercentage.Current.Value().Should().Be(40.0F); // 2/5
 
-                    instantRatio.IncrementNumeratorBy(4L).Should().Be(6L);
-                    instantRatio.IncrementDenominatorBy(7L).Should().Be(12L);
-                    instantRatio.Current.Value().Should().Be(50.0F); // 6/12
+                    instantPercentage.IncrementNumeratorBy(4L).Should().Be(6L);
+                    instantPercentage.IncrementDenominatorBy(7L).Should().Be(12L);
+                    instantPercentage.Current.Value().Should().Be(50.0F); // 6/12
 
-                    instantRatio.DecrementNumerator().Should().Be(5L);
-                    instantRatio.DecrementDenominatorBy(4L).Should().Be(8L);
-                    instantRatio.Current.Value().Should().Be(62.5F); // 5/8
+                    instantPercentage.DecrementNumerator().Should().Be(5L);
+                    instantPercentage.DecrementDenominatorBy(4L).Should().Be(8L);
+                    instantPercentage.Current.Value().Should().Be(62.5F); // 5/8
 
-                    instantRatio.DecrementNumeratorBy(3L).Should().Be(2L);
-                    instantRatio.DecrementDenominator().Should().Be(7L);
-                    instantRatio.Current.Value().Should().Be(200.0F / 7.0F); // 2/7
+                    instantPercentage.DecrementNumeratorBy(3L).Should().Be(2L);
+                    instantPercentage.DecrementDenominator().Should().Be(7L);
+                    instantPercentage.Current.Value().Should().Be(200.0F / 7.0F); // 2/7
 
-                    instantRatio.Reset();
-                    instantRatio.Current.Value().Should().Be(0.0F);
+                    instantPercentage.Reset();
+                    instantPercentage.Current.Value().Should().Be(0.0F);
                 }
             }
             finally
@@ -307,7 +307,7 @@ namespace NDiagnostics.Metering.Test
         }
 
         [TestMethod]
-        public void CanCreateInstantRatioMultiInstanceMeter()
+        public void CanCreateInstantPercentageMultiInstanceMeter()
         {
             MeterCategory.Install<InstantMultiInstance>();
 
@@ -318,69 +318,69 @@ namespace NDiagnostics.Metering.Test
                 {
                     category.Should().NotBeNull();
 
-                    var instantRatioTotal = category[InstantMultiInstance.InstantRatio, "_Total"].Cast<IInstantRatio>();
-                    var instantRatioZero = category[InstantMultiInstance.InstantRatio, "0"].Cast<IInstantRatio>();
-                    var instantRatioOne = category[InstantMultiInstance.InstantRatio, "1"].Cast<IInstantRatio>();
-                    instantRatioTotal.Should().NotBeNull();
-                    instantRatioZero.Should().NotBeNull();
-                    instantRatioOne.Should().NotBeNull();
+                    var instantPercentageTotal = category[InstantMultiInstance.InstantPercentage, "_Total"].Cast<IInstantPercentage>();
+                    var instantPercentageZero = category[InstantMultiInstance.InstantPercentage, "0"].Cast<IInstantPercentage>();
+                    var instantPercentageOne = category[InstantMultiInstance.InstantPercentage, "1"].Cast<IInstantPercentage>();
+                    instantPercentageTotal.Should().NotBeNull();
+                    instantPercentageZero.Should().NotBeNull();
+                    instantPercentageOne.Should().NotBeNull();
 
-                    instantRatioTotal.SetNumerator(1L);
-                    instantRatioTotal.SetDenominator(4L);
-                    instantRatioTotal.Current.Value().Should().Be(25.0F); // 1/4
-                    instantRatioZero.SetNumerator(4L);
-                    instantRatioZero.SetDenominator(5L);
-                    instantRatioZero.Current.Value().Should().Be(80.0F); // 4/5
-                    instantRatioOne.SetNumerator(7L);
-                    instantRatioOne.SetDenominator(10L);
-                    instantRatioOne.Current.Value().Should().Be(70.0F); // 7/10
+                    instantPercentageTotal.SetNumerator(1L);
+                    instantPercentageTotal.SetDenominator(4L);
+                    instantPercentageTotal.Current.Value().Should().Be(25.0F); // 1/4
+                    instantPercentageZero.SetNumerator(4L);
+                    instantPercentageZero.SetDenominator(5L);
+                    instantPercentageZero.Current.Value().Should().Be(80.0F); // 4/5
+                    instantPercentageOne.SetNumerator(7L);
+                    instantPercentageOne.SetDenominator(10L);
+                    instantPercentageOne.Current.Value().Should().Be(70.0F); // 7/10
 
-                    instantRatioTotal.IncrementNumerator().Should().Be(2L);
-                    instantRatioTotal.IncrementDenominator().Should().Be(5L);
-                    instantRatioTotal.Current.Value().Should().Be(40.0F); // 2/5
-                    instantRatioZero.DecrementNumeratorBy(2L).Should().Be(2L);
-                    instantRatioZero.DecrementDenominator().Should().Be(4L);
-                    instantRatioZero.Current.Value().Should().Be(50.0F); // 2/4
-                    instantRatioOne.IncrementNumerator().Should().Be(8L);
-                    instantRatioOne.DecrementDenominatorBy(2L).Should().Be(8L);
-                    instantRatioOne.Current.Value().Should().Be(100.0F); // 8/8
+                    instantPercentageTotal.IncrementNumerator().Should().Be(2L);
+                    instantPercentageTotal.IncrementDenominator().Should().Be(5L);
+                    instantPercentageTotal.Current.Value().Should().Be(40.0F); // 2/5
+                    instantPercentageZero.DecrementNumeratorBy(2L).Should().Be(2L);
+                    instantPercentageZero.DecrementDenominator().Should().Be(4L);
+                    instantPercentageZero.Current.Value().Should().Be(50.0F); // 2/4
+                    instantPercentageOne.IncrementNumerator().Should().Be(8L);
+                    instantPercentageOne.DecrementDenominatorBy(2L).Should().Be(8L);
+                    instantPercentageOne.Current.Value().Should().Be(100.0F); // 8/8
 
-                    instantRatioTotal.IncrementNumeratorBy(4L).Should().Be(6L);
-                    instantRatioTotal.IncrementDenominatorBy(7L).Should().Be(12L);
-                    instantRatioTotal.Current.Value().Should().Be(50.0F); // 6/12
-                    instantRatioZero.DecrementNumerator().Should().Be(1L);
-                    instantRatioZero.IncrementDenominatorBy(4L).Should().Be(8L);
-                    instantRatioZero.Current.Value().Should().Be(12.5F); // 1/8
-                    instantRatioOne.DecrementNumeratorBy(2L).Should().Be(6L);
-                    instantRatioOne.IncrementDenominatorBy(2L).Should().Be(10L);
-                    instantRatioOne.Current.Value().Should().Be(60.0F); // 6/10
+                    instantPercentageTotal.IncrementNumeratorBy(4L).Should().Be(6L);
+                    instantPercentageTotal.IncrementDenominatorBy(7L).Should().Be(12L);
+                    instantPercentageTotal.Current.Value().Should().Be(50.0F); // 6/12
+                    instantPercentageZero.DecrementNumerator().Should().Be(1L);
+                    instantPercentageZero.IncrementDenominatorBy(4L).Should().Be(8L);
+                    instantPercentageZero.Current.Value().Should().Be(12.5F); // 1/8
+                    instantPercentageOne.DecrementNumeratorBy(2L).Should().Be(6L);
+                    instantPercentageOne.IncrementDenominatorBy(2L).Should().Be(10L);
+                    instantPercentageOne.Current.Value().Should().Be(60.0F); // 6/10
 
-                    instantRatioTotal.DecrementNumerator().Should().Be(5L);
-                    instantRatioTotal.DecrementDenominatorBy(4L).Should().Be(8L);
-                    instantRatioTotal.Current.Value().Should().Be(62.5F); // 5/8
-                    instantRatioZero.IncrementNumerator().Should().Be(2L);
-                    instantRatioZero.DecrementDenominatorBy(4L).Should().Be(4L);
-                    instantRatioZero.Current.Value().Should().Be(50.0F); // 2/4
-                    instantRatioOne.DecrementNumerator().Should().Be(5L);
-                    instantRatioOne.DecrementDenominator().Should().Be(9L);
-                    instantRatioOne.Current.Value().Should().Be(500.0F / 9.0F); // 5/9
+                    instantPercentageTotal.DecrementNumerator().Should().Be(5L);
+                    instantPercentageTotal.DecrementDenominatorBy(4L).Should().Be(8L);
+                    instantPercentageTotal.Current.Value().Should().Be(62.5F); // 5/8
+                    instantPercentageZero.IncrementNumerator().Should().Be(2L);
+                    instantPercentageZero.DecrementDenominatorBy(4L).Should().Be(4L);
+                    instantPercentageZero.Current.Value().Should().Be(50.0F); // 2/4
+                    instantPercentageOne.DecrementNumerator().Should().Be(5L);
+                    instantPercentageOne.DecrementDenominator().Should().Be(9L);
+                    instantPercentageOne.Current.Value().Should().Be(500.0F / 9.0F); // 5/9
 
-                    instantRatioTotal.DecrementNumeratorBy(3L).Should().Be(2L);
-                    instantRatioTotal.DecrementDenominator().Should().Be(7L);
-                    instantRatioTotal.Current.Value().Should().Be(200.0F / 7.0F); // 2/7
-                    instantRatioZero.IncrementNumeratorBy(2L).Should().Be(4L);
-                    instantRatioZero.IncrementDenominator().Should().Be(5L);
-                    instantRatioZero.Current.Value().Should().Be(80.0F); // 4/5
-                    instantRatioOne.IncrementNumeratorBy(2L).Should().Be(7L);
-                    instantRatioOne.IncrementDenominator().Should().Be(10L);
-                    instantRatioOne.Current.Value().Should().Be(70.0F); // 7/10
+                    instantPercentageTotal.DecrementNumeratorBy(3L).Should().Be(2L);
+                    instantPercentageTotal.DecrementDenominator().Should().Be(7L);
+                    instantPercentageTotal.Current.Value().Should().Be(200.0F / 7.0F); // 2/7
+                    instantPercentageZero.IncrementNumeratorBy(2L).Should().Be(4L);
+                    instantPercentageZero.IncrementDenominator().Should().Be(5L);
+                    instantPercentageZero.Current.Value().Should().Be(80.0F); // 4/5
+                    instantPercentageOne.IncrementNumeratorBy(2L).Should().Be(7L);
+                    instantPercentageOne.IncrementDenominator().Should().Be(10L);
+                    instantPercentageOne.Current.Value().Should().Be(70.0F); // 7/10
 
-                    instantRatioTotal.Reset();
-                    instantRatioZero.Reset();
-                    instantRatioOne.Reset();
-                    instantRatioTotal.Current.Value().Should().Be(0.0F);
-                    instantRatioZero.Current.Value().Should().Be(0.0F);
-                    instantRatioOne.Current.Value().Should().Be(0.0F);
+                    instantPercentageTotal.Reset();
+                    instantPercentageZero.Reset();
+                    instantPercentageOne.Reset();
+                    instantPercentageTotal.Current.Value().Should().Be(0.0F);
+                    instantPercentageZero.Current.Value().Should().Be(0.0F);
+                    instantPercentageOne.Current.Value().Should().Be(0.0F);
                 }
             }
             finally
@@ -450,8 +450,8 @@ namespace NDiagnostics.Metering.Test
             [Meter("InstantCount64", "InstantCount64 Description", MeterType.InstantValue, MeterDataType.Int64)]
             InstantCount64,
 
-            [Meter("InstantRatio", "InstantRatio Description", MeterType.InstantRatio)]
-            InstantRatio,
+            [Meter("InstantPercentage", "InstantPercentage Description", MeterType.InstantPercentage)]
+            InstantPercentage,
 
             [Meter("InstantTime", "InstantTime Description", MeterType.InstantTime)]
             InstantTime,
@@ -466,8 +466,8 @@ namespace NDiagnostics.Metering.Test
             [Meter("InstantCount64", "InstantCount64 Description", MeterType.InstantValue, MeterDataType.Int64)]
             InstantCount64,
 
-            [Meter("InstantRatio", "InstantRatio Description", MeterType.InstantRatio)]
-            InstantRatio,
+            [Meter("InstantPercentage", "InstantPercentage Description", MeterType.InstantPercentage)]
+            InstantPercentage,
 
             [Meter("InstantTime", "InstantTime Description", MeterType.InstantTime)]
             InstantTime,

@@ -59,12 +59,12 @@ public interface IInstantTime : IMeter
 #### Example
 Total elapsed time since application start.
 
-### InstantRatio
+### InstantPercentage
 #### Description
-Measures a fraction of integers. Substitutes performance counters of type `RawFraction`.
+Measures a percentage as a fraction of integers. Substitutes performance counters of type `RawFraction`.
 #### Interface 
 ~~~c#
-public interface IInstantRatio : IMeter
+public interface IInstantPercentage : IMeter
 {
     long IncrementNumerator();
 
@@ -86,7 +86,7 @@ public interface IInstantRatio : IMeter
 
     void SetDenominator(long value);
 
-    new InstantRatioSample Current { get; }
+    new InstantPercentageSample Current { get; }
 }
 ~~~
 #### Example

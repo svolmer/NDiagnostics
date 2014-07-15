@@ -2,7 +2,7 @@
 
 namespace NDiagnostics.Metering
 {
-    public interface IInstantRatio : IMeter
+    public interface IInstantPercentage : IMeter
     {
         long IncrementNumerator();
 
@@ -24,6 +24,6 @@ namespace NDiagnostics.Metering
 
         void SetDenominator(long value);
 
-        new InstantRatioSample Current { get; }
+        new InstantPercentageSample Current { get; }
     }
 }

@@ -4,25 +4,9 @@ namespace NDiagnostics.Metering
 {
     public interface IAverageRatio : IMeter
     {
-        long IncrementNumerator();
+        void SampleSuccess();
 
-        long IncrementNumeratorBy(long value);
-
-        long DecrementNumerator();
-
-        long DecrementNumeratorBy(long value);
-
-        void SetNumerator(long value);
-
-        long IncrementDenominator();
-
-        long IncrementDenominatorBy(long value);
-
-        long DecrementDenominator();
-
-        long DecrementDenominatorBy(long value);
-
-        void SetDenominator(long value);
+        void SampleFailure();
 
         new AverageRatioSample Current { get; }
     }

@@ -39,20 +39,20 @@ namespace NDiagnostics.Metering.Samples
             return sample.Value;
         }
 
-        public static float ComputeValue(InstantRatioSample sample)
-        {
-            sample.ThrowIfNull("sample");
-            if(sample.Denominator == 0)
-            {
-                return 0.0F;
-            }
-            return (float) sample.Numerator / sample.Denominator * 100.0F;
-        }
-
         public static float ComputeValue(InstantTimeSample sample)
         {
             sample.ThrowIfNull("sample");
             return (sample.TimeStamp - sample.StartTime).Seconds;
+        }
+
+        public static float ComputeValue(InstantPercentageSample sample)
+        {
+            sample.ThrowIfNull("sample");
+            if (sample.Denominator == 0)
+            {
+                return 0.0F;
+            }
+            return (float)sample.Numerator / sample.Denominator * 100.0F;
         }
 
         // Average Meters

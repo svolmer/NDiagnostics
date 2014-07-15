@@ -38,7 +38,7 @@ namespace NDiagnostics.Metering.Extensions
             {
                 case MeterType.InstantValue:
                     return meterAttribute.DataType == MeterDataType.Int32 ? PerformanceCounterType.NumberOfItems32 : PerformanceCounterType.NumberOfItems64;
-                case MeterType.InstantRatio:
+                case MeterType.InstantPercentage:
                     return PerformanceCounterType.RawFraction;
                 case MeterType.AverageValue:
                     return PerformanceCounterType.AverageCount64;

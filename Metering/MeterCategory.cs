@@ -174,8 +174,8 @@ namespace NDiagnostics.Metering
                         case MeterType.InstantValue:
                             meter = new InstantValueMeter(meterCategoryAttribute.Name, meterCategoryAttribute.Type, meterAttribute.Name, meterAttribute.MeterType, instanceName);
                             break;
-                        case MeterType.InstantRatio:
-                            meter = new InstantRatioMeter(meterCategoryAttribute.Name, meterCategoryAttribute.Type, meterAttribute.Name, meterAttribute.MeterType, instanceName);
+                        case MeterType.InstantPercentage:
+                            meter = new InstantPercentageMeter(meterCategoryAttribute.Name, meterCategoryAttribute.Type, meterAttribute.Name, meterAttribute.MeterType, instanceName);
                             break;
                             // Average Meters
                         case MeterType.AverageValue:

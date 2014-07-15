@@ -2,11 +2,11 @@
 
 namespace NDiagnostics.Metering.Meters
 {
-    internal sealed class InstantRatioMeter : Meter, IInstantRatio
+    internal sealed class InstantPercentageMeter : Meter, IInstantPercentage
     {
         #region Constructors and Destructors
 
-        public InstantRatioMeter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName = null)
+        public InstantPercentageMeter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName = null)
             : base(categoryName, categoryType, meterName, meterType, instanceName, true)
         {
             this.Reset();
@@ -14,9 +14,9 @@ namespace NDiagnostics.Metering.Meters
 
         #endregion
 
-        #region IInstantRatio
+        #region IInstantPercentage
 
-        InstantRatioSample IInstantRatio.Current
+        InstantPercentageSample IInstantPercentage.Current
         {
             get { return this.GetCurrentSample(); }
         }
@@ -90,10 +90,10 @@ namespace NDiagnostics.Metering.Meters
 
         #region Methods
 
-        private InstantRatioSample GetCurrentSample()
+        private InstantPercentageSample GetCurrentSample()
         {
             var sample = this.ValueCounter.RawSample;
-            return new InstantRatioSample(sample.Value, sample.BaseValue, sample.TimeStamp);
+            return new InstantPercentageSample(sample.Value, sample.BaseValue, sample.TimeStamp);
         }
 
         #endregion

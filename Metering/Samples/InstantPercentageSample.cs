@@ -2,11 +2,11 @@
 
 namespace NDiagnostics.Metering.Samples
 {
-    public sealed class InstantRatioSample : Sample
+    public sealed class InstantPercentageSample : Sample
     {
         #region Constructors and Destructors
 
-        internal InstantRatioSample(long numerator, long denominator, TimeStamp timeStamp)
+        internal InstantPercentageSample(long numerator, long denominator, TimeStamp timeStamp)
             : base(timeStamp)
         {
             this.Numerator = numerator;

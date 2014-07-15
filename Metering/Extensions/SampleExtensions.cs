@@ -11,7 +11,7 @@ namespace NDiagnostics.Metering.Extensions
             return Sample.ComputeValue(sample);
         }
 
-        public static float Value(this InstantRatioSample sample)
+        public static float Value(this InstantPercentageSample sample)
         {
             return Sample.ComputeValue(sample);
         }
