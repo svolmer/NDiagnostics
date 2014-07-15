@@ -21,54 +21,15 @@ namespace NDiagnostics.Metering.Meters
             get { return this.GetCurrentSample(); }
         }
 
-        public long IncrementNumerator()
+        public void SampleSuccess()
         {
-            return this.ValueCounter.Increment();
+            this.ValueCounter.Increment();
+            this.BaseCounter.Increment();
         }
 
-        public long IncrementNumeratorBy(long value)
+        public void SampleFailure()
         {
-            return this.ValueCounter.IncrementBy(value);
-        }
-
-        public long DecrementNumerator()
-        {
-            return this.ValueCounter.Decrement();
-        }
-
-        public long DecrementNumeratorBy(long value)
-        {
-            return this.ValueCounter.IncrementBy(-value);
-        }
-
-        public void SetNumerator(long value)
-        {
-            this.ValueCounter.RawValue = value;
-        }
-
-        public long IncrementDenominator()
-        {
-            return this.BaseCounter.Increment();
-        }
-
-        public long IncrementDenominatorBy(long value)
-        {
-            return this.BaseCounter.IncrementBy(value);
-        }
-
-        public long DecrementDenominator()
-        {
-            return this.BaseCounter.Decrement();
-        }
-
-        public long DecrementDenominatorBy(long value)
-        {
-            return this.BaseCounter.IncrementBy(-value);
-        }
-
-        public void SetDenominator(long value)
-        {
-            this.BaseCounter.RawValue = value;
+            this.BaseCounter.Increment();
         }
 
         #endregion
