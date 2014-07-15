@@ -28,7 +28,7 @@ namespace NDiagnostics.Metering.Types
 
         public static TimeStamp Now
         {
-            [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")] get { return new TimeStamp(Stopwatch.GetTimestamp()); }
+            get { return new TimeStamp(Stopwatch.GetTimestamp()); }
         }
 
         internal long Ticks { [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")] get; private set; }

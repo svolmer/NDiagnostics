@@ -26,6 +26,11 @@ namespace NDiagnostics.Metering.Types
 
         #region Properties
 
+        public static Time FromSeconds(float seconds)
+        {
+            return new Time(seconds);
+        }
+
         internal long Ticks { [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")] get; private set; }
 
         internal float Seconds

@@ -25,6 +25,11 @@ namespace NDiagnostics.Metering.Types
 
         #region Properties
 
+        public static TimeStamp100Ns Now
+        {
+            get { return new TimeStamp100Ns(DateTime.Now.Ticks); }
+        }
+
         internal long Ticks { [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")] get; private set; }
 
         private float Seconds
