@@ -154,12 +154,6 @@ namespace NDiagnostics.Metering.Test
 
             [Meter("AverageRatio", "AverageRatio Description", MeterType.AverageRatio)]
             AverageRatio,
-
-            [Meter("AverageRate32", "AverageRate32 Description", MeterType.AverageRate, MeterDataType.Int32)]
-            AverageRate32,
-
-            [Meter("AverageRate64", "AverageRate64 Description", MeterType.AverageRate, MeterDataType.Int64)]
-            AverageRate64,
         }
 
         [MeterCategory("Average Multi Instance", "Average Multi Instance Description", MeterCategoryType.MultiInstance)]
@@ -173,12 +167,6 @@ namespace NDiagnostics.Metering.Test
 
             [Meter("AverageRatio", "AverageRatio Description", MeterType.AverageRatio)]
             AverageRatio,
-
-            [Meter("AverageRate32", "AverageRate32 Description", MeterType.AverageRate, MeterDataType.Int32)]
-            AverageRate32,
-
-            [Meter("AverageRate64", "AverageRate64 Description", MeterType.AverageRate, MeterDataType.Int64)]
-            AverageRate64,
         }
     }
 }

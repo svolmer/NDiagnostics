@@ -2,11 +2,11 @@
 
 namespace NDiagnostics.Metering.Samples
 {
-    public sealed class AverageRateSample : Sample
+    public sealed class SampleRateSample : Sample
     {
         #region Constructors and Destructors
 
-        internal AverageRateSample(long count, TimeStamp timeStamp)
+        internal SampleRateSample(long count, TimeStamp timeStamp)
             : base(timeStamp)
         {
             this.Count = count;

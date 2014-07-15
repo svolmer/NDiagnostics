@@ -87,7 +87,7 @@ namespace NDiagnostics.Metering.Samples
             return 0.0F;
         }
 
-        public static float ComputeValue(AverageRateSample sample0, AverageRateSample sample1)
+        public static float ComputeValue(SampleRateSample sample0, SampleRateSample sample1)
         {
             sample0.ThrowIfNull("sample0");
             sample1.ThrowIfNull("sample1");

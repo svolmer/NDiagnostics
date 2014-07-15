@@ -2,11 +2,11 @@
 
 namespace NDiagnostics.Metering.Meters
 {
-    internal sealed class AverageRateMeter : Meter, IAverageRate
+    internal sealed class SampleRateMeter : Meter, ISampleRate
     {
         #region Constructors and Destructors
 
-        public AverageRateMeter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName = null)
+        public SampleRateMeter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName = null)
             : base(categoryName, categoryType, meterName, meterType, instanceName, false)
         {
             this.Reset();
@@ -14,9 +14,9 @@ namespace NDiagnostics.Metering.Meters
 
         #endregion
 
-        #region IAverageRate
+        #region ISampleRate
 
-        AverageRateSample IAverageRate.Current
+        SampleRateSample ISampleRate.Current
         {
             get { return this.GetCurrentSample(); }
         }
@@ -44,10 +44,10 @@ namespace NDiagnostics.Metering.Meters
 
         #region Methods
 
-        private AverageRateSample GetCurrentSample()
+        private SampleRateSample GetCurrentSample()
         {
             var sample = this.ValueCounter.RawSample;
-            return new AverageRateSample(sample.Value, sample.TimeStamp);
+            return new SampleRateSample(sample.Value, sample.TimeStamp);
         }
 
         #endregion

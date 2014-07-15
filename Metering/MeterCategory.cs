@@ -191,8 +191,8 @@ namespace NDiagnostics.Metering
                         case MeterType.InstantTime:
                             meter = new InstantTimeMeter(meterCategoryAttribute.Name, meterCategoryAttribute.Type, meterAttribute.Name, meterAttribute.MeterType, instanceName);
                             break;
-                        case MeterType.AverageRate:
-                            meter = new AverageRateMeter(meterCategoryAttribute.Name, meterCategoryAttribute.Type, meterAttribute.Name, meterAttribute.MeterType, instanceName);
+                        case MeterType.SampleRate:
+                            meter = new SampleRateMeter(meterCategoryAttribute.Name, meterCategoryAttribute.Type, meterAttribute.Name, meterAttribute.MeterType, instanceName);
                             break;
                         case MeterType.AverageRatio:
                             meter = new AverageRatioMeter(meterCategoryAttribute.Name, meterCategoryAttribute.Type, meterAttribute.Name, meterAttribute.MeterType, instanceName);

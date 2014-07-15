@@ -18,7 +18,7 @@ namespace NDiagnostics.Metering
 
         // Sample Meters
 
-        AverageRate = 0x00010010, // SampleValue
+        SampleRate = 0x00010010, // SampleRate
 
         AverageRatio = 0x00010011, // SamplePercentage
 

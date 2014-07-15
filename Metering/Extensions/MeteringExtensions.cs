@@ -48,7 +48,7 @@ namespace NDiagnostics.Metering.Extensions
                     return meterAttribute.DataType == MeterDataType.Int32 ? PerformanceCounterType.CounterDelta32 : PerformanceCounterType.CounterDelta64;
                 case MeterType.InstantTime:
                     return PerformanceCounterType.ElapsedTime;
-                case MeterType.AverageRate:
+                case MeterType.SampleRate:
                     return meterAttribute.DataType == MeterDataType.Int32 ? PerformanceCounterType.RateOfCountsPerSecond32 : PerformanceCounterType.RateOfCountsPerSecond64;
                 case MeterType.AverageRatio:
                     return PerformanceCounterType.SampleFraction;

@@ -24,7 +24,7 @@ Instant meters measure the most recent absolute values. Any value can be obtaine
 ### InstantValue
 #### Description
 Measures an integer. Substitutes performance counters of type `NumberOfItems32`, `NumberOfItems64`, `NumberOfItemsHEX32`, `NumberOfItemsHEX64`.
-#### interface 
+#### Interface 
 ~~~c#
 public interface IInstantValue : IMeter
 {
@@ -159,20 +159,24 @@ public interface IAverageRatio : IMeter
 #### Example
 Average percentage of free vs total memory.
 
-### AverageRate
+### Sample Meters 
+Differential meters measure the difference between values at the beginning and the end of a given time frame. Any value can be obtained from two measurements at different points in time.
+
+### SampleRate
 #### Description
 Measures the average rate of items per second. Substitutes performance counters of type `SampleCounter`, `RateOfCountsPerSecond32`, `RateOfCountsPerSecond64`.
 #### Interface 
 ~~~c#
-public interface IAverageRate : IMeter
+public interface ISampleRate : IMeter
 {
     void Sample();
 
-    new AverageRateSample Current { get; }
+    new SampleRateSample Current { get; }
 }
 ~~~
 #### Example
-Average number of messages processed per second.
+Number of messages processed per time frame.
+
 
 ### Differential Meters 
 Differential meters measure the difference between values at the beginning and the end of a given time frame. Any value can be obtained from two measurements at different points in time.
