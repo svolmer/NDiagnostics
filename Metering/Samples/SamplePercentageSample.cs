@@ -2,11 +2,11 @@ using NDiagnostics.Metering.Types;
 
 namespace NDiagnostics.Metering.Samples
 {
-    public sealed class AverageRatioSample : Sample
+    public sealed class SamplePercentageSample : Sample
     {
         #region Constructors and Destructors
 
-        internal AverageRatioSample(long numerator, long denominator, TimeStamp timeStamp)
+        internal SamplePercentageSample(long numerator, long denominator, TimeStamp timeStamp)
             : base(timeStamp)
         {
             this.Numerator = numerator;

@@ -18,13 +18,13 @@ namespace NDiagnostics.Metering
 
         // Sample Meters
 
-        SampleRate = 0x00010010, // SampleRate
+        SampleRate = 0x00100010,
 
-        AverageRatio = 0x00010011, // SamplePercentage
+        SamplePercentage = 0x00100011,
 
         // Differential Meters 
 
-        DifferentialValue = 0x00100000,
+        DifferentialValue = 0x01000000,
 
         // Percentage of Time Meters
 

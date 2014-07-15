@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NDiagnostics.Metering.Attributes;
@@ -11,7 +10,11 @@ namespace NDiagnostics.Metering.Test
     [TestClass]
     public class AverageMetersFixture
     {
+        #region Constants, Properties and Fields
+
         internal static readonly float TimeTolerance = 1.0F / Stopwatch.Frequency;
+
+        #endregion
 
         #region Test methods
 
@@ -22,7 +25,7 @@ namespace NDiagnostics.Metering.Test
 
             try
             {
-                using (var category = MeterCategory.Create<AverageSingleInstance>())
+                using(var category = MeterCategory.Create<AverageSingleInstance>())
                 {
                     category.Should().NotBeNull();
 
@@ -63,7 +66,7 @@ namespace NDiagnostics.Metering.Test
 
             try
             {
-                using (var category = MeterCategory.Create<AverageSingleInstance>())
+                using(var category = MeterCategory.Create<AverageSingleInstance>())
                 {
                     category.Should().NotBeNull();
 
@@ -97,50 +100,6 @@ namespace NDiagnostics.Metering.Test
             }
         }
 
-
-        [TestMethod]
-        public void CanCreateAverageRatioSingleInstanceMeter()
-        {
-            MeterCategory.Install<AverageSingleInstance>();
-
-            try
-            {
-                using (var category = MeterCategory.Create<AverageSingleInstance>())
-                {
-                    category.Should().NotBeNull();
-
-                    var averageRatio = category[AverageSingleInstance.AverageRatio].Cast<IAverageRatio>();
-                    averageRatio.Should().NotBeNull();
-
-                    averageRatio.Reset();
-                    var sample1 = averageRatio.Current;
-
-                    averageRatio.SampleSuccess();
-                    averageRatio.SampleSuccess();
-                    averageRatio.SampleFailure();
-                    averageRatio.SampleSuccess();
-                    averageRatio.SampleSuccess();
-
-                    var sample2 = averageRatio.Current;
-
-                    Sample.ComputeValue(sample2, sample1).IsAlmostEqual(400.0F/5.0F).Should().BeTrue();
-
-                    averageRatio.SampleFailure();
-                    averageRatio.SampleFailure();
-                    averageRatio.SampleSuccess();
-
-                    var sample3 = averageRatio.Current;
-
-                    Sample.ComputeValue(sample3, sample1).IsAlmostEqual(500.0F / 8.0F).Should().BeTrue();
-                    Sample.ComputeValue(sample3, sample2).IsAlmostEqual(100.0F / 3.0F).Should().BeTrue();
-                }
-            }
-            finally
-            {
-                MeterCategory.Uninstall<AverageSingleInstance>();
-            }
-        }
-
         #endregion
 
         [MeterCategory("Average Single Instance", "Average Single Instance Description", MeterCategoryType.SingleInstance)]
@@ -151,9 +110,6 @@ namespace NDiagnostics.Metering.Test
 
             [Meter("AverageTime", "AverageTime Description", MeterType.AverageTime)]
             AverageTime,
-
-            [Meter("AverageRatio", "AverageRatio Description", MeterType.AverageRatio)]
-            AverageRatio,
         }
 
         [MeterCategory("Average Multi Instance", "Average Multi Instance Description", MeterCategoryType.MultiInstance)]
@@ -164,9 +120,6 @@ namespace NDiagnostics.Metering.Test
 
             [Meter("AverageTime", "AverageTime Description", MeterType.AverageTime)]
             AverageTime,
-
-            [Meter("AverageRatio", "AverageRatio Description", MeterType.AverageRatio)]
-            AverageRatio,
         }
     }
 }

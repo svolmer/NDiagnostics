@@ -75,7 +75,7 @@
     <Compile Include="IMultiTimer.cs" />
     <Compile Include="IInstantValue.cs" />
     <Compile Include="ISampleRate.cs" />
-    <Compile Include="IAverageRatio.cs" />
+    <Compile Include="ISamplePercentage.cs" />
     <Compile Include="ITimer.cs" />
     <Compile Include="ITimerInverse.cs" />
     <Compile Include="IInstantPercentage.cs" />
@@ -100,7 +100,7 @@
     <Compile Include="Meters\InstantValueMeter.cs" />
     <Compile Include="Meters\InstantPercentageMeter.cs" />
     <Compile Include="Meters\SampleRateMeter.cs" />
-    <Compile Include="Meters\AverageRatioMeter.cs" />
+    <Compile Include="Meters\SamplePercentageMeter.cs" />
     <Compile Include="Meters\Timer100NsInverseMeter.cs" />
     <Compile Include="Meters\Timer100nsMeter.cs" />
     <Compile Include="MeterType.cs" />
@@ -113,7 +113,7 @@
     <Compile Include="Samples\MultiTimerSample.cs" />
     <Compile Include="Samples\InstantValueSample.cs" />
     <Compile Include="Samples\SampleRateSample.cs" />
-    <Compile Include="Samples\AverageRatioSample.cs" />
+    <Compile Include="Samples\SamplePercentageSample.cs" />
     <Compile Include="Samples\TimerInverseSample.cs" />
     <Compile Include="Samples\TimerSample.cs" />
     <Compile Include="Samples\InstantTimeSample.cs" />

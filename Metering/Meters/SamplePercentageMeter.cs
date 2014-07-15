@@ -2,11 +2,11 @@
 
 namespace NDiagnostics.Metering.Meters
 {
-    internal sealed class AverageRatioMeter : Meter, IAverageRatio
+    internal sealed class SamplePercentageMeter : Meter, ISamplePercentage
     {
         #region Constructors and Destructors
 
-        public AverageRatioMeter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName = null)
+        public SamplePercentageMeter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName = null)
             : base(categoryName, categoryType, meterName, meterType, instanceName, true)
         {
             this.Reset();
@@ -14,9 +14,9 @@ namespace NDiagnostics.Metering.Meters
 
         #endregion
 
-        #region IAverageRatio
+        #region ISamplePercentage
 
-        AverageRatioSample IAverageRatio.Current
+        SamplePercentageSample ISamplePercentage.Current
         {
             get { return this.GetCurrentSample(); }
         }
@@ -51,10 +51,10 @@ namespace NDiagnostics.Metering.Meters
 
         #region Methods
 
-        private AverageRatioSample GetCurrentSample()
+        private SamplePercentageSample GetCurrentSample()
         {
             var sample = this.ValueCounter.RawSample;
-            return new AverageRatioSample(sample.Value, sample.BaseValue, sample.TimeStamp);
+            return new SamplePercentageSample(sample.Value, sample.BaseValue, sample.TimeStamp);
         }
 
         #endregion

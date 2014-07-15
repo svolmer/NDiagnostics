@@ -126,45 +126,12 @@ public interface IAverageTime : IMeter
 #### Example
 Average processing time per message.
 
-### AverageRatio
-#### Description
-Measures the the average of a fraction of integers. Substitutes performance counters of type `SampleFraction`.
-#### Interface 
-~~~c#
-public interface IAverageRatio : IMeter
-{
-    long IncrementNumerator();
-
-    long IncrementNumeratorBy(long value);
-
-    long DecrementNumerator();
-
-    long DecrementNumeratorBy(long value);
-
-    void SetNumerator(long value);
-
-    long IncrementDenominator();
-
-    long IncrementDenominatorBy(long value);
-
-    long DecrementDenominator();
-
-    long DecrementDenominatorBy(long value);
-
-    void SetDenominator(long value);
-
-    new AverageRatioSample Current { get; }
-}
-~~~
-#### Example
-Average percentage of free vs total memory.
-
 ### Sample Meters 
 Differential meters measure the difference between values at the beginning and the end of a given time frame. Any value can be obtained from two measurements at different points in time.
 
 ### SampleRate
 #### Description
-Measures the average rate of items per second. Substitutes performance counters of type `SampleCounter`, `RateOfCountsPerSecond32`, `RateOfCountsPerSecond64`.
+Measures the rate of items per time frame. Substitutes performance counters of type `SampleCounter`, `RateOfCountsPerSecond32`, `RateOfCountsPerSecond64`.
 #### Interface 
 ~~~c#
 public interface ISampleRate : IMeter
@@ -177,6 +144,22 @@ public interface ISampleRate : IMeter
 #### Example
 Number of messages processed per time frame.
 
+### SamplePercentage
+#### Description
+Measures the percentage of success vs failure items per time frame. Substitutes performance counters of type `SampleFraction`.
+#### Interface 
+~~~c#
+public interface ISamplePercentage : IMeter
+{
+    void SampleSuccess();
+
+    void SampleFailure();
+
+    new SamplePercentageSample Current { get; }
+}
+~~~
+#### Example
+Percentage of free vs total memory per time frame.
 
 ### Differential Meters 
 Differential meters measure the difference between values at the beginning and the end of a given time frame. Any value can be obtained from two measurements at different points in time.

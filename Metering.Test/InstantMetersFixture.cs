@@ -142,7 +142,7 @@ namespace NDiagnostics.Metering.Test
 
             try
             {
-                using (var category = MeterCategory.Create<InstantSingleInstance>())
+                using(var category = MeterCategory.Create<InstantSingleInstance>())
                 {
                     category.Should().NotBeNull();
 
@@ -150,9 +150,9 @@ namespace NDiagnostics.Metering.Test
                     instantTime.Should().NotBeNull();
 
                     instantTime.Set(TimeStamp.Now);
-                    instantTime.Current.Value().Should().BeLessThan(0.1F); 
+                    instantTime.Current.Value().Should().BeLessThan(0.1F);
 
-                    Thread.Sleep(new TimeSpan(0,0,0,1)); // 1 second
+                    Thread.Sleep(new TimeSpan(0, 0, 0, 1)); // 1 second
                     instantTime.Current.Value().Should().BeGreaterThan(1.0F);
                     instantTime.Current.Value().Should().BeLessThan(1.1F);
 
@@ -191,7 +191,7 @@ namespace NDiagnostics.Metering.Test
                     instantCountTotal.Current.Value().Should().Be(6);
                     instantCountZero.Current.Value().Should().Be(2);
                     instantCountOne.Current.Value().Should().Be(4);
-                    
+
                     instantCountTotal.Increment().Should().Be(7);
                     instantCountZero.Increment().Should().Be(3);
                     instantCountTotal.Increment().Should().Be(8);
@@ -243,8 +243,8 @@ namespace NDiagnostics.Metering.Test
 
             try
             {
-                string[] instanceNames = { "_Total", "0", "1" };
-                using (var category = MeterCategory.Create<InstantMultiInstance>(instanceNames))
+                string[] instanceNames = {"_Total", "0", "1"};
+                using(var category = MeterCategory.Create<InstantMultiInstance>(instanceNames))
                 {
                     category.Should().NotBeNull();
 
@@ -313,8 +313,8 @@ namespace NDiagnostics.Metering.Test
 
             try
             {
-                string[] instanceNames = { "_Total", "0", "1" };
-                using (var category = MeterCategory.Create<InstantMultiInstance>(instanceNames))
+                string[] instanceNames = {"_Total", "0", "1"};
+                using(var category = MeterCategory.Create<InstantMultiInstance>(instanceNames))
                 {
                     category.Should().NotBeNull();
 
@@ -396,8 +396,8 @@ namespace NDiagnostics.Metering.Test
 
             try
             {
-                string[] instanceNames = { "_Total", "0", "1" };
-                using (var category = MeterCategory.Create<InstantMultiInstance>(instanceNames))
+                string[] instanceNames = {"_Total", "0", "1"};
+                using(var category = MeterCategory.Create<InstantMultiInstance>(instanceNames))
                 {
                     category.Should().NotBeNull();
 

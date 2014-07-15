@@ -2,12 +2,12 @@
 
 namespace NDiagnostics.Metering
 {
-    public interface IAverageRatio : IMeter
+    public interface ISamplePercentage : IMeter
     {
         void SampleSuccess();
 
         void SampleFailure();
 
-        new AverageRatioSample Current { get; }
+        new SamplePercentageSample Current { get; }
     }
 }
