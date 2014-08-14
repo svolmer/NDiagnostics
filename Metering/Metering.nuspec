@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">  
+  <metadata>
+    <id>NDiagnostics.Metering</id>
+    <version></version>
+    <authors>Stephan Volmer</authors>
+    <description>The library allows the measurement of key application performance indicators during runtime.</description>
+    <language>en-US</language>
+    <projectUrl>https://github.com/svolmer/NDiagnostics</projectUrl>
+    <licenseUrl>https://github.com/svolmer/NDiagnostics/blob/master/license.md</licenseUrl>
+    <releaseNotes></releaseNotes>
+  </metadata>
+</package>
