@@ -35,16 +35,19 @@ namespace NDiagnostics.Metering.Counters
 
         public override long Increment()
         {
+            this.ThrowIfDisposed();
             return this.performanceCounter.Increment();
         }
 
         public override long IncrementBy(long n)
         {
+            this.ThrowIfDisposed();
             return this.performanceCounter.IncrementBy(n);
         }
 
         public override long Decrement()
         {
+            this.ThrowIfDisposed();
             return this.performanceCounter.Decrement();
         }
 
@@ -52,9 +55,9 @@ namespace NDiagnostics.Metering.Counters
 
         #region Methods
 
-        protected override void InternalDispose()
+        protected override void OnDisposing()
         {
-            this.performanceCounter.TryDispose();
+            this.performanceCounter.Dispose();
         }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using NDiagnostics.Metering.Extensions;
 using NDiagnostics.Metering.Types;
 
 namespace NDiagnostics.Metering.Counters
@@ -46,16 +47,19 @@ namespace NDiagnostics.Metering.Counters
 
         public override long Increment()
         {
+            this.ThrowIfDisposed();
             return Interlocked.Increment(ref this.n);
         }
 
         public override long IncrementBy(long value)
         {
+            this.ThrowIfDisposed();
             return Interlocked.Add(ref this.n, value);
         }
 
         public override long Decrement()
         {
+            this.ThrowIfDisposed();
             return Interlocked.Decrement(ref this.n);
         }
 
@@ -63,7 +67,7 @@ namespace NDiagnostics.Metering.Counters
 
         #region Methods
 
-        protected override void InternalDispose()
+        protected override void OnDisposing()
         {
         }
 

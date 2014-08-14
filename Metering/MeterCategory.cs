@@ -256,7 +256,7 @@ namespace NDiagnostics.Metering
 
         #region Methods
 
-        protected override void InternalDispose()
+        protected override void OnDisposing()
         {
             if((this.meters != null) && (this.meters.Count > 0))
             {

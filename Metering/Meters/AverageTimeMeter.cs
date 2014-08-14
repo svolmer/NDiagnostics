@@ -1,4 +1,5 @@
-﻿using NDiagnostics.Metering.Samples;
+﻿using NDiagnostics.Metering.Extensions;
+using NDiagnostics.Metering.Samples;
 using NDiagnostics.Metering.Types;
 
 namespace NDiagnostics.Metering.Meters
@@ -24,6 +25,7 @@ namespace NDiagnostics.Metering.Meters
 
         public void Sample(Time elapsedTime)
         {
+            this.ThrowIfDisposed();
             this.ValueCounter.IncrementBy(elapsedTime.Ticks);
             this.BaseCounter.Increment();
         }
@@ -39,6 +41,7 @@ namespace NDiagnostics.Metering.Meters
 
         public override void Reset()
         {
+            this.ThrowIfDisposed();
             this.ValueCounter.RawValue = 0;
             this.BaseCounter.RawValue = 0;
         }

@@ -1,4 +1,5 @@
-﻿using NDiagnostics.Metering.Samples;
+﻿using NDiagnostics.Metering.Extensions;
+using NDiagnostics.Metering.Samples;
 
 namespace NDiagnostics.Metering.Meters
 {
@@ -23,51 +24,61 @@ namespace NDiagnostics.Metering.Meters
 
         public long IncrementNumerator()
         {
+            this.ThrowIfDisposed();
             return this.ValueCounter.Increment();
         }
 
         public long IncrementNumeratorBy(long value)
         {
+            this.ThrowIfDisposed();
             return this.ValueCounter.IncrementBy(value);
         }
 
         public long DecrementNumerator()
         {
+            this.ThrowIfDisposed();
             return this.ValueCounter.Decrement();
         }
 
         public long DecrementNumeratorBy(long value)
         {
+            this.ThrowIfDisposed();
             return this.ValueCounter.IncrementBy(-value);
         }
 
         public void SetNumerator(long value)
         {
+            this.ThrowIfDisposed();
             this.ValueCounter.RawValue = value;
         }
 
         public long IncrementDenominator()
         {
+            this.ThrowIfDisposed();
             return this.BaseCounter.Increment();
         }
 
         public long IncrementDenominatorBy(long value)
         {
+            this.ThrowIfDisposed();
             return this.BaseCounter.IncrementBy(value);
         }
 
         public long DecrementDenominator()
         {
+            this.ThrowIfDisposed();
             return this.BaseCounter.Decrement();
         }
 
         public long DecrementDenominatorBy(long value)
         {
+            this.ThrowIfDisposed();
             return this.BaseCounter.IncrementBy(-value);
         }
 
         public void SetDenominator(long value)
         {
+            this.ThrowIfDisposed();
             this.BaseCounter.RawValue = value;
         }
 
@@ -82,6 +93,7 @@ namespace NDiagnostics.Metering.Meters
 
         public override void Reset()
         {
+            this.ThrowIfDisposed();
             this.ValueCounter.RawValue = 0;
             this.BaseCounter.RawValue = 0;
         }

@@ -60,7 +60,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region Methods
 
-        protected override void InternalDispose()
+        protected override void OnDisposing()
         {
             this.BaseCounter.TryDispose();
             this.ValueCounter.TryDispose();

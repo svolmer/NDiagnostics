@@ -1,5 +1,4 @@
 ﻿using System;
-using NDiagnostics.Metering.Extensions;
 
 namespace NDiagnostics.Metering
 {
@@ -46,19 +45,7 @@ namespace NDiagnostics.Metering
 
         #region Methods
 
-        protected void ThrowIfDisposed()
-        {
-            if(this.IsDisposed)
-            {
-                throw new ObjectDisposedException(this.GetType().ToName());
-            }
-        }
-
-        protected abstract void InternalDispose();
-
-        protected virtual void InternalFinalize()
-        {
-        }
+        protected abstract void OnDisposing();
 
         private void Dispose(bool isDisposing)
         {
@@ -69,11 +56,7 @@ namespace NDiagnostics.Metering
 
             if(isDisposing)
             {
-                this.InternalDispose();
-            }
-            else
-            {
-                this.InternalFinalize();
+                this.OnDisposing();
             }
 
             this.isDisposed = true;

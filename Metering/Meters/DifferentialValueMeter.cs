@@ -1,4 +1,5 @@
-﻿using NDiagnostics.Metering.Samples;
+﻿using NDiagnostics.Metering.Extensions;
+using NDiagnostics.Metering.Samples;
 
 namespace NDiagnostics.Metering.Meters
 {
@@ -23,26 +24,31 @@ namespace NDiagnostics.Metering.Meters
 
         public long Increment()
         {
+            this.ThrowIfDisposed();
             return this.ValueCounter.Increment();
         }
 
         public long IncrementBy(long value)
         {
+            this.ThrowIfDisposed();
             return this.ValueCounter.IncrementBy(value);
         }
 
         public long Decrement()
         {
+            this.ThrowIfDisposed();
             return this.ValueCounter.Decrement();
         }
 
         public long DecrementBy(long value)
         {
+            this.ThrowIfDisposed();
             return this.ValueCounter.IncrementBy(-value);
         }
 
         public void Set(long value)
         {
+            this.ThrowIfDisposed();
             this.ValueCounter.RawValue = value;
         }
 
@@ -57,6 +63,7 @@ namespace NDiagnostics.Metering.Meters
 
         public override void Reset()
         {
+            this.ThrowIfDisposed();
             this.ValueCounter.RawValue = 0;
         }
 

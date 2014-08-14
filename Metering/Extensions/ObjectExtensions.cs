@@ -19,11 +19,13 @@ namespace NDiagnostics.Metering.Extensions
             return !ReferenceEquals(null, self);
         }
 
+        [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")]
         public static Type Type<T>(this T self)
         {
             return self.IsNull() ? typeof(T) : self.GetType();
         }
 
+        [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")]
         public static void ThrowIfNull<T>(this T self)
         {
             if(self.IsNull())
@@ -32,6 +34,7 @@ namespace NDiagnostics.Metering.Extensions
             }
         }
 
+        [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")]
         public static void ThrowIfNull<T>(this T self, string name)
         {
             if(self.IsNull())

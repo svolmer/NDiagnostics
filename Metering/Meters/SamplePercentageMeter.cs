@@ -1,4 +1,5 @@
-﻿using NDiagnostics.Metering.Samples;
+﻿using NDiagnostics.Metering.Extensions;
+using NDiagnostics.Metering.Samples;
 
 namespace NDiagnostics.Metering.Meters
 {
@@ -23,6 +24,7 @@ namespace NDiagnostics.Metering.Meters
 
         public override void Reset()
         {
+            this.ThrowIfDisposed();
             this.ValueCounter.RawValue = 0;
             this.BaseCounter.RawValue = 0;
         }
@@ -38,12 +40,14 @@ namespace NDiagnostics.Metering.Meters
 
         public void SampleSuccess()
         {
+            this.ThrowIfDisposed();
             this.ValueCounter.Increment();
             this.BaseCounter.Increment();
         }
 
         public void SampleFailure()
         {
+            this.ThrowIfDisposed();
             this.BaseCounter.Increment();
         }
 

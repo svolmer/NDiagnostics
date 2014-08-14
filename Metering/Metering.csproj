@@ -50,6 +50,7 @@
       <Link>Properties\AssemblyInfo.global.cs</Link>
     </Compile>
     <Compile Include="DisposableObject.cs" />
+    <Compile Include="Extensions\DisposableExtensions.cs" />
     <Compile Include="Extensions\MeteringExtensions.cs" />
     <Compile Include="Extensions\FloatExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
