@@ -3,7 +3,7 @@ using NDiagnostics.Metering.Extensions;
 
 namespace NDiagnostics.Metering.Counters
 {
-    internal sealed class SystemBaseCounter : Counter, IBaseCounter
+    internal sealed class SystemBaseCounter : SystemCounter, IBaseCounter
     {
         #region Constants and Fields
 

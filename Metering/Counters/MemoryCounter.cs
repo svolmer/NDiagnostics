@@ -8,7 +8,7 @@ namespace NDiagnostics.Metering.Counters
 
         protected MemoryCounter(string categoryName, string counterName, string instanceName)
         {
-            instanceName = instanceName ?? string.Empty;
+            instanceName.ThrowIfNull("instanceName");
             instanceName.ThrowIfExceedsMaxSize("instanceName", 127);
 
             this.CategoryName = categoryName;

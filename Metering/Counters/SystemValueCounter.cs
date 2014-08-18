@@ -4,7 +4,7 @@ using NDiagnostics.Metering.Types;
 
 namespace NDiagnostics.Metering.Counters
 {
-    internal sealed class SystemValueCounter : Counter, IValueCounter
+    internal sealed class SystemValueCounter : SystemCounter, IValueCounter
     {
         #region Constants and Fields
 

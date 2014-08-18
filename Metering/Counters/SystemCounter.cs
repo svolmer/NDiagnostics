@@ -2,13 +2,13 @@
 
 namespace NDiagnostics.Metering.Counters
 {
-    internal abstract class Counter : DisposableObject, ICounter
+    internal abstract class SystemCounter : DisposableObject, ICounter
     {
         #region Constructors and Destructors
 
-        protected Counter(string categoryName, string counterName, string instanceName)
+        protected SystemCounter(string categoryName, string counterName, string instanceName)
         {
-            instanceName = instanceName ?? string.Empty;
+            instanceName.ThrowIfNull("instanceName");
             instanceName.ThrowIfExceedsMaxSize("instanceName", 127);
 
             this.CategoryName = categoryName;

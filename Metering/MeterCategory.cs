@@ -38,11 +38,6 @@ namespace NDiagnostics.Metering
                 }
             }
 
-            if(meterCategoryAttribute.MeterCategoryType == MeterCategoryType.MultiInstance)
-            {
-                return new MeterCategory<T>(meterCategoryAttribute, meterAttributes, new[] {"_Total"});
-            }
-
             return new MeterCategory<T>(meterCategoryAttribute, meterAttributes);
         }
 
@@ -135,33 +130,20 @@ namespace NDiagnostics.Metering
 
         #region Constructors and Destructors
 
-        internal MeterCategory(MeterCategoryAttribute meterCategoryAttribute, Dictionary<T, MeterAttribute> meterAttributes, string[] instanceNames = null)
+        internal MeterCategory(MeterCategoryAttribute meterCategoryAttribute, Dictionary<T, MeterAttribute> meterAttributes)
         {
             meterCategoryAttribute.ThrowIfNull("meterCategoryAttribute");
             meterAttributes.ThrowIfNull("meterAttributes");
 
-            instanceNames = instanceNames ?? new[] {string.Empty};
-            for(var i = 0; i < instanceNames.Length; i++)
-            {
-                instanceNames[i].ThrowIfExceedsMaxSize(string.Format("instanceNames[{0}]", i), 127);
-            }
-
-            if(meterCategoryAttribute.MeterCategoryType == MeterCategoryType.MultiInstance && instanceNames.Any(instanceName => instanceName == null) && instanceNames.Count() != instanceNames.Distinct().Count())
-            {
-                throw new NotSupportedException("Meter categories of type 'MultiInstance' must have uniquely named instances.");
-            }
+            var defaultInstanceName = meterCategoryAttribute.MeterCategoryType == MeterCategoryType.SingleInstance ? SingleInstance.DefaultInstanceName : MultiInstance.DefaultInstanceName;
 
             this.meters = new Dictionary<string, IDictionary<T, IMeter>>();
             this.CategoryName = meterCategoryAttribute.Name;
             this.CategoryType = meterCategoryAttribute.MeterCategoryType;
-            this.InstanceNames = instanceNames;
             this.meterAttributes = meterAttributes;
 
-            foreach(var instanceName in instanceNames)
-            {
-                var instanceMeters = CreateInstanceMeters(meterCategoryAttribute.Name, meterCategoryAttribute.MeterCategoryType, meterAttributes, instanceName);
-                this.meters.Add(instanceName, instanceMeters);
-            }
+            var instanceMeters = CreateInstanceMeters(meterCategoryAttribute.Name, meterCategoryAttribute.MeterCategoryType, meterAttributes, defaultInstanceName);
+            this.meters.Add(defaultInstanceName, instanceMeters);
         }
 
         #endregion
@@ -172,7 +154,10 @@ namespace NDiagnostics.Metering
 
         public MeterCategoryType CategoryType { get; private set; }
 
-        public string[] InstanceNames { get; private set; }
+        public string[] InstanceNames
+        {
+            get { return this.meters.Keys.ToArray(); }
+        }
 
         #endregion
 
@@ -290,7 +275,12 @@ namespace NDiagnostics.Metering
 
         private IMeter GetInstanceMeter(T meterName, string instanceName = null)
         {
-            instanceName = instanceName ?? (this.CategoryType == MeterCategoryType.SingleInstance ? string.Empty : "_Total");
+            instanceName = instanceName ?? (this.CategoryType == MeterCategoryType.SingleInstance ? SingleInstance.DefaultInstanceName : MultiInstance.DefaultInstanceName);
+
+            if(this.CategoryType == MeterCategoryType.SingleInstance && instanceName != SingleInstance.DefaultInstanceName)
+            {
+                throw new NotSupportedException("Meter categories of type 'SingleInstance' must not have instance names.");
+            }
 
             IDictionary<T, IMeter> instanceMeters;
             if(!this.meters.TryGetValue(instanceName, out instanceMeters))

@@ -65,12 +65,14 @@
     <Compile Include="Attributes\MeterAttribute.cs" />
     <Compile Include="Attributes\MeterCategoryAttribute.cs" />
     <Compile Include="Counters\MemoryCounterRegistry.cs" />
+    <Compile Include="MultiInstance.cs" />
+    <Compile Include="SingleInstance.cs" />
     <Compile Include="MeterDataType.cs" />
     <Compile Include="IMultiTimer100Ns.cs" />
     <Compile Include="IMultiTimer100NsInverse.cs" />
     <Compile Include="IMultiTimerInverse.cs" />
     <Compile Include="Counters\BaseCounter.cs" />
-    <Compile Include="Counters\Counter.cs" />
+    <Compile Include="Counters\SystemCounter.cs" />
     <Compile Include="Counters\MemoryBaseCounter.cs" />
     <Compile Include="Counters\MemoryValueCounter.cs" />
     <Compile Include="Counters\RawSample.cs" />
