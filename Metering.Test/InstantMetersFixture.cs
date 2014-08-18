@@ -38,6 +38,7 @@ namespace NDiagnostics.Metering.Test
 
                 var instantCount = category[InstantSingleInstance.InstantCount32].Cast<IInstantValue>();
                 instantCount.Should().NotBeNull();
+                instantCount.Reset();
 
                 instantCount.Increment().Should().Be(1);
                 instantCount.Current.Value().Should().Be(1);
@@ -68,6 +69,7 @@ namespace NDiagnostics.Metering.Test
 
                 var instantCount = category[InstantSingleInstance.InstantCount64].Cast<IInstantValue>();
                 instantCount.Should().NotBeNull();
+                instantCount.Reset();
 
                 instantCount.Increment().Should().Be(1L);
                 instantCount.Current.Value().Should().Be(1L);
@@ -98,6 +100,7 @@ namespace NDiagnostics.Metering.Test
 
                 var instantPercentage = category[InstantSingleInstance.InstantPercentage].Cast<IInstantPercentage>();
                 instantPercentage.Should().NotBeNull();
+                instantPercentage.Reset();
 
                 instantPercentage.SetNumerator(1L);
                 instantPercentage.SetDenominator(4L);
@@ -133,6 +136,7 @@ namespace NDiagnostics.Metering.Test
 
                 var instantTime = category[InstantSingleInstance.InstantTime].Cast<IInstantTime>();
                 instantTime.Should().NotBeNull();
+                instantTime.Reset();
 
                 instantTime.Set(TimeStamp.Now);
                 instantTime.Current.Value().Should().BeLessThan(0.1F);
@@ -157,8 +161,11 @@ namespace NDiagnostics.Metering.Test
                 var instantCountZero = category[InstantMultiInstance.InstantCount32, "0"].Cast<IInstantValue>();
                 var instantCountOne = category[InstantMultiInstance.InstantCount32, "1"].Cast<IInstantValue>();
                 instantCountTotal.Should().NotBeNull();
+                instantCountTotal.Reset();
                 instantCountZero.Should().NotBeNull();
+                instantCountZero.Reset();
                 instantCountOne.Should().NotBeNull();
+                instantCountOne.Reset();
 
                 instantCountTotal.IncrementBy(6).Should().Be(6);
                 instantCountZero.IncrementBy(2).Should().Be(2);
@@ -217,8 +224,11 @@ namespace NDiagnostics.Metering.Test
                 var instantCountZero = category[InstantMultiInstance.InstantCount64, "0"].Cast<IInstantValue>();
                 var instantCountOne = category[InstantMultiInstance.InstantCount64, "1"].Cast<IInstantValue>();
                 instantCountTotal.Should().NotBeNull();
+                instantCountTotal.Reset();
                 instantCountZero.Should().NotBeNull();
+                instantCountZero.Reset();
                 instantCountOne.Should().NotBeNull();
+                instantCountOne.Reset();
 
                 instantCountTotal.IncrementBy(6).Should().Be(6L);
                 instantCountZero.IncrementBy(2).Should().Be(2L);
@@ -277,8 +287,11 @@ namespace NDiagnostics.Metering.Test
                 var instantPercentageZero = category[InstantMultiInstance.InstantPercentage, "0"].Cast<IInstantPercentage>();
                 var instantPercentageOne = category[InstantMultiInstance.InstantPercentage, "1"].Cast<IInstantPercentage>();
                 instantPercentageTotal.Should().NotBeNull();
+                instantPercentageTotal.Reset();
                 instantPercentageZero.Should().NotBeNull();
+                instantPercentageZero.Reset();
                 instantPercentageOne.Should().NotBeNull();
+                instantPercentageOne.Reset();
 
                 instantPercentageTotal.SetNumerator(1L);
                 instantPercentageTotal.SetDenominator(4L);
@@ -350,8 +363,11 @@ namespace NDiagnostics.Metering.Test
                 var instantTimeZero = category[InstantMultiInstance.InstantTime, "0"].Cast<IInstantTime>();
                 var instantTimeOne = category[InstantMultiInstance.InstantTime, "1"].Cast<IInstantTime>();
                 instantTimeTotal.Should().NotBeNull();
+                instantTimeTotal.Reset();
                 instantTimeZero.Should().NotBeNull();
+                instantTimeZero.Reset();
                 instantTimeOne.Should().NotBeNull();
+                instantTimeOne.Reset();
 
                 instantTimeTotal.Set(TimeStamp.Now);
                 Thread.Sleep(TimeSpan.FromSeconds(1.0));

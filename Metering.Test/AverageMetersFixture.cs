@@ -16,87 +16,85 @@ namespace NDiagnostics.Metering.Test
 
         #endregion
 
+        #region Initialize/Cleanup
+
+        [ClassInitialize]
+        public static void Initialize(TestContext context)
+        {
+            MeterCategory.Install<AverageSingleInstance>();
+        }
+
+        [ClassCleanup]
+        public static void Cleanup()
+        {
+            MeterCategory.Uninstall<AverageSingleInstance>();
+        }
+
+        #endregion
+
         #region Test methods
 
         [TestMethod]
         public void CanCreateAverageCountSingleInstanceMeter()
         {
-            MeterCategory.Install<AverageSingleInstance>();
-
-            try
+            using(var category = MeterCategory.Create<AverageSingleInstance>())
             {
-                using(var category = MeterCategory.Create<AverageSingleInstance>())
-                {
-                    category.Should().NotBeNull();
+                category.Should().NotBeNull();
 
-                    var averageCount = category[AverageSingleInstance.AverageCount].Cast<IAverageValue>();
-                    averageCount.Should().NotBeNull();
+                var averageCount = category[AverageSingleInstance.AverageCount].Cast<IAverageValue>();
+                averageCount.Should().NotBeNull();
+                averageCount.Reset();
 
-                    averageCount.Reset();
-                    var sample1 = averageCount.Current;
+                var sample1 = averageCount.Current;
 
-                    averageCount.Sample(1);
-                    averageCount.Sample(2);
-                    averageCount.Sample(3);
-                    averageCount.Sample(4);
-                    averageCount.Sample(5);
+                averageCount.Sample(1);
+                averageCount.Sample(2);
+                averageCount.Sample(3);
+                averageCount.Sample(4);
+                averageCount.Sample(5);
 
-                    var sample2 = averageCount.Current;
+                var sample2 = averageCount.Current;
 
-                    Sample.ComputeValue(sample2, sample1).Should().Be(3.0F);
+                Sample.ComputeValue(sample2, sample1).Should().Be(3.0F);
 
-                    averageCount.Sample(6);
-                    averageCount.Sample(7);
+                averageCount.Sample(6);
+                averageCount.Sample(7);
 
-                    var sample3 = averageCount.Current;
+                var sample3 = averageCount.Current;
 
-                    Sample.ComputeValue(sample3, sample1).Should().Be(4.0F);
-                }
-            }
-            finally
-            {
-                MeterCategory.Uninstall<AverageSingleInstance>();
+                Sample.ComputeValue(sample3, sample1).Should().Be(4.0F);
             }
         }
 
         [TestMethod]
         public void CanCreateAverageTimeSingleInstanceMeter()
         {
-            MeterCategory.Install<AverageSingleInstance>();
-
-            try
+            using(var category = MeterCategory.Create<AverageSingleInstance>())
             {
-                using(var category = MeterCategory.Create<AverageSingleInstance>())
-                {
-                    category.Should().NotBeNull();
+                category.Should().NotBeNull();
 
-                    var averageTime = category[AverageSingleInstance.AverageTime].Cast<IAverageTime>();
-                    averageTime.Should().NotBeNull();
+                var averageTime = category[AverageSingleInstance.AverageTime].Cast<IAverageTime>();
+                averageTime.Should().NotBeNull();
+                averageTime.Reset();
 
-                    averageTime.Reset();
-                    var sample1 = averageTime.Current;
+                var sample1 = averageTime.Current;
 
-                    averageTime.Sample(Time.FromSeconds(1.0F));
-                    averageTime.Sample(Time.FromSeconds(1.5F));
-                    averageTime.Sample(Time.FromSeconds(2.0F));
-                    averageTime.Sample(Time.FromSeconds(2.5F));
-                    averageTime.Sample(Time.FromSeconds(3.0F));
+                averageTime.Sample(Time.FromSeconds(1.0F));
+                averageTime.Sample(Time.FromSeconds(1.5F));
+                averageTime.Sample(Time.FromSeconds(2.0F));
+                averageTime.Sample(Time.FromSeconds(2.5F));
+                averageTime.Sample(Time.FromSeconds(3.0F));
 
-                    var sample2 = averageTime.Current;
+                var sample2 = averageTime.Current;
 
-                    Sample.ComputeValue(sample2, sample1).IsAlmostEqual(2.0F, TimeTolerance).Should().BeTrue();
+                Sample.ComputeValue(sample2, sample1).IsAlmostEqual(2.0F, TimeTolerance).Should().BeTrue();
 
-                    averageTime.Sample(Time.FromSeconds(3.5F));
-                    averageTime.Sample(Time.FromSeconds(4.0F));
+                averageTime.Sample(Time.FromSeconds(3.5F));
+                averageTime.Sample(Time.FromSeconds(4.0F));
 
-                    var sample3 = averageTime.Current;
+                var sample3 = averageTime.Current;
 
-                    Sample.ComputeValue(sample3, sample1).IsAlmostEqual(2.5F, TimeTolerance).Should().BeTrue();
-                }
-            }
-            finally
-            {
-                MeterCategory.Uninstall<AverageSingleInstance>();
+                Sample.ComputeValue(sample3, sample1).IsAlmostEqual(2.5F, TimeTolerance).Should().BeTrue();
             }
         }
 
