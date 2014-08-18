@@ -277,11 +277,6 @@ namespace NDiagnostics.Metering
         {
             instanceName = instanceName ?? (this.CategoryType == MeterCategoryType.SingleInstance ? SingleInstance.DefaultInstanceName : MultiInstance.DefaultInstanceName);
 
-            if(this.CategoryType == MeterCategoryType.SingleInstance && instanceName != SingleInstance.DefaultInstanceName)
-            {
-                throw new NotSupportedException("Meter categories of type 'SingleInstance' must not have instance names.");
-            }
-
             IDictionary<T, IMeter> instanceMeters;
             if(!this.meters.TryGetValue(instanceName, out instanceMeters))
             {

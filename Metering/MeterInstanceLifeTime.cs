@@ -7,5 +7,7 @@ namespace NDiagnostics.Metering
         Global = PerformanceCounterInstanceLifetime.Global,
 
         Process = PerformanceCounterInstanceLifetime.Process,
+
+        Managed = 2,
     }
 }

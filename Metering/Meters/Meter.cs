@@ -9,15 +9,24 @@ namespace NDiagnostics.Metering.Meters
     {
         #region Constructors and Destructors
 
-        protected Meter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName, bool createBase = false)
+        protected Meter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName, MeterInstanceLifetime instanceLifetime, bool createBase)
         {
             categoryName.ThrowIfNullOrEmpty("categoryName");
             meterName.ThrowIfNullOrEmpty("meterName");
             instanceName.ThrowIfNull("instanceName");
             instanceName.ThrowIfExceedsMaxSize("instanceName", 127);
+
+            if (categoryType == MeterCategoryType.SingleInstance && instanceName != SingleInstance.DefaultInstanceName)
+            {
+                throw new ArgumentException("The meter categories is single-instance and requires the meter to be created without an instance name.");
+            }
+            if(categoryType == MeterCategoryType.SingleInstance && instanceLifetime != MeterInstanceLifetime.Global)
+            {
+                throw new ArgumentException("The meter category is single-instance and requires the meter to be created with a global instance lifetime.");
+            }
             if(categoryType == MeterCategoryType.MultiInstance && string.IsNullOrEmpty(instanceName))
             {
-                throw new InvalidOperationException("The meter category is multi-instance and requires the meter to be created with an instance name.");
+                throw new InvalidOperationException("The meter category is multi-instance and requires the meter to be created with an unique instance name.");
             }
 
             this.CategoryName = categoryName;
@@ -25,7 +34,7 @@ namespace NDiagnostics.Metering.Meters
             this.MeterName = meterName;
             this.MeterType = meterType;
             this.InstanceName = instanceName;
-            this.InstanceLifetime = MeterInstanceLifetime.Global;
+            this.InstanceLifetime = instanceLifetime;
 
             this.BaseCounter = createBase ? Counters.BaseCounter.Create(categoryName, meterName, instanceName) : null;
             this.ValueCounter = Counters.ValueCounter.Create(categoryName, meterName, instanceName, this.BaseCounter);
