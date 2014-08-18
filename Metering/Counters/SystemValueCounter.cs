@@ -4,7 +4,7 @@ using NDiagnostics.Metering.Types;
 
 namespace NDiagnostics.Metering.Counters
 {
-    internal sealed class SystemValueCounter : ValueCounter
+    internal sealed class SystemValueCounter : Counter, IValueCounter
     {
         #region Constants and Fields
 
@@ -14,34 +14,22 @@ namespace NDiagnostics.Metering.Counters
 
         #region Constructors and Destructors
 
-        internal SystemValueCounter(string categoryName, string counterName, string instanceName, BaseCounter baseCounter)
-            : base(categoryName, counterName, instanceName, baseCounter)
+        internal SystemValueCounter(string categoryName, string counterName, string instanceName, IBaseCounter baseCounter)
+            : base(categoryName, counterName, instanceName)
         {
+            this.BaseCounter = baseCounter;
             this.performanceCounter = new PerformanceCounter(categoryName, counterName, instanceName, false);
         }
 
         #endregion
 
-        #region Properties
+        #region ICounter
 
         public override long RawValue
         {
             get { return this.performanceCounter.RawValue; }
             set { this.performanceCounter.RawValue = value; }
         }
-
-        public override RawSample RawSample
-        {
-            get
-            {
-                var sample = this.performanceCounter.NextSample();
-                return new RawSample(sample.RawValue, sample.BaseValue, new TimeStamp(sample.TimeStamp), new TimeStamp100Ns(sample.TimeStamp100nSec));
-            }
-        }
-
-        #endregion
-
-        #region Public Methods
 
         public override long Increment()
         {
@@ -59,6 +47,21 @@ namespace NDiagnostics.Metering.Counters
         {
             this.ThrowIfDisposed();
             return this.performanceCounter.Decrement();
+        }
+
+        #endregion
+
+        #region IValueCounter
+
+        public IBaseCounter BaseCounter { get; private set; }
+
+        public RawSample RawSample
+        {
+            get
+            {
+                var sample = this.performanceCounter.NextSample();
+                return new RawSample(sample.RawValue, sample.BaseValue, new TimeStamp(sample.TimeStamp), new TimeStamp100Ns(sample.TimeStamp100nSec));
+            }
         }
 
         #endregion

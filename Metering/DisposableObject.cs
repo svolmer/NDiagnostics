@@ -6,7 +6,9 @@ namespace NDiagnostics.Metering
     {
         #region Constants and Fields
 
-        private bool isDisposed;
+        private readonly object disposerLock = new object();
+
+        private volatile bool isDisposed;
 
         #endregion
 
@@ -49,17 +51,20 @@ namespace NDiagnostics.Metering
 
         private void Dispose(bool isDisposing)
         {
-            if(this.isDisposed)
+            lock(this.disposerLock)
             {
-                return;
-            }
+                if(this.isDisposed)
+                {
+                    return;
+                }
 
-            if(isDisposing)
-            {
-                this.OnDisposing();
-            }
+                if(isDisposing)
+                {
+                    this.OnDisposing();
+                }
 
-            this.isDisposed = true;
+                this.isDisposed = true;
+            }
         }
 
         #endregion

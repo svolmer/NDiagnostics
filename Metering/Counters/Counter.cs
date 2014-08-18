@@ -2,7 +2,7 @@
 
 namespace NDiagnostics.Metering.Counters
 {
-    internal abstract class Counter : DisposableObject
+    internal abstract class Counter : DisposableObject, ICounter
     {
         #region Constructors and Destructors
 
@@ -18,7 +18,7 @@ namespace NDiagnostics.Metering.Counters
 
         #endregion
 
-        #region Properties
+        #region ICounter
 
         public string CategoryName { get; protected set; }
 
@@ -27,10 +27,6 @@ namespace NDiagnostics.Metering.Counters
         public string InstanceName { get; private set; }
 
         public abstract long RawValue { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         public abstract long Increment();
 

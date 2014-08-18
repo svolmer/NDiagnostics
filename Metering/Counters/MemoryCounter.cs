@@ -1,61 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NDiagnostics.Metering.Extensions;
 
 namespace NDiagnostics.Metering.Counters
 {
-    internal sealed class MemoryCounter
+    internal abstract class MemoryCounter : ICounter
     {
-        #region Constants and Fields
-
-        private static readonly Lazy<MemoryCounter> instance = new Lazy<MemoryCounter>(() => new MemoryCounter(), true);
-
-        private static IDictionary<string, IDictionary<string, IDictionary<string, Counter>>> counters;
-
-        #endregion
-
         #region Constructors and Destructors
 
-        private MemoryCounter()
+        protected MemoryCounter(string categoryName, string counterName, string instanceName)
         {
-            counters = new Dictionary<string, IDictionary<string, IDictionary<string, Counter>>>();
+            instanceName = instanceName ?? string.Empty;
+            instanceName.ThrowIfExceedsMaxSize("instanceName", 127);
+
+            this.CategoryName = categoryName;
+            this.CounterName = counterName;
+            this.InstanceName = instanceName;
         }
 
         #endregion
 
-        #region Properties
+        #region ICounter
 
-        public static MemoryCounter Registry
-        {
-            get { return instance.Value; }
-        }
+        public string CategoryName { get; protected set; }
 
-        #endregion
+        public string CounterName { get; private set; }
 
-        #region Public Methods
+        public string InstanceName { get; private set; }
 
-        public T Get<T>(string categoryName, string counterName, string instanceName, BaseCounter baseCounter = null) where T : Counter
-        {
-            if(!counters.ContainsKey(categoryName))
-            {
-                counters.Add(categoryName, new Dictionary<string, IDictionary<string, Counter>>());
-            }
-            if(!counters[categoryName].ContainsKey(instanceName))
-            {
-                counters[categoryName].Add(instanceName, new Dictionary<string, Counter>());
-            }
-            if(!counters[categoryName][instanceName].ContainsKey(counterName))
-            {
-                if(typeof(T) == typeof(MemoryBaseCounter))
-                {
-                    counters[categoryName][instanceName].Add(counterName, new MemoryBaseCounter(categoryName, counterName, instanceName));
-                }
-                else if(typeof(T) == typeof(MemoryValueCounter))
-                {
-                    counters[categoryName][instanceName].Add(counterName, new MemoryValueCounter(categoryName, counterName, instanceName, baseCounter));
-                }
-            }
-            return counters[categoryName][instanceName][counterName] as T;
-        }
+        public abstract long RawValue { get; set; }
+
+        public abstract long Increment();
+
+        public abstract long IncrementBy(long value);
+
+        public abstract long Decrement();
 
         #endregion
     }

@@ -4,29 +4,11 @@ using NDiagnostics.Metering.Extensions;
 
 namespace NDiagnostics.Metering.Counters
 {
-    internal abstract class ValueCounter : Counter
+    internal static class ValueCounter
     {
-        #region Constructors and Destructors
-
-        protected ValueCounter(string categoryName, string counterName, string instanceName, BaseCounter baseCounter)
-            : base(categoryName, counterName, instanceName)
-        {
-            this.BaseCounter = baseCounter;
-        }
-
-        #endregion
-
-        #region Properties
-
-        public BaseCounter BaseCounter { get; private set; }
-
-        public abstract RawSample RawSample { get; }
-
-        #endregion
-
         #region Methods
 
-        internal static ValueCounter Create(string categoryName, string counterName, string instanceName, BaseCounter baseCounter = null)
+        internal static IValueCounter Create(string categoryName, string counterName, string instanceName, IBaseCounter baseCounter = null)
         {
             categoryName.ThrowIfNullOrEmpty("categoryName");
             counterName.ThrowIfNullOrEmpty("counterName");
@@ -41,7 +23,7 @@ namespace NDiagnostics.Metering.Counters
             catch(UnauthorizedAccessException)
             {
             }
-            return MemoryCounter.Registry.Get<MemoryValueCounter>(categoryName, counterName, instanceName, baseCounter);
+            return MemoryCounterRegistry.Instance.Get<MemoryValueCounter>(categoryName, counterName, instanceName, baseCounter);
         }
 
         #endregion

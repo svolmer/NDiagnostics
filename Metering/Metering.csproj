@@ -49,6 +49,10 @@
     <Compile Include="..\AssemblyInfo.global.cs">
       <Link>Properties\AssemblyInfo.global.cs</Link>
     </Compile>
+    <Compile Include="Counters\IBaseCounter.cs" />
+    <Compile Include="Counters\ICounter.cs" />
+    <Compile Include="Counters\IValueCounter.cs" />
+    <Compile Include="Counters\MemoryCounter.cs" />
     <Compile Include="DisposableObject.cs" />
     <Compile Include="Extensions\DisposableExtensions.cs" />
     <Compile Include="Extensions\MeteringExtensions.cs" />
@@ -60,7 +64,7 @@
     <Compile Include="IDisposableObject.cs" />
     <Compile Include="Attributes\MeterAttribute.cs" />
     <Compile Include="Attributes\MeterCategoryAttribute.cs" />
-    <Compile Include="Counters\MemoryCounter.cs" />
+    <Compile Include="Counters\MemoryCounterRegistry.cs" />
     <Compile Include="MeterDataType.cs" />
     <Compile Include="IMultiTimer100Ns.cs" />
     <Compile Include="IMultiTimer100NsInverse.cs" />

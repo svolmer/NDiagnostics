@@ -1,9 +1,8 @@
 ﻿using System.Threading;
-using NDiagnostics.Metering.Extensions;
 
 namespace NDiagnostics.Metering.Counters
 {
-    internal sealed class MemoryBaseCounter : BaseCounter
+    internal sealed class MemoryBaseCounter : MemoryCounter, IBaseCounter
     {
         #region Constants and Fields
 
@@ -21,7 +20,7 @@ namespace NDiagnostics.Metering.Counters
 
         #endregion
 
-        #region Properties
+        #region ICounter
 
         public override long RawValue
         {
@@ -29,34 +28,19 @@ namespace NDiagnostics.Metering.Counters
             set { Interlocked.Exchange(ref this.n, value); }
         }
 
-        #endregion
-
-        #region Public Methods
-
         public override long Increment()
         {
-            this.ThrowIfDisposed();
             return Interlocked.Increment(ref this.n);
         }
 
         public override long IncrementBy(long value)
         {
-            this.ThrowIfDisposed();
             return Interlocked.Add(ref this.n, value);
         }
 
         public override long Decrement()
         {
-            this.ThrowIfDisposed();
             return Interlocked.Decrement(ref this.n);
-        }
-
-        #endregion
-
-        #region Methods
-
-        protected override void OnDisposing()
-        {
         }
 
         #endregion

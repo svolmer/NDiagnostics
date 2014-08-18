@@ -26,17 +26,17 @@ namespace NDiagnostics.Metering.Meters
             this.MeterType = meterType;
             this.InstanceName = instanceName;
 
-            this.BaseCounter = createBase ? BaseCounter.Create(categoryName, meterName, instanceName) : null;
-            this.ValueCounter = ValueCounter.Create(categoryName, meterName, instanceName, this.BaseCounter);
+            this.BaseCounter = createBase ? Counters.BaseCounter.Create(categoryName, meterName, instanceName) : null;
+            this.ValueCounter = Counters.ValueCounter.Create(categoryName, meterName, instanceName, this.BaseCounter);
         }
 
         #endregion
 
         #region Properties
 
-        protected ValueCounter ValueCounter { get; private set; }
+        protected IValueCounter ValueCounter { get; private set; }
 
-        protected BaseCounter BaseCounter { get; private set; }
+        protected IBaseCounter BaseCounter { get; private set; }
 
         #endregion
 

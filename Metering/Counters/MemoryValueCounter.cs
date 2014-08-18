@@ -1,10 +1,9 @@
 ﻿using System.Threading;
-using NDiagnostics.Metering.Extensions;
 using NDiagnostics.Metering.Types;
 
 namespace NDiagnostics.Metering.Counters
 {
-    internal sealed class MemoryValueCounter : ValueCounter
+    internal sealed class MemoryValueCounter : MemoryCounter, IValueCounter
     {
         #region Constants and Fields
 
@@ -14,15 +13,16 @@ namespace NDiagnostics.Metering.Counters
 
         #region Constructors and Destructors
 
-        internal MemoryValueCounter(string categoryName, string counterName, string instanceName, BaseCounter baseCounter)
-            : base(categoryName, counterName, instanceName, baseCounter)
+        internal MemoryValueCounter(string categoryName, string counterName, string instanceName, IBaseCounter baseCounter)
+            : base(categoryName, counterName, instanceName)
         {
+            this.BaseCounter = baseCounter;
             Interlocked.Exchange(ref this.n, 0L);
         }
 
         #endregion
 
-        #region Properties
+        #region ICounter
 
         public override long RawValue
         {
@@ -30,7 +30,28 @@ namespace NDiagnostics.Metering.Counters
             set { Interlocked.Exchange(ref this.n, value); }
         }
 
-        public override RawSample RawSample
+        public override long Increment()
+        {
+            return Interlocked.Increment(ref this.n);
+        }
+
+        public override long IncrementBy(long value)
+        {
+            return Interlocked.Add(ref this.n, value);
+        }
+
+        public override long Decrement()
+        {
+            return Interlocked.Decrement(ref this.n);
+        }
+
+        #endregion
+
+        #region IValueCounter
+
+        public IBaseCounter BaseCounter { get; private set; }
+
+        public RawSample RawSample
         {
             get
             {
@@ -39,36 +60,6 @@ namespace NDiagnostics.Metering.Counters
                 var timeStamp = TimeStamp.Now;
                 return new RawSample(rawValue, baseValue, timeStamp);
             }
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        public override long Increment()
-        {
-            this.ThrowIfDisposed();
-            return Interlocked.Increment(ref this.n);
-        }
-
-        public override long IncrementBy(long value)
-        {
-            this.ThrowIfDisposed();
-            return Interlocked.Add(ref this.n, value);
-        }
-
-        public override long Decrement()
-        {
-            this.ThrowIfDisposed();
-            return Interlocked.Decrement(ref this.n);
-        }
-
-        #endregion
-
-        #region Methods
-
-        protected override void OnDisposing()
-        {
         }
 
         #endregion

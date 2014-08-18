@@ -3,7 +3,7 @@ using NDiagnostics.Metering.Extensions;
 
 namespace NDiagnostics.Metering.Counters
 {
-    internal sealed class SystemBaseCounter : BaseCounter
+    internal sealed class SystemBaseCounter : Counter, IBaseCounter
     {
         #region Constants and Fields
 
@@ -21,17 +21,13 @@ namespace NDiagnostics.Metering.Counters
 
         #endregion
 
-        #region Properties
+        #region ICounter
 
         public override long RawValue
         {
             get { return this.performanceCounter.RawValue; }
             set { this.performanceCounter.RawValue = value; }
         }
-
-        #endregion
-
-        #region Public Methods
 
         public override long Increment()
         {
