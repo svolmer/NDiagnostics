@@ -8,7 +8,7 @@ namespace NDiagnostics.Metering.Meters
     {
         #region Constructors and Destructors
 
-        public TimerMeter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName = null)
+        public TimerMeter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName)
             : base(categoryName, categoryType, meterName, meterType, instanceName, false)
         {
             this.Reset();

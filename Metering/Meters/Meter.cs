@@ -9,11 +9,11 @@ namespace NDiagnostics.Metering.Meters
     {
         #region Constructors and Destructors
 
-        protected Meter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName = null, bool createBase = false)
+        protected Meter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName, bool createBase = false)
         {
             categoryName.ThrowIfNullOrEmpty("categoryName");
             meterName.ThrowIfNullOrEmpty("meterName");
-            instanceName = instanceName ?? string.Empty;
+            instanceName.ThrowIfNull("instanceName");
             instanceName.ThrowIfExceedsMaxSize("instanceName", 127);
             if(categoryType == MeterCategoryType.MultiInstance && string.IsNullOrEmpty(instanceName))
             {
@@ -25,6 +25,7 @@ namespace NDiagnostics.Metering.Meters
             this.MeterName = meterName;
             this.MeterType = meterType;
             this.InstanceName = instanceName;
+            this.InstanceLifetime = MeterInstanceLifetime.Global;
 
             this.BaseCounter = createBase ? Counters.BaseCounter.Create(categoryName, meterName, instanceName) : null;
             this.ValueCounter = Counters.ValueCounter.Create(categoryName, meterName, instanceName, this.BaseCounter);
@@ -51,6 +52,8 @@ namespace NDiagnostics.Metering.Meters
         public MeterType MeterType { get; private set; }
 
         public string InstanceName { get; private set; }
+
+        public MeterInstanceLifetime InstanceLifetime { get; private set; }
 
         public abstract Sample Current { get; }
 

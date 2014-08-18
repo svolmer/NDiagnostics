@@ -14,6 +14,8 @@ namespace NDiagnostics.Metering
 
         string InstanceName { get; }
 
+        MeterInstanceLifetime InstanceLifetime { get; }
+
         Sample Current { get; }
 
         void Reset();
