@@ -173,8 +173,8 @@ namespace NDiagnostics.Metering.Test
 
             try
             {
-                string[] instanceNames = {"_Total", "0", "1"};
-                using(var category = MeterCategory.Create<InstantMultiInstance>(instanceNames))
+                //string[] instanceNames = {"_Total", "0", "1"};
+                using(var category = MeterCategory.Create<InstantMultiInstance>())
                 {
                     category.Should().NotBeNull();
 
@@ -243,8 +243,8 @@ namespace NDiagnostics.Metering.Test
 
             try
             {
-                string[] instanceNames = {"_Total", "0", "1"};
-                using(var category = MeterCategory.Create<InstantMultiInstance>(instanceNames))
+                //string[] instanceNames = {"_Total", "0", "1"};
+                using(var category = MeterCategory.Create<InstantMultiInstance>())
                 {
                     category.Should().NotBeNull();
 
@@ -313,8 +313,8 @@ namespace NDiagnostics.Metering.Test
 
             try
             {
-                string[] instanceNames = {"_Total", "0", "1"};
-                using(var category = MeterCategory.Create<InstantMultiInstance>(instanceNames))
+                //string[] instanceNames = {"_Total", "0", "1"};
+                using(var category = MeterCategory.Create<InstantMultiInstance>())
                 {
                     category.Should().NotBeNull();
 
@@ -396,14 +396,14 @@ namespace NDiagnostics.Metering.Test
 
             try
             {
-                string[] instanceNames = {"_Total", "0", "1"};
-                using(var category = MeterCategory.Create<InstantMultiInstance>(instanceNames))
+                //string[] instanceNames = {"_Total", "0", "1"};
+                using(var category = MeterCategory.Create<InstantMultiInstance>())
                 {
                     category.Should().NotBeNull();
 
-                    var instantTimeTotal = category[InstantMultiInstance.InstantTime, instanceNames[0]].Cast<IInstantTime>();
-                    var instantTimeZero = category[InstantMultiInstance.InstantTime, instanceNames[1]].Cast<IInstantTime>();
-                    var instantTimeOne = category[InstantMultiInstance.InstantTime, instanceNames[2]].Cast<IInstantTime>();
+                    var instantTimeTotal = category[InstantMultiInstance.InstantTime, "_Total"].Cast<IInstantTime>();
+                    var instantTimeZero = category[InstantMultiInstance.InstantTime, "0"].Cast<IInstantTime>();
+                    var instantTimeOne = category[InstantMultiInstance.InstantTime, "1"].Cast<IInstantTime>();
                     instantTimeTotal.Should().NotBeNull();
                     instantTimeZero.Should().NotBeNull();
                     instantTimeOne.Should().NotBeNull();

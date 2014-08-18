@@ -15,7 +15,7 @@ namespace NDiagnostics.Metering.Attributes
 
             this.Name = name;
             this.Description = description;
-            this.Type = type;
+            this.MeterCategoryType = type;
         }
 
         #endregion
@@ -26,7 +26,7 @@ namespace NDiagnostics.Metering.Attributes
 
         public string Description { get; private set; }
 
-        public MeterCategoryType Type { get; private set; }
+        public MeterCategoryType MeterCategoryType { get; private set; }
 
         #endregion
     }
