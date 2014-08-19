@@ -9,26 +9,22 @@ namespace NDiagnostics.Metering.Extensions
     {
         #region Methods
 
-        internal static MeterCategoryAttribute GetMeterCategoryAttribute(this Type enumType)
+        internal static MeterCategoryAttribute GetMeterCategoryAttribute(this Type enumType) 
         {
-            enumType.ThrowIfNull("enumType");
-
             return Attribute.GetCustomAttribute(enumType, typeof(MeterCategoryAttribute)) as MeterCategoryAttribute;
         }
 
         internal static MeterAttribute GetMeterAttribute(this Type enumType, object enumValue)
         {
-            enumType.ThrowIfNull("enumType");
-            enumValue.ThrowIfNull("enumValue");
-
-            var fieldInfo = enumType.GetField(enumValue.ToString());
-            if(fieldInfo != null)
+            if(enumType.IsNotNull())
             {
-                var attributes = fieldInfo.GetCustomAttributes(typeof(MeterAttribute), false) as MeterAttribute[];
-
-                return attributes.FirstOrDefault();
+                var fieldInfo = enumType.GetField(enumValue.ToString());
+                if(fieldInfo.IsNotNull())
+                {
+                    var attributes = fieldInfo.GetCustomAttributes(typeof(MeterAttribute), false) as MeterAttribute[];
+                    return attributes.FirstOrDefault();
+                }
             }
-
             return null;
         }
 

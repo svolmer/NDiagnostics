@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="AverageMetersFixture.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="MeterCategoryFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InstantMetersFixture.cs" />
     <Compile Include="SampleMetersFixture.cs" />

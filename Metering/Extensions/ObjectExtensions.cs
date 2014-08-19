@@ -26,21 +26,34 @@ namespace NDiagnostics.Metering.Extensions
         }
 
         [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")]
-        public static void ThrowIfNull<T>(this T self)
+        public static T ThrowIfNull<T>(this T self)
         {
             if(self.IsNull())
             {
                 throw new NullReferenceException(string.Format("{0} is null.", self.Type().ToName()));
             }
+            return self;
         }
 
         [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")]
-        public static void ThrowIfNull<T>(this T self, string name)
+        public static T ThrowIfNull<T>(this T self, string name)
         {
             if(self.IsNull())
             {
                 throw new ArgumentNullException(string.Format("{0} '{1}' is null.", self.Type().ToName(), name), (Exception) null);
             }
+            return self;
+        }
+
+        [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")]
+        public static T ThrowIfNull<T, TException>(this T self, TException innerException)
+            where TException : Exception
+        {
+            if (self.IsNull())
+            {
+                throw innerException;
+            }
+            return self;
         }
 
         public static void TryDispose<T>(this T self)

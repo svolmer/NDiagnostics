@@ -8,7 +8,19 @@ namespace NDiagnostics.Metering.Extensions
     {
         #region Public Methods
 
-        public static string ToName(this Type type)
+        internal static T ThrowIfNotEnum<T>(this T type) 
+            where T : Type
+        {
+            type.ThrowIfNull();
+
+            if (!type.IsEnum)
+            {
+                throw new NotSupportedException(string.Format("Type '{0}' must be an enum.", type.ToName()));
+            }
+            return type;
+        }
+
+        internal static string ToName(this Type type)
         {
             var typeName = type.Name;
             if(type.IsGenericType)

@@ -14,28 +14,21 @@ namespace NDiagnostics.Metering
 
         public static IMeterCategory<T> Create<T>()
         {
-            var typeT = typeof(T);
-            if(!typeT.IsEnum)
-            {
-                throw new NotSupportedException(string.Format("{0} must be an enum type.", typeT.Name));
-            }
+            var typeT = typeof(T).ThrowIfNotEnum();
 
-            var meterCategoryAttribute = typeT.GetMeterCategoryAttribute();
-            if(meterCategoryAttribute == null)
-            {
-                throw new NotSupportedException(string.Format("Enum '{0}' must have a MeterCategoryAttribute associated.", typeT.Name));
-            }
+            var meterCategoryAttribute = typeT.GetMeterCategoryAttribute()
+                .ThrowIfNull(new NotSupportedException(string.Format("Enum '{0}' must be decorated by a MeterCategoryAttribute.", typeT.ToName()), null));
 
-            var enumValues = Enum.GetValues(typeT);
+            var values = Enum.GetValues(typeT)
+                .ThrowIfEmpty(new NotSupportedException(string.Format("Enum '{0}' must contain at least one value.", typeT.ToName()), null));
 
             var meterAttributes = new Dictionary<T, MeterAttribute>();
-            foreach(T meter in enumValues)
+            foreach(T value in values)
             {
-                var attr = typeT.GetMeterAttribute(meter);
-                if(attr != null)
-                {
-                    meterAttributes.Add(meter, attr);
-                }
+                var meterAttribute = typeT.GetMeterAttribute(value)
+                    .ThrowIfNull(new NotSupportedException(string.Format("Value '{0}' of enum '{1}' must de decorated by a MeterAttribute.", value, typeT.ToName()), null));
+
+                meterAttributes.Add(value, meterAttribute);
             }
 
             return new MeterCategory<T>(meterCategoryAttribute, meterAttributes);
@@ -43,67 +36,64 @@ namespace NDiagnostics.Metering
 
         public static void Install<T>()
         {
-            var typeT = typeof(T);
-            if(!typeT.IsEnum)
-            {
-                throw new NotSupportedException(string.Format("{0} must be an enum type.", typeT.Name));
-            }
+            var typeT = typeof(T).ThrowIfNotEnum();
 
-            var meterCategoryAttribute = typeT.GetMeterCategoryAttribute();
-            if(meterCategoryAttribute == null)
-            {
-                throw new NotSupportedException(string.Format("Enum '{0}' must have a MeterCategoryAttribute associated.", typeT.Name));
-            }
+            var meterCategoryAttribute = typeT.GetMeterCategoryAttribute()
+                .ThrowIfNull(new NotSupportedException(string.Format("Enum '{0}' must be decorated by a MeterCategoryAttribute.", typeT.ToName()), null));
 
-            var enumValues = Enum.GetValues(typeT);
+            var values = Enum.GetValues(typeT)
+                .ThrowIfEmpty(new NotSupportedException(string.Format("Enum '{0}' must contain at least one value.", typeT.ToName()), null));
+
+            var meterAttributes = new List<MeterAttribute>();
+            foreach(T value in values)
+            {
+                var meterAttribute = typeT.GetMeterAttribute(value)
+                    .ThrowIfNull(new NotSupportedException(string.Format("Value '{0}' of enum '{1}' must de decorated by a MeterAttribute.", value, typeT.ToName()), null));
+
+                meterAttributes.Add(meterAttribute);
+            }
 
             if(PerformanceCounterCategory.Exists(meterCategoryAttribute.Name))
             {
                 PerformanceCounterCategory.Delete(meterCategoryAttribute.Name);
             }
 
-            var categoryCounters = new CounterCreationDataCollection();
-
-            foreach(var performanceCounter in enumValues)
+            var counterCreationDataCollection = new CounterCreationDataCollection();
+            foreach(var meterAttribute in meterAttributes)
             {
-                var meterAttribute = typeT.GetMeterAttribute(performanceCounter);
-                if(meterAttribute != null)
+                var counterType = meterAttribute.GetPerformanceCounterType();
+                if(counterType.HasValue)
                 {
-                    var counterType = meterAttribute.GetPerformanceCounterType();
-                    if(counterType.HasValue)
+                    var counterCreationData = new CounterCreationData(meterAttribute.Name, meterAttribute.Description, counterType.Value);
+                    counterCreationDataCollection.Add(counterCreationData);
+                    var baseType = counterCreationData.CounterType.GetBaseType();
+                    if(baseType.HasValue)
                     {
-                        var counterData = new CounterCreationData(meterAttribute.Name, meterAttribute.Description, counterType.Value);
-                        categoryCounters.Add(counterData);
-                        var baseType = counterData.CounterType.GetBaseType();
-                        if(baseType.HasValue)
-                        {
-                            categoryCounters.Add(new CounterCreationData(meterAttribute.Name.GetNameForBaseType(), string.Format("Base for {0}", meterAttribute.Name), baseType.Value));
-                        }
+                        counterCreationDataCollection.Add(new CounterCreationData(meterAttribute.Name.GetNameForBaseType(), string.Format("Base for {0}", meterAttribute.Name), baseType.Value));
                     }
                 }
             }
 
-            if(categoryCounters.Count > 0)
-            {
-                PerformanceCounterCategory.Create(meterCategoryAttribute.Name, meterCategoryAttribute.Description, (PerformanceCounterCategoryType) meterCategoryAttribute.MeterCategoryType, categoryCounters);
-            }
+            PerformanceCounterCategory.Create(meterCategoryAttribute.Name, meterCategoryAttribute.Description, (PerformanceCounterCategoryType) meterCategoryAttribute.MeterCategoryType, counterCreationDataCollection);
         }
 
         public static void Uninstall<T>()
         {
-            var typeT = typeof(T);
-            if(!typeT.IsEnum)
+            var typeT = typeof(T).ThrowIfNotEnum();
+
+            var meterCategoryAttribute = typeT.GetMeterCategoryAttribute()
+                .ThrowIfNull(new NotSupportedException(string.Format("Enum '{0}' must be decorated by a MeterCategoryAttribute.", typeT.ToName()), null));
+
+            var values = Enum.GetValues(typeT)
+                .ThrowIfEmpty(new NotSupportedException(string.Format("Enum '{0}' must contain at least one value.", typeT.ToName()), null));
+
+            foreach (T value in values)
             {
-                throw new NotSupportedException(string.Format("{0} must be an enum type.", typeT.Name));
+                typeT.GetMeterAttribute(value)
+                    .ThrowIfNull(new NotSupportedException(string.Format("Value '{0}' of enum '{1}' must de decorated by a MeterAttribute.", value, typeT.ToName()), null));
             }
 
-            var meterCategoryAttribute = typeT.GetMeterCategoryAttribute();
-            if(meterCategoryAttribute == null)
-            {
-                throw new NotSupportedException(string.Format("Enum '{0}' must have a MeterCategoryAttribute associated.", typeT.Name));
-            }
-
-            if(PerformanceCounterCategory.Exists(meterCategoryAttribute.Name))
+            if (PerformanceCounterCategory.Exists(meterCategoryAttribute.Name))
             {
                 PerformanceCounterCategory.Delete(meterCategoryAttribute.Name);
             }
