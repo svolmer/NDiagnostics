@@ -6,14 +6,14 @@ namespace NDiagnostics.Metering.Extensions
 {
     internal static class TypeExtensions
     {
-        #region Public Methods
+        #region Methods
 
-        internal static T ThrowIfNotEnum<T>(this T type) 
+        internal static T ThrowIfNotEnum<T>(this T type)
             where T : Type
         {
             type.ThrowIfNull();
 
-            if (!type.IsEnum)
+            if(!type.IsEnum)
             {
                 throw new NotSupportedException(string.Format("Type '{0}' must be an enum.", type.ToName()));
             }

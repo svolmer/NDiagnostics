@@ -1,10 +1,8 @@
-﻿using NDiagnostics.Metering.Samples;
-
-namespace NDiagnostics.Metering.Extensions
+﻿namespace NDiagnostics.Metering.Samples
 {
     public static class SampleExtensions
     {
-        #region Public Methods
+        #region Methods
 
         public static long Value(this InstantValueSample sample)
         {

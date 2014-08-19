@@ -9,7 +9,7 @@ namespace NDiagnostics.Metering.Extensions
     {
         #region Methods
 
-        internal static MeterCategoryAttribute GetMeterCategoryAttribute(this Type enumType) 
+        internal static MeterCategoryAttribute GetMeterCategoryAttribute(this Type enumType)
         {
             return Attribute.GetCustomAttribute(enumType, typeof(MeterCategoryAttribute)) as MeterCategoryAttribute;
         }

@@ -3,7 +3,7 @@ using System.Threading;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NDiagnostics.Metering.Attributes;
-using NDiagnostics.Metering.Extensions;
+using NDiagnostics.Metering.Samples;
 using NDiagnostics.Metering.Types;
 
 namespace NDiagnostics.Metering.Test

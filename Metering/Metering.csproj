@@ -59,7 +59,6 @@
     <Compile Include="Extensions\MeteringExtensions.cs" />
     <Compile Include="Extensions\FloatExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
-    <Compile Include="Extensions\SampleExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="IDisposableObject.cs" />
@@ -68,6 +67,7 @@
     <Compile Include="Counters\MemoryCounterRegistry.cs" />
     <Compile Include="MeterInstanceLifeTime.cs" />
     <Compile Include="MultiInstance.cs" />
+    <Compile Include="Samples\SampleExtensions.cs" />
     <Compile Include="SingleInstance.cs" />
     <Compile Include="MeterDataType.cs" />
     <Compile Include="IMultiTimer100Ns.cs" />
