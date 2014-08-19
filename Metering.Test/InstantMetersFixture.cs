@@ -380,8 +380,8 @@ namespace NDiagnostics.Metering.Test
                 Thread.Sleep(TimeSpan.FromSeconds(1.0));
                 instantTimeOne.Set(TimeStamp.Now);
 
-                instantTimeTotal.Current.Value().Should().BeGreaterThan(2.0F);
-                instantTimeZero.Current.Value().Should().BeGreaterThan(1.0F);
+                instantTimeTotal.Current.Value().Should().BeGreaterThan(1.9F);
+                instantTimeZero.Current.Value().Should().BeGreaterThan(0.9F);
                 instantTimeOne.Current.Value().Should().BeGreaterThan(0.0F);
                 instantTimeTotal.Current.Value().Should().BeLessThan(2.1F);
                 instantTimeZero.Current.Value().Should().BeLessThan(1.1F);

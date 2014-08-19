@@ -1,19 +1,15 @@
-﻿using NDiagnostics.Metering.Extensions;
-
-namespace NDiagnostics.Metering.Counters
+﻿namespace NDiagnostics.Metering.Counters
 {
     internal abstract class MemoryCounter : ICounter
     {
         #region Constructors and Destructors
 
-        protected MemoryCounter(string categoryName, string counterName, string instanceName)
+        protected MemoryCounter(string categoryName, string counterName, string instanceName, InstanceLifetime instanceLifetime)
         {
-            instanceName.ThrowIfNull("instanceName");
-            instanceName.ThrowIfExceedsMaxSize("instanceName", 127);
-
             this.CategoryName = categoryName;
             this.CounterName = counterName;
             this.InstanceName = instanceName;
+            this.InstanceLifetime = instanceLifetime;
         }
 
         #endregion
@@ -25,6 +21,8 @@ namespace NDiagnostics.Metering.Counters
         public string CounterName { get; private set; }
 
         public string InstanceName { get; private set; }
+
+        public InstanceLifetime InstanceLifetime { get; private set; }
 
         public abstract long RawValue { get; set; }
 

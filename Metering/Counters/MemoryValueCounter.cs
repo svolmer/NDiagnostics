@@ -13,8 +13,8 @@ namespace NDiagnostics.Metering.Counters
 
         #region Constructors and Destructors
 
-        internal MemoryValueCounter(string categoryName, string counterName, string instanceName, IBaseCounter baseCounter)
-            : base(categoryName, counterName, instanceName)
+        internal MemoryValueCounter(string categoryName, string counterName, string instanceName, InstanceLifetime instanceLifetime, IBaseCounter baseCounter)
+            : base(categoryName, counterName, instanceName, instanceLifetime)
         {
             this.BaseCounter = baseCounter;
             Interlocked.Exchange(ref this.n, 0L);

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace NDiagnostics.Metering.Extensions
 {
+    [DebuggerStepThrough]
     internal static class StringExtensions
     {
         #region Methods

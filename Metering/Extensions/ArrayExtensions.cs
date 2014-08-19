@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics;
 
 namespace NDiagnostics.Metering.Extensions
 {
+    [DebuggerStepThrough]
     internal static class ArrayExtensions
     {
         #region Methods

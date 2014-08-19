@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 
 namespace NDiagnostics.Metering.Extensions
 {
+    [DebuggerStepThrough]
     internal static class TypeExtensions
     {
         #region Methods
@@ -11,8 +13,6 @@ namespace NDiagnostics.Metering.Extensions
         internal static T ThrowIfNotEnum<T>(this T type)
             where T : Type
         {
-            type.ThrowIfNull();
-
             if(!type.IsEnum)
             {
                 throw new NotSupportedException(string.Format("Type '{0}' must be an enum.", type.ToName()));

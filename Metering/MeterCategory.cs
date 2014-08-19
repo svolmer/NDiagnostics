@@ -38,7 +38,7 @@ namespace NDiagnostics.Metering
 
             if (meterCategoryAttribute.MeterCategoryType == MeterCategoryType.SingleInstance && instanceNames != null)
             {
-                throw new NotSupportedException(string.Format("Enum '{0}' is decorated by a MeterCategory attribute of type 'SingleInstance' and must not be created with instance names.", typeT.ToName()), null);
+                throw new NotSupportedException(string.Format("Enum '{0}' is of type 'SingleInstance' and must be created without an instance name.", typeT.ToName()), null);
             }
 
             return new MeterCategory<T>(meterCategoryAttribute, meterAttributes, instanceNames);
@@ -206,14 +206,14 @@ namespace NDiagnostics.Metering
         {
             if((this.meters != null) && (this.meters.Count > 0))
             {
-                var instances = this.meters.Values.ToArray();
+                var instanceMeters = this.meters.Values.ToList();
                 this.meters.Clear();
 
-                foreach(var instanceMeters in instances)
+                foreach(var instanceMeter in instanceMeters)
                 {
-                    if(instanceMeters != null)
+                    if(instanceMeter != null)
                     {
-                        foreach(var meter in instanceMeters.Values)
+                        foreach(var meter in instanceMeter.Values)
                         {
                             meter.Dispose();
                         }

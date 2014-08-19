@@ -33,7 +33,8 @@ namespace NDiagnostics.Metering.Counters
 
         #region Public Methods
 
-        public T Get<T>(string categoryName, string counterName, string instanceName, IBaseCounter baseCounter = null) where T : class, ICounter
+        public T Get<T>(string categoryName, string counterName, string instanceName, InstanceLifetime instanceLifetime, IBaseCounter baseCounter = null) 
+            where T : class, ICounter
         {
             if(!counters.ContainsKey(categoryName))
             {
@@ -47,14 +48,28 @@ namespace NDiagnostics.Metering.Counters
             {
                 if(typeof(T) == typeof(MemoryBaseCounter))
                 {
-                    counters[categoryName][instanceName].Add(counterName, new MemoryBaseCounter(categoryName, counterName, instanceName));
+                    counters[categoryName][instanceName].Add(counterName, new MemoryBaseCounter(categoryName, counterName, instanceName, instanceLifetime));
                 }
                 else if(typeof(T) == typeof(MemoryValueCounter))
                 {
-                    counters[categoryName][instanceName].Add(counterName, new MemoryValueCounter(categoryName, counterName, instanceName, baseCounter));
+                    counters[categoryName][instanceName].Add(counterName, new MemoryValueCounter(categoryName, counterName, instanceName, instanceLifetime, baseCounter));
                 }
             }
             return counters[categoryName][instanceName][counterName] as T;
+        }
+
+        public void Remove(string categoryName, string counterName, string instanceName)
+        {
+            if(counters.ContainsKey(categoryName))
+            {
+                if(counters[categoryName].ContainsKey(instanceName))
+                {
+                    if(counters[categoryName][instanceName].ContainsKey(instanceName))
+                    {
+                        counters[categoryName][instanceName].Remove(counterName);
+                    }
+                }
+            }
         }
 
         #endregion

@@ -8,6 +8,8 @@
 
         string InstanceName { get; }
 
+        InstanceLifetime InstanceLifetime { get; }
+
         long RawValue { get; set; }
 
         long Increment();

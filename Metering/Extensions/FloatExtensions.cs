@@ -1,7 +1,9 @@
-﻿using System.Runtime;
+﻿using System.Diagnostics;
+using System.Runtime;
 
 namespace NDiagnostics.Metering.Extensions
 {
+    [DebuggerStepThrough]
     internal static class FloatExtensions
     {
         #region Methods

@@ -12,8 +12,8 @@ namespace NDiagnostics.Metering.Counters
 
         #region Constructors and Destructors
 
-        internal MemoryBaseCounter(string categoryName, string counterName, string instanceName)
-            : base(categoryName, counterName, instanceName)
+        internal MemoryBaseCounter(string categoryName, string counterName, string instanceName, InstanceLifetime instanceLifetime)
+            : base(categoryName, counterName, instanceName, instanceLifetime)
         {
             Interlocked.Exchange(ref this.n, 0L);
         }

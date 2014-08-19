@@ -5,6 +5,7 @@ using NDiagnostics.Metering.Attributes;
 
 namespace NDiagnostics.Metering.Extensions
 {
+    [DebuggerStepThrough]
     internal static class MeteringExtensions
     {
         #region Methods

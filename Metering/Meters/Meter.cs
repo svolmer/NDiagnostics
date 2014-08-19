@@ -13,8 +13,7 @@ namespace NDiagnostics.Metering.Meters
         {
             categoryName.ThrowIfNullOrEmpty("categoryName");
             meterName.ThrowIfNullOrEmpty("meterName");
-            instanceName.ThrowIfNull("instanceName");
-            instanceName.ThrowIfExceedsMaxSize("instanceName", 127);
+            instanceName.ThrowIfNull("instanceName").ThrowIfExceedsMaxSize("instanceName", 127);
 
             if (categoryType == MeterCategoryType.SingleInstance && instanceName != SingleInstance.DefaultInstanceName)
             {
@@ -36,8 +35,8 @@ namespace NDiagnostics.Metering.Meters
             this.InstanceName = instanceName;
             this.InstanceLifetime = instanceLifetime;
 
-            this.BaseCounter = createBase ? Counters.BaseCounter.Create(categoryName, meterName, instanceName) : null;
-            this.ValueCounter = Counters.ValueCounter.Create(categoryName, meterName, instanceName, this.BaseCounter);
+            this.BaseCounter = createBase ? Counters.BaseCounter.Create(categoryName, meterName, instanceName, instanceLifetime) : null;
+            this.ValueCounter = Counters.ValueCounter.Create(categoryName, meterName, instanceName, instanceLifetime, this.BaseCounter);
         }
 
         #endregion

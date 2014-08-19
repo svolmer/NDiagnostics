@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using NDiagnostics.Metering.Extensions;
 
 namespace NDiagnostics.Metering.Counters
 {
@@ -8,22 +7,19 @@ namespace NDiagnostics.Metering.Counters
     {
         #region Methods
 
-        internal static IValueCounter Create(string categoryName, string counterName, string instanceName, IBaseCounter baseCounter = null)
+        internal static IValueCounter Create(string categoryName, string counterName, string instanceName, InstanceLifetime instanceLifetime, IBaseCounter baseCounter = null)
         {
-            categoryName.ThrowIfNullOrEmpty("categoryName");
-            counterName.ThrowIfNullOrEmpty("counterName");
-
             try
             {
                 if(PerformanceCounterCategory.Exists(categoryName) && PerformanceCounterCategory.CounterExists(counterName, categoryName))
                 {
-                    return new SystemValueCounter(categoryName, counterName, instanceName, baseCounter);
+                    return new SystemValueCounter(categoryName, counterName, instanceName, instanceLifetime, baseCounter);
                 }
             }
-            catch(UnauthorizedAccessException)
+            catch(Exception)
             {
             }
-            return MemoryCounterRegistry.Instance.Get<MemoryValueCounter>(categoryName, counterName, instanceName, baseCounter);
+            return MemoryCounterRegistry.Instance.Get<MemoryValueCounter>(categoryName, counterName, instanceName, instanceLifetime, baseCounter);
         }
 
         #endregion
