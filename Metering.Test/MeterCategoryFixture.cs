@@ -20,7 +20,7 @@ namespace NDiagnostics.Metering.Test
         public void MeterCategoryInstallThrowsIfNotDecorated()
         {
             Action action = MeterCategory.Install<CategoryNotDecorated>;
-            action.ShouldThrow<NotSupportedException>().WithMessage("Enum 'CategoryNotDecorated' must be decorated by a MeterCategoryAttribute.");
+            action.ShouldThrow<NotSupportedException>().WithMessage("Enum 'CategoryNotDecorated' must be decorated by a MeterCategory attribute.");
         }
 
         [TestMethod]
@@ -34,7 +34,7 @@ namespace NDiagnostics.Metering.Test
         public void MeterCategoryInstallThrowsIfNotAllValuesAreDecorated()
         {
             Action action = MeterCategory.Install<CategoryValueNotDecorated>;
-            action.ShouldThrow<NotSupportedException>().WithMessage("Value 'NotDecorated' of enum 'CategoryValueNotDecorated' must de decorated by a MeterAttribute.");
+            action.ShouldThrow<NotSupportedException>().WithMessage("Value 'NotDecorated' of enum 'CategoryValueNotDecorated' must de decorated by a Meter attribute.");
         }
 
         [TestMethod]

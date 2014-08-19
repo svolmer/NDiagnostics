@@ -2,7 +2,7 @@
 
 namespace NDiagnostics.Metering
 {
-    public abstract class DisposableObject : IDisposableObject
+    internal abstract class DisposableObject : IDisposableObject
     {
         #region Constants and Fields
 

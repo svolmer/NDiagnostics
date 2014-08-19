@@ -154,7 +154,8 @@ namespace NDiagnostics.Metering.Test
         [TestMethod]
         public void CanCreateInstantCount32MultiInstanceMeter()
         {
-            using(var category = MeterCategory.Create<InstantMultiInstance>())
+            var instanceNames = new[] {MultiInstance.DefaultInstanceName, "0", "1"};
+            using (var category = MeterCategory.Create<InstantMultiInstance>(instanceNames))
             {
                 category.Should().NotBeNull();
 
@@ -217,7 +218,8 @@ namespace NDiagnostics.Metering.Test
         [TestMethod]
         public void CanCreateInstantCount64MultiInstanceMeter()
         {
-            using(var category = MeterCategory.Create<InstantMultiInstance>())
+            var instanceNames = new[] { MultiInstance.DefaultInstanceName, "0", "1" };
+            using (var category = MeterCategory.Create<InstantMultiInstance>(instanceNames))
             {
                 category.Should().NotBeNull();
 
@@ -280,7 +282,8 @@ namespace NDiagnostics.Metering.Test
         [TestMethod]
         public void CanCreateInstantPercentageMultiInstanceMeter()
         {
-            using(var category = MeterCategory.Create<InstantMultiInstance>())
+            var instanceNames = new[] { MultiInstance.DefaultInstanceName, "0", "1" };
+            using (var category = MeterCategory.Create<InstantMultiInstance>(instanceNames))
             {
                 category.Should().NotBeNull();
 
@@ -356,7 +359,8 @@ namespace NDiagnostics.Metering.Test
         [TestMethod]
         public void CanCreateInstantTimeMultiInstanceMeter()
         {
-            using(var category = MeterCategory.Create<InstantMultiInstance>())
+            var instanceNames = new[] { MultiInstance.DefaultInstanceName, "0", "1" };
+            using (var category = MeterCategory.Create<InstantMultiInstance>(instanceNames))
             {
                 category.Should().NotBeNull();
 

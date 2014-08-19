@@ -14,10 +14,15 @@ namespace NDiagnostics.Metering
 
         public static IMeterCategory<T> Create<T>()
         {
+            return Create<T>(null);
+        }
+
+        public static IMeterCategory<T> Create<T>(IEnumerable<string> instanceNames)
+        {
             var typeT = typeof(T).ThrowIfNotEnum();
 
             var meterCategoryAttribute = typeT.GetMeterCategoryAttribute()
-                .ThrowIfNull(new NotSupportedException(string.Format("Enum '{0}' must be decorated by a MeterCategoryAttribute.", typeT.ToName()), null));
+                .ThrowIfNull(new NotSupportedException(string.Format("Enum '{0}' must be decorated by a MeterCategory attribute.", typeT.ToName()), null));
 
             var values = Enum.GetValues(typeT)
                 .ThrowIfEmpty(new NotSupportedException(string.Format("Enum '{0}' must contain at least one value.", typeT.ToName()), null));
@@ -26,12 +31,17 @@ namespace NDiagnostics.Metering
             foreach(T value in values)
             {
                 var meterAttribute = typeT.GetMeterAttribute(value)
-                    .ThrowIfNull(new NotSupportedException(string.Format("Value '{0}' of enum '{1}' must de decorated by a MeterAttribute.", value, typeT.ToName()), null));
+                    .ThrowIfNull(new NotSupportedException(string.Format("Value '{0}' of enum '{1}' must de decorated by a Meter attribute.", value, typeT.ToName()), null));
 
                 meterAttributes.Add(value, meterAttribute);
             }
 
-            return new MeterCategory<T>(meterCategoryAttribute, meterAttributes);
+            if (meterCategoryAttribute.MeterCategoryType == MeterCategoryType.SingleInstance && instanceNames != null)
+            {
+                throw new NotSupportedException(string.Format("Enum '{0}' is decorated by a MeterCategory attribute of type 'SingleInstance' and must not be created with instance names.", typeT.ToName()), null);
+            }
+
+            return new MeterCategory<T>(meterCategoryAttribute, meterAttributes, instanceNames);
         }
 
         public static void Install<T>()
@@ -39,7 +49,7 @@ namespace NDiagnostics.Metering
             var typeT = typeof(T).ThrowIfNotEnum();
 
             var meterCategoryAttribute = typeT.GetMeterCategoryAttribute()
-                .ThrowIfNull(new NotSupportedException(string.Format("Enum '{0}' must be decorated by a MeterCategoryAttribute.", typeT.ToName()), null));
+                .ThrowIfNull(new NotSupportedException(string.Format("Enum '{0}' must be decorated by a MeterCategory attribute.", typeT.ToName()), null));
 
             var values = Enum.GetValues(typeT)
                 .ThrowIfEmpty(new NotSupportedException(string.Format("Enum '{0}' must contain at least one value.", typeT.ToName()), null));
@@ -48,7 +58,7 @@ namespace NDiagnostics.Metering
             foreach(T value in values)
             {
                 var meterAttribute = typeT.GetMeterAttribute(value)
-                    .ThrowIfNull(new NotSupportedException(string.Format("Value '{0}' of enum '{1}' must de decorated by a MeterAttribute.", value, typeT.ToName()), null));
+                    .ThrowIfNull(new NotSupportedException(string.Format("Value '{0}' of enum '{1}' must de decorated by a Meter attribute.", value, typeT.ToName()), null));
 
                 meterAttributes.Add(meterAttribute);
             }
@@ -82,7 +92,7 @@ namespace NDiagnostics.Metering
             var typeT = typeof(T).ThrowIfNotEnum();
 
             var meterCategoryAttribute = typeT.GetMeterCategoryAttribute()
-                .ThrowIfNull(new NotSupportedException(string.Format("Enum '{0}' must be decorated by a MeterCategoryAttribute.", typeT.ToName()), null));
+                .ThrowIfNull(new NotSupportedException(string.Format("Enum '{0}' must be decorated by a MeterCategory attribute.", typeT.ToName()), null));
 
             var values = Enum.GetValues(typeT)
                 .ThrowIfEmpty(new NotSupportedException(string.Format("Enum '{0}' must contain at least one value.", typeT.ToName()), null));
@@ -90,7 +100,7 @@ namespace NDiagnostics.Metering
             foreach (T value in values)
             {
                 typeT.GetMeterAttribute(value)
-                    .ThrowIfNull(new NotSupportedException(string.Format("Value '{0}' of enum '{1}' must de decorated by a MeterAttribute.", value, typeT.ToName()), null));
+                    .ThrowIfNull(new NotSupportedException(string.Format("Value '{0}' of enum '{1}' must de decorated by a Meter attribute.", value, typeT.ToName()), null));
             }
 
             if (PerformanceCounterCategory.Exists(meterCategoryAttribute.Name))
@@ -120,20 +130,34 @@ namespace NDiagnostics.Metering
 
         #region Constructors and Destructors
 
-        internal MeterCategory(MeterCategoryAttribute meterCategoryAttribute, Dictionary<T, MeterAttribute> meterAttributes)
+        internal MeterCategory(MeterCategoryAttribute meterCategoryAttribute, IDictionary<T, MeterAttribute> meterAttributes, IEnumerable<string> instanceNames)
         {
-            meterCategoryAttribute.ThrowIfNull("meterCategoryAttribute");
-            meterAttributes.ThrowIfNull("meterAttributes");
-
-            var defaultInstanceName = meterCategoryAttribute.MeterCategoryType == MeterCategoryType.SingleInstance ? SingleInstance.DefaultInstanceName : MultiInstance.DefaultInstanceName;
-
             this.meters = new Dictionary<string, IDictionary<T, IMeter>>();
             this.CategoryName = meterCategoryAttribute.Name;
             this.CategoryType = meterCategoryAttribute.MeterCategoryType;
             this.meterAttributes = meterAttributes;
 
-            var instanceMeters = CreateInstanceMeters(meterCategoryAttribute.Name, meterCategoryAttribute.MeterCategoryType, meterAttributes, defaultInstanceName);
-            this.meters.Add(defaultInstanceName, instanceMeters);
+            if(meterCategoryAttribute.MeterCategoryType == MeterCategoryType.SingleInstance)
+            {
+                var instanceMeters = CreateInstanceMeters(meterCategoryAttribute.Name, meterCategoryAttribute.MeterCategoryType, meterAttributes, SingleInstance.DefaultInstanceName);
+                this.meters.Add(SingleInstance.DefaultInstanceName, instanceMeters);
+            }
+            else
+            {
+                if(instanceNames == null)
+                {
+                    var instanceMeters = CreateInstanceMeters(meterCategoryAttribute.Name, meterCategoryAttribute.MeterCategoryType, meterAttributes, MultiInstance.DefaultInstanceName);
+                    this.meters.Add(MultiInstance.DefaultInstanceName, instanceMeters);
+                }
+                else
+                {
+                    foreach(var instanceName in instanceNames)
+                    {
+                        var instanceMeters = CreateInstanceMeters(meterCategoryAttribute.Name, meterCategoryAttribute.MeterCategoryType, meterAttributes, instanceName);
+                        this.meters.Add(instanceName, instanceMeters);
+                    }
+                }
+            }
         }
 
         #endregion
@@ -155,12 +179,23 @@ namespace NDiagnostics.Metering
 
         public IMeter this[T meterName]
         {
-            get { return this.GetInstanceMeter(meterName); }
+            get { return this.GetMeter(meterName); }
         }
 
         public IMeter this[T meterName, string instanceName]
         {
-            get { return this.GetInstanceMeter(meterName, instanceName); }
+            get { return this.GetMeter(meterName, instanceName); }
+        }
+
+        public void CreateInstance(string instanceName, MeterInstanceLifetime instanceLifetime = MeterInstanceLifetime.Process)
+        {
+            if (this.CategoryType == MeterCategoryType.SingleInstance)
+            {
+                throw new InvalidOperationException(string.Format("Instances cannot be created on meter categories of type 'SingleInstance'."), null);
+            }
+
+            var instanceMeters = CreateInstanceMeters(this.CategoryName, this.CategoryType, this.meterAttributes, instanceName, instanceLifetime);
+            this.meters.Add(instanceName, instanceMeters);
         }
 
         #endregion
@@ -187,7 +222,7 @@ namespace NDiagnostics.Metering
             }
         }
 
-        private static IDictionary<T, IMeter> CreateInstanceMeters(string meterCategoryName, MeterCategoryType meterCategoryType, IEnumerable<KeyValuePair<T, MeterAttribute>> meterAttributes, string instanceName)
+        private static IDictionary<T, IMeter> CreateInstanceMeters(string meterCategoryName, MeterCategoryType meterCategoryType, IEnumerable<KeyValuePair<T, MeterAttribute>> meterAttributes, string instanceName, MeterInstanceLifetime instanceLifetime = MeterInstanceLifetime.Global)
         {
             var instanceMeters = new Dictionary<T, IMeter>();
 
@@ -196,84 +231,81 @@ namespace NDiagnostics.Metering
             {
                 var meterAttribute = enumerator.Current.Value;
 
-                var meter = CreateMeter(meterCategoryName, meterCategoryType, meterAttribute.Name, meterAttribute.MeterType, instanceName);
+                var meter = CreateMeter(meterCategoryName, meterCategoryType, meterAttribute.Name, meterAttribute.MeterType, instanceName, instanceLifetime);
 
                 instanceMeters.Add(enumerator.Current.Key, meter);
             }
             return instanceMeters;
         }
 
-        private static IMeter CreateMeter(string meterCategoryName, MeterCategoryType meterCategoryType, string meterName, MeterType meterType, string instanceName)
+        private static IMeter CreateMeter(string meterCategoryName, MeterCategoryType meterCategoryType, string meterName, MeterType meterType, string instanceName, MeterInstanceLifetime instanceLifetime)
         {
             IMeter meter = null;
             switch(meterType)
             {
                     // Instant Meters
                 case MeterType.InstantValue:
-                    meter = new InstantValueMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName);
+                    meter = new InstantValueMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
                     break;
                 case MeterType.InstantPercentage:
-                    meter = new InstantPercentageMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName);
+                    meter = new InstantPercentageMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
                     break;
                     // Average Meters
                 case MeterType.AverageValue:
-                    meter = new AverageValueMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName);
+                    meter = new AverageValueMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
                     break;
                 case MeterType.AverageTime:
-                    meter = new AverageTimeMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName);
+                    meter = new AverageTimeMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
                     break;
                     // Difference Meters
                 case MeterType.DifferentialValue:
-                    meter = new DifferentialValueMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName);
+                    meter = new DifferentialValueMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
                     break;
                 case MeterType.InstantTime:
-                    meter = new InstantTimeMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName);
+                    meter = new InstantTimeMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
                     break;
                 case MeterType.SampleRate:
-                    meter = new SampleRateMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName);
+                    meter = new SampleRateMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
                     break;
                 case MeterType.SamplePercentage:
-                    meter = new SamplePercentageMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName);
+                    meter = new SamplePercentageMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
                     break;
                 case MeterType.Timer:
-                    meter = new TimerMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName);
+                    meter = new TimerMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
                     break;
                 case MeterType.TimerInverse:
-                    meter = new TimerInverseMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName);
+                    meter = new TimerInverseMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
                     break;
                 case MeterType.Timer100Ns:
-                    meter = new Timer100nsMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName);
+                    meter = new Timer100nsMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
                     break;
                 case MeterType.Timer100NsInverse:
-                    meter = new Timer100nsInverseMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName);
+                    meter = new Timer100nsInverseMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
                     break;
                 case MeterType.MultiTimer:
-                    meter = new MultiTimerMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName);
+                    meter = new MultiTimerMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
                     break;
                 case MeterType.MultiTimerInverse:
-                    meter = new MultiTimerInverseMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName);
+                    meter = new MultiTimerInverseMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
                     break;
                 case MeterType.MultiTimer100Ns:
-                    meter = new MultiTimer100NsMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName);
+                    meter = new MultiTimer100NsMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
                     break;
                 case MeterType.MultiTimer100NsInverse:
-                    meter = new MultiTimer100NsInverseMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName);
+                    meter = new MultiTimer100NsInverseMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
                     break;
             }
             return meter;
         }
 
-        private IMeter GetInstanceMeter(T meterName, string instanceName = null)
+        private IMeter GetMeter(T meterName, string instanceName = null)
         {
             instanceName = instanceName ?? (this.CategoryType == MeterCategoryType.SingleInstance ? SingleInstance.DefaultInstanceName : MultiInstance.DefaultInstanceName);
-
-            IDictionary<T, IMeter> instanceMeters;
-            if(!this.meters.TryGetValue(instanceName, out instanceMeters))
+            if(this.meters.ContainsKey(instanceName) && this.meters[instanceName].ContainsKey(meterName))
             {
-                instanceMeters = CreateInstanceMeters(this.CategoryName, this.CategoryType, this.meterAttributes, instanceName);
-                this.meters.Add(instanceName, instanceMeters);
+                return this.meters[instanceName][meterName];
             }
-            return this.meters[instanceName][meterName];
+            return null;
         }
 
         #endregion
