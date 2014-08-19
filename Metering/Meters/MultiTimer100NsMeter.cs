@@ -8,7 +8,7 @@ namespace NDiagnostics.Metering.Meters
     {
         #region Constructors and Destructors
 
-        public MultiTimer100NsMeter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName, MeterInstanceLifetime instanceLifetime = MeterInstanceLifetime.Global)
+        public MultiTimer100NsMeter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName, InstanceLifetime instanceLifetime = InstanceLifetime.Global)
             : base(categoryName, categoryType, meterName, meterType, instanceName, instanceLifetime, true)
         {
             this.Reset();

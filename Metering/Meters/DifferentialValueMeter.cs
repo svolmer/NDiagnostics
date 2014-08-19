@@ -7,7 +7,7 @@ namespace NDiagnostics.Metering.Meters
     {
         #region Constructors and Destructors
 
-        public DifferentialValueMeter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName, MeterInstanceLifetime instanceLifetime = MeterInstanceLifetime.Global)
+        public DifferentialValueMeter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName, InstanceLifetime instanceLifetime = InstanceLifetime.Global)
             : base(categoryName, categoryType, meterName, meterType, instanceName, instanceLifetime, false)
         {
             this.Reset();

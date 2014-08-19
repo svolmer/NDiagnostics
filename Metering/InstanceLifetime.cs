@@ -2,7 +2,7 @@
 
 namespace NDiagnostics.Metering
 {
-    public enum MeterInstanceLifetime
+    public enum InstanceLifetime
     {
         Global = PerformanceCounterInstanceLifetime.Global,
 

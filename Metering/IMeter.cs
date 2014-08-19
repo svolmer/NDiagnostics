@@ -14,7 +14,7 @@ namespace NDiagnostics.Metering
 
         string InstanceName { get; }
 
-        MeterInstanceLifetime InstanceLifetime { get; }
+        InstanceLifetime InstanceLifetime { get; }
 
         Sample Current { get; }
 

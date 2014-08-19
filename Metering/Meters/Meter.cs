@@ -9,7 +9,7 @@ namespace NDiagnostics.Metering.Meters
     {
         #region Constructors and Destructors
 
-        protected Meter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName, MeterInstanceLifetime instanceLifetime, bool createBase)
+        protected Meter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName, InstanceLifetime instanceLifetime, bool createBase)
         {
             categoryName.ThrowIfNullOrEmpty("categoryName");
             meterName.ThrowIfNullOrEmpty("meterName");
@@ -20,7 +20,7 @@ namespace NDiagnostics.Metering.Meters
             {
                 throw new ArgumentException("The meter categories is single-instance and requires the meter to be created without an instance name.");
             }
-            if(categoryType == MeterCategoryType.SingleInstance && instanceLifetime != MeterInstanceLifetime.Global)
+            if(categoryType == MeterCategoryType.SingleInstance && instanceLifetime != InstanceLifetime.Global)
             {
                 throw new ArgumentException("The meter category is single-instance and requires the meter to be created with a global instance lifetime.");
             }
@@ -62,7 +62,7 @@ namespace NDiagnostics.Metering.Meters
 
         public string InstanceName { get; private set; }
 
-        public MeterInstanceLifetime InstanceLifetime { get; private set; }
+        public InstanceLifetime InstanceLifetime { get; private set; }
 
         public abstract Sample Current { get; }
 

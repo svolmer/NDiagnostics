@@ -65,7 +65,7 @@
     <Compile Include="Attributes\MeterAttribute.cs" />
     <Compile Include="Attributes\MeterCategoryAttribute.cs" />
     <Compile Include="Counters\MemoryCounterRegistry.cs" />
-    <Compile Include="MeterInstanceLifetime.cs" />
+    <Compile Include="InstanceLifetime.cs" />
     <Compile Include="MultiInstance.cs" />
     <Compile Include="Samples\SampleExtensions.cs" />
     <Compile Include="SingleInstance.cs" />

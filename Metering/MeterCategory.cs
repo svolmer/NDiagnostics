@@ -187,7 +187,7 @@ namespace NDiagnostics.Metering
             get { return this.GetMeter(meterName, instanceName); }
         }
 
-        public void CreateInstance(string instanceName, MeterInstanceLifetime instanceLifetime = MeterInstanceLifetime.Process)
+        public void CreateInstance(string instanceName, InstanceLifetime instanceLifetime = InstanceLifetime.Process)
         {
             if (this.CategoryType == MeterCategoryType.SingleInstance)
             {
@@ -222,7 +222,7 @@ namespace NDiagnostics.Metering
             }
         }
 
-        private static IDictionary<T, IMeter> CreateInstanceMeters(string meterCategoryName, MeterCategoryType meterCategoryType, IEnumerable<KeyValuePair<T, MeterAttribute>> meterAttributes, string instanceName, MeterInstanceLifetime instanceLifetime = MeterInstanceLifetime.Global)
+        private static IDictionary<T, IMeter> CreateInstanceMeters(string meterCategoryName, MeterCategoryType meterCategoryType, IEnumerable<KeyValuePair<T, MeterAttribute>> meterAttributes, string instanceName, InstanceLifetime instanceLifetime = InstanceLifetime.Global)
         {
             var instanceMeters = new Dictionary<T, IMeter>();
 
@@ -238,7 +238,7 @@ namespace NDiagnostics.Metering
             return instanceMeters;
         }
 
-        private static IMeter CreateMeter(string meterCategoryName, MeterCategoryType meterCategoryType, string meterName, MeterType meterType, string instanceName, MeterInstanceLifetime instanceLifetime)
+        private static IMeter CreateMeter(string meterCategoryName, MeterCategoryType meterCategoryType, string meterName, MeterType meterType, string instanceName, InstanceLifetime instanceLifetime)
         {
             IMeter meter = null;
             switch(meterType)
