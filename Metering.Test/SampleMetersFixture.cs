@@ -40,7 +40,7 @@ namespace NDiagnostics.Metering.Test
             {
                 category.Should().NotBeNull();
 
-                var samplePercentage = category[SampleSingleInstance.SamplePercentage].Cast<ISamplePercentage>();
+                var samplePercentage = category[SampleSingleInstance.SamplePercentage].As<ISamplePercentage>();
                 samplePercentage.Should().NotBeNull();
                 samplePercentage.Reset();
 

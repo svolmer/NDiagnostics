@@ -41,7 +41,7 @@ namespace NDiagnostics.Metering.Test
             {
                 category.Should().NotBeNull();
 
-                var averageCount = category[AverageSingleInstance.AverageCount].Cast<IAverageValue>();
+                var averageCount = category[AverageSingleInstance.AverageCount].As<IAverageValue>();
                 averageCount.Should().NotBeNull();
                 averageCount.Reset();
 
@@ -73,7 +73,7 @@ namespace NDiagnostics.Metering.Test
             {
                 category.Should().NotBeNull();
 
-                var averageTime = category[AverageSingleInstance.AverageTime].Cast<IAverageTime>();
+                var averageTime = category[AverageSingleInstance.AverageTime].As<IAverageTime>();
                 averageTime.Should().NotBeNull();
                 averageTime.Reset();
 

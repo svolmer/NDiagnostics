@@ -110,9 +110,13 @@ namespace NDiagnostics.Metering
         }
 
         [DebuggerStepThrough]
-        public static T Cast<T>(this IMeter obj) where T : class, IMeter
+        public static T As<T>(this IMeter obj) where T : class, IMeter
         {
-            return obj == null ? null : obj as T;
+            if(obj is T)
+            {
+                return (T) obj;
+            }
+            return default(T);
         }
 
         #endregion

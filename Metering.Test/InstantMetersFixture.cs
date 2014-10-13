@@ -37,7 +37,7 @@ namespace NDiagnostics.Metering.Test
                 category.Should().NotBeNull();
                 category.InstanceNames.ShouldBeEquivalentTo(new[] {SingleInstance.DefaultInstanceName});
 
-                var instantCount = category[InstantSingleInstance.InstantCount32].Cast<IInstantValue>();
+                var instantCount = category[InstantSingleInstance.InstantCount32].As<IInstantValue>();
                 instantCount.Should().NotBeNull();
                 instantCount.Reset();
 
@@ -68,7 +68,7 @@ namespace NDiagnostics.Metering.Test
             {
                 category.Should().NotBeNull();
 
-                var instantCount = category[InstantSingleInstance.InstantCount64].Cast<IInstantValue>();
+                var instantCount = category[InstantSingleInstance.InstantCount64].As<IInstantValue>();
                 instantCount.Should().NotBeNull();
                 instantCount.Reset();
 
@@ -99,7 +99,7 @@ namespace NDiagnostics.Metering.Test
             {
                 category.Should().NotBeNull();
 
-                var instantPercentage = category[InstantSingleInstance.InstantPercentage].Cast<IInstantPercentage>();
+                var instantPercentage = category[InstantSingleInstance.InstantPercentage].As<IInstantPercentage>();
                 instantPercentage.Should().NotBeNull();
                 instantPercentage.Reset();
 
@@ -135,7 +135,7 @@ namespace NDiagnostics.Metering.Test
             {
                 category.Should().NotBeNull();
 
-                var instantTime = category[InstantSingleInstance.InstantTime].Cast<IInstantTime>();
+                var instantTime = category[InstantSingleInstance.InstantTime].As<IInstantTime>();
                 instantTime.Should().NotBeNull();
                 instantTime.Reset();
 
@@ -159,9 +159,9 @@ namespace NDiagnostics.Metering.Test
             {
                 category.Should().NotBeNull();
 
-                var instantCountTotal = category[InstantMultiInstance.InstantCount32].Cast<IInstantValue>();
-                var instantCountZero = category[InstantMultiInstance.InstantCount32, "0"].Cast<IInstantValue>();
-                var instantCountOne = category[InstantMultiInstance.InstantCount32, "1"].Cast<IInstantValue>();
+                var instantCountTotal = category[InstantMultiInstance.InstantCount32].As<IInstantValue>();
+                var instantCountZero = category[InstantMultiInstance.InstantCount32, "0"].As<IInstantValue>();
+                var instantCountOne = category[InstantMultiInstance.InstantCount32, "1"].As<IInstantValue>();
                 instantCountTotal.Should().NotBeNull();
                 instantCountTotal.Reset();
                 instantCountZero.Should().NotBeNull();
@@ -223,9 +223,9 @@ namespace NDiagnostics.Metering.Test
             {
                 category.Should().NotBeNull();
 
-                var instantCountTotal = category[InstantMultiInstance.InstantCount64].Cast<IInstantValue>();
-                var instantCountZero = category[InstantMultiInstance.InstantCount64, "0"].Cast<IInstantValue>();
-                var instantCountOne = category[InstantMultiInstance.InstantCount64, "1"].Cast<IInstantValue>();
+                var instantCountTotal = category[InstantMultiInstance.InstantCount64].As<IInstantValue>();
+                var instantCountZero = category[InstantMultiInstance.InstantCount64, "0"].As<IInstantValue>();
+                var instantCountOne = category[InstantMultiInstance.InstantCount64, "1"].As<IInstantValue>();
                 instantCountTotal.Should().NotBeNull();
                 instantCountTotal.Reset();
                 instantCountZero.Should().NotBeNull();
@@ -287,9 +287,9 @@ namespace NDiagnostics.Metering.Test
             {
                 category.Should().NotBeNull();
 
-                var instantPercentageTotal = category[InstantMultiInstance.InstantPercentage].Cast<IInstantPercentage>();
-                var instantPercentageZero = category[InstantMultiInstance.InstantPercentage, "0"].Cast<IInstantPercentage>();
-                var instantPercentageOne = category[InstantMultiInstance.InstantPercentage, "1"].Cast<IInstantPercentage>();
+                var instantPercentageTotal = category[InstantMultiInstance.InstantPercentage].As<IInstantPercentage>();
+                var instantPercentageZero = category[InstantMultiInstance.InstantPercentage, "0"].As<IInstantPercentage>();
+                var instantPercentageOne = category[InstantMultiInstance.InstantPercentage, "1"].As<IInstantPercentage>();
                 instantPercentageTotal.Should().NotBeNull();
                 instantPercentageTotal.Reset();
                 instantPercentageZero.Should().NotBeNull();
@@ -364,9 +364,9 @@ namespace NDiagnostics.Metering.Test
             {
                 category.Should().NotBeNull();
 
-                var instantTimeTotal = category[InstantMultiInstance.InstantTime].Cast<IInstantTime>();
-                var instantTimeZero = category[InstantMultiInstance.InstantTime, "0"].Cast<IInstantTime>();
-                var instantTimeOne = category[InstantMultiInstance.InstantTime, "1"].Cast<IInstantTime>();
+                var instantTimeTotal = category[InstantMultiInstance.InstantTime].As<IInstantTime>();
+                var instantTimeZero = category[InstantMultiInstance.InstantTime, "0"].As<IInstantTime>();
+                var instantTimeOne = category[InstantMultiInstance.InstantTime, "1"].As<IInstantTime>();
                 instantTimeTotal.Should().NotBeNull();
                 instantTimeTotal.Reset();
                 instantTimeZero.Should().NotBeNull();
