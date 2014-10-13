@@ -20,7 +20,8 @@ namespace NDiagnostics.Metering.Extensions
             return type;
         }
 
-        internal static string ToName(this Type type)
+        internal static string ToName<T>(this T type)
+            where T : Type
         {
             var typeName = type.Name;
             if(type.IsGenericType)
