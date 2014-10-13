@@ -29,9 +29,9 @@ namespace NDiagnostics.Metering.Samples
 
         #endregion
 
-        // Instant Meters 
-
         #region Public Methods
+
+        // Instant Meters 
 
         public static long ComputeValue(InstantValueSample sample)
         {
