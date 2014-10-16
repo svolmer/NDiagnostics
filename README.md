@@ -2,7 +2,7 @@
 
 This library makes it easier for developers to gain valuable application insight. This is achieved by using "meters" to measure key performance indicators during runtime.
 
-The library utilizes [Performance Counters](http://msdn.microsoft.com/en-us/library/windows/desktop/aa373083(v=vs.85).aspx) as its basis if available, but falls back to using transient in-memory counters if not. Therefore, the library can be used even in environments where administrative privilages for the management of Performance Counters are lacking.
+The library utilizes [performance counters](http://msdn.microsoft.com/en-us/library/windows/desktop/aa373083(v=vs.85).aspx) as its basis if available, but falls back to using transient in-memory counters if not. Therefore, the library can be used even in environments where administrative privilages for the management of performance counters are lacking.
 
 The library provides out-of-the-box a more elaborated API than the cumbersome provided by the .NET framework in the [`System.Diagnostics`](http://msdn.microsoft.com/en-us/library/System.Diagnostics(v=vs.110).aspx) namespace. The API allows performance data to be collected and evaluated by using single line statements with minimal pollution of the code. 
 
@@ -14,6 +14,43 @@ nuget install NDiagnostics.Metering
 or
 ~~~shell
 PM> Install-Package NDiagnostics.Metering
+~~~
+
+# Basics
+
+Meters are bundled together in logical units, so called meter categories. Meter categories come in two flavors: 
+single-instance and multi-instance. A single-instance category has only one global value for each of its meters.
+A good example of a category is the `System` category of Windows. It has meters like `System Up Time` 
+and `Threads`, and clearly there is only one global value for each of the its meters.  
+
+Multi-instance categories on the other hand can have an unlimited number of different values for each meter. 
+A good example is `Process`, which has one instance for each process running, and therefore a set of instance values 
+for each of its meters. Each instance of a meter can be uniquely identified by its unique instance name (e.g. 
+process name). Typically, there is an additonal global instance that is commonly, but not necessarily, named 
+`_Total`, that represents the aggregate value of all other instance values.
+
+Meters have a type that essentially defines how the values they contain have to be interpreted. Some of the meter 
+types (so called [Instantaneous Meters](##markdown-header-instananeous-meters)) will require only a single sample, 
+all others require two samples in order to calculate their corresponding value. Detailed specifications of the 
+various meter types can be found in section [Meter Types](##markdown-header-meter-types).
+ 
+TODO Instance Lifetime
+
+# Usage
+
+## Declaration
+
+
+~~~c#
+[MeterCategory("System", "The System category consists of meters that apply to the system as a whole.", MeterCategoryType.SingleInstance)]
+public enum SystemMeterCategory
+{
+    [Meter("System Up Time", "System Up Time is the elapsed time (in seconds) that the computer has been running since it was last started.", MeterType.InstantTime)]
+    SystemUpTime,
+
+    [Meter("Threads", "Threads is the number of threads at the time of the sample.", MeterType.InstantValue)]
+    Threads,
+}
 ~~~
 
 # Meter Types
