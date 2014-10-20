@@ -191,14 +191,14 @@ namespace NDiagnostics.Metering
             get { return this.GetMeter(meterName, instanceName); }
         }
 
-        public void CreateInstance(string instanceName, InstanceLifetime instanceLifetime = InstanceLifetime.Process)
+        public void CreateInstance(string instanceName)
         {
             if (this.CategoryType == MeterCategoryType.SingleInstance)
             {
                 throw new InvalidOperationException(string.Format("Instances cannot be created on meter categories of type 'SingleInstance'."), null);
             }
 
-            var instanceMeters = CreateInstanceMeters(this.CategoryName, this.CategoryType, this.meterAttributes, instanceName, instanceLifetime);
+            var instanceMeters = CreateInstanceMeters(this.CategoryName, this.CategoryType, this.meterAttributes, instanceName, InstanceLifetime.Process);
             this.meters.Add(instanceName, instanceMeters);
         }
 
