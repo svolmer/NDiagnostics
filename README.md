@@ -18,30 +18,28 @@ PM> Install-Package NDiagnostics.Metering
 
 # Basics
 
-Meters have a type (e.g. `MeterType.AverageTime`) that essentially defines how the values they represent have to be 
-interpreted. Some of the meter types (so called [Instantaneous Meters](##markdown-header-instananeous-meters)) will 
-require only a single sample, all others require two samples in order to calculate their corresponding value. Detailed 
-specifications of the various meter types can be found in section [Meter Types](##markdown-header-meter-types).
+Meters have a type that essentially defines how the values they represent have to be interpreted. Some of the 
+meter types (so called [Instantaneous Meters](##markdown-header-instananeous-meters)) will require only a single 
+sample, all others require two samples in order to calculate their corresponding value. Detailed specifications 
+of the various meter types can be found in section [Meter Types](##markdown-header-meter-types).
  
 Meters are bundled together in logical units, so called meter categories. Meter categories come in two flavors: 
-single-instance (`MeterCategoryType.SingleInstance`) and multi-instance (`MeterCategoryType.MultiInstance`). A 
-single-instance category has only one global value for each of its meters. A good example of a category is the 
-`System` category of Windows. It has meters like `System Up Time` and `Threads`, and clearly there is only one 
-global value for each of the its meters.  
+single-instance and multi-instance. A single-instance category has only one global value for each of its meters. 
+A good example of a category is the `System` category of Windows. It has meters like `System Up Time` and 
+`Threads`, and clearly there is only one global value for each of the its meters.  
 
 Multi-instance categories on the other hand can have an unlimited number of different values for each meter. 
-A good example is `Process`, which has one instance for each process running, and therefore a set of instance values 
-for each of its meters. Each instance of a meter can be uniquely identified by its unique instance name (e.g. 
-process name). Typically, there is an additonal global instance that is commonly, but not necessarily, named 
-`_Total`, that represents the aggregate value of all other instance values.
+A good example is `Process`, which has one instance for each process running, and therefore a set of instance 
+values for each of its meters. Each instance of a meter can be uniquely identified by its unique instance name 
+(e.g. process name). Typically, but not necessarily, there is a global instance that is commonly named `_Total`, 
+that represents the aggregate value of all other instance values.
 
-All meter instances have a lifetime associated with it. An instance lifetime can be either `InstanceLifetime.Global`
-or `InstanceLifetime.Process`. All meters of a single-instance category have a global lifetime by default. Essentially,
-this means they exist from the point in time when they are installed until the point in time they are uninstalled. 
-Multi-instance meters on the other hand can either have a global lifetime or a lifetime that is tied to the lifetime of
-a particular process. Instances with a lifetime `InstanceLifetime.Process` can added at runtime on the fly. Their 
-lifetime ends automatically whenever the process that created that particular instance is terminated. A good example 
-of a category with such instances is the `Process` category of Windows.
+All meter instances have a lifetime that is either tied to the lifetime of their meter category (global lifetime) 
+or to the lifetime of a particular process (process lifeftime). All meters of a single-instance category 
+have a global lifetime by default. Multi-instance meters on the other hand can either have a global lifetime 
+(i.e. they are created whenever the meter category is created) or a process lifetime. Instances with a process 
+lifetime are created on the fly at runtime and their lifetime ends automatically whenever the creating process 
+is terminated. A good example of a category with such instances is the `Process` category of Windows.
 
 # Usage
 
@@ -80,11 +78,15 @@ public enum MeterType : long
     InstantValue,
     InstantTime,
     InstantPercentage,
+    // Average Meters
     AverageValue,
     AverageTime,
+    // Sample Meters
     SampleRate,
     SamplePercentage,
+    // Differential Meters
     DifferentialValue,
+    // Percentage of Time Meters
     Timer,
     TimerInverse,
     MultiTimer,
@@ -171,7 +173,6 @@ public interface IInstantPercentage : IMeter
 Percentage of free vs. total memory.
 
 ## Average Meters
-
 Average meters measure the average of values within a given time frame. Any value can be obtained from two measurements at different points in time.
 
 ### AverageValue
@@ -204,7 +205,7 @@ public interface IAverageTime : IMeter
 #### Example
 Average processing time per message.
 
-### Sample Meters 
+## Sample Meters 
 Sample meters measure the occurrence of events per time frame. Any value can be obtained from two measurements at different points in time.
 
 ### SampleRate
@@ -239,7 +240,7 @@ public interface ISamplePercentage : IMeter
 #### Example
 Percentage of free vs total memory per time frame.
 
-### Differential Meters 
+## Differential Meters 
 Differential meters measure the difference between values at the beginning and the end of a given time frame. Any value can be obtained from two measurements at different points in time.
 
 ### DifferentialValue
@@ -265,7 +266,7 @@ public interface IDifferentialValue : IMeter
 #### Example
 ?
 
-### Percentage of Time Meters
+## Percentage of Time Meters
 Percentage of time meters measure the difference between values at the beginning and the end of a given time frame. Any value can be obtained from two measurements at different points in time.
 
 ### Timer
