@@ -4,9 +4,9 @@ namespace NDiagnostics.Metering
 {
     public interface ISamplePercentage : IMeter
     {
-        void SampleSuccess();
+        void SampleA();
 
-        void SampleFailure();
+        void SampleB();
 
         new SamplePercentageSample Current { get; }
     }

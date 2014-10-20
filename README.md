@@ -73,6 +73,29 @@ public enum ProcessMeterCategory
 
 # Meter Types
 
+~~~c#
+public enum MeterType : long
+{
+    // Instantaneous Meters
+    InstantValue,
+    InstantTime,
+    InstantPercentage,
+    AverageValue,
+    AverageTime,
+    SampleRate,
+    SamplePercentage,
+    DifferentialValue,
+    Timer,
+    TimerInverse,
+    MultiTimer,
+    MultiTimerInverse,
+    Timer100Ns,
+    Timer100NsInverse,
+    MultiTimer100Ns,
+    MultiTimer100NsInverse,
+}
+~~~
+
 ## Instantaneous Meters
 Instant meters measure the most recent absolute values. Any value can be obtained from a single measurement at any point in time.
 
@@ -182,11 +205,11 @@ public interface IAverageTime : IMeter
 Average processing time per message.
 
 ### Sample Meters 
-Differential meters measure the difference between values at the beginning and the end of a given time frame. Any value can be obtained from two measurements at different points in time.
+Sample meters measure the occurrence of events per time frame. Any value can be obtained from two measurements at different points in time.
 
 ### SampleRate
 #### Description
-Measures the rate of items per time frame. Substitutes performance counters of type `SampleCounter`, `RateOfCountsPerSecond32`, `RateOfCountsPerSecond64`.
+Measures the rate of occurrences of events per time frame. Substitutes performance counters of type `SampleCounter`, `RateOfCountsPerSecond32`, `RateOfCountsPerSecond64`.
 #### Interface 
 ~~~c#
 public interface ISampleRate : IMeter
@@ -201,14 +224,14 @@ Number of messages processed per time frame.
 
 ### SamplePercentage
 #### Description
-Measures the percentage of success vs failure items per time frame. Substitutes performance counters of type `SampleFraction`.
+Measures the percentage of occurrences of type A events (e.g. success) vs. type B events (e.g. failure) per time frame. Substitutes performance counters of type `SampleFraction`.
 #### Interface 
 ~~~c#
 public interface ISamplePercentage : IMeter
 {
-    void SampleSuccess();
+    void SampleA();
 
-    void SampleFailure();
+    void SampleB();
 
     new SamplePercentageSample Current { get; }
 }

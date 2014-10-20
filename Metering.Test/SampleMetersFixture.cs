@@ -46,19 +46,19 @@ namespace NDiagnostics.Metering.Test
 
                 var sample1 = samplePercentage.Current;
 
-                samplePercentage.SampleSuccess();
-                samplePercentage.SampleSuccess();
-                samplePercentage.SampleFailure();
-                samplePercentage.SampleSuccess();
-                samplePercentage.SampleSuccess();
+                samplePercentage.SampleA();
+                samplePercentage.SampleA();
+                samplePercentage.SampleB();
+                samplePercentage.SampleA();
+                samplePercentage.SampleA();
 
                 var sample2 = samplePercentage.Current;
 
                 Sample.ComputeValue(sample2, sample1).IsAlmostEqual(400.0F / 5.0F).Should().BeTrue();
 
-                samplePercentage.SampleFailure();
-                samplePercentage.SampleFailure();
-                samplePercentage.SampleSuccess();
+                samplePercentage.SampleB();
+                samplePercentage.SampleB();
+                samplePercentage.SampleA();
 
                 var sample3 = samplePercentage.Current;
 

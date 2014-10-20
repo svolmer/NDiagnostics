@@ -38,14 +38,14 @@ namespace NDiagnostics.Metering.Meters
             get { return this.GetCurrentSample(); }
         }
 
-        public void SampleSuccess()
+        public void SampleA()
         {
             this.ThrowIfDisposed();
             this.ValueCounter.Increment();
             this.BaseCounter.Increment();
         }
 
-        public void SampleFailure()
+        public void SampleB()
         {
             this.ThrowIfDisposed();
             this.BaseCounter.Increment();
