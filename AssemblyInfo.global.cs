@@ -3,5 +3,5 @@
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("NDiagnostics.Metering")]
 [assembly: AssemblyCopyright("Copyright © Stephan Volmer 2014")]
-[assembly: AssemblyVersion("0.9.4.0")]
-[assembly: AssemblyFileVersion("0.9.4")]
+[assembly: AssemblyVersion("0.9.5.0")]
+[assembly: AssemblyFileVersion("0.9.5")]

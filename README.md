@@ -1,10 +1,16 @@
 # NDiagnostics.Metering
 
-This library makes it easier for developers to gain valuable application insight. This is achieved by using "meters" to measure key performance indicators during runtime.
+This library makes it easier for developers to gain valuable application insight. This is achieved by using "meters" 
+to measure key performance indicators during runtime.
 
-The library utilizes [performance counters](http://msdn.microsoft.com/en-us/library/windows/desktop/aa373083(v=vs.85).aspx) as its basis if available, but falls back to using transient in-memory counters if not. Therefore, the library can be used even in environments where administrative privilages for the management of performance counters are lacking.
+The library utilizes [performance counters](http://msdn.microsoft.com/en-us/library/windows/desktop/aa373083(v=vs.85).aspx) 
+as its basis if available, but falls back to using transient in-memory counters if not. Therefore, the library can 
+be used even in environments where administrative privilages for the management of performance counters are lacking.
 
-The library provides out-of-the-box a more elaborated API than the cumbersome provided by the .NET framework in the [`System.Diagnostics`](http://msdn.microsoft.com/en-us/library/System.Diagnostics(v=vs.110).aspx) namespace. The API allows performance data to be collected and evaluated by using single line statements with minimal pollution of the code. 
+The library provides out-of-the-box a more elaborated API than the cumbersome provided by the .NET framework in the 
+[`System.Diagnostics`](http://msdn.microsoft.com/en-us/library/System.Diagnostics(v=vs.110).aspx) namespace. The API 
+allows performance data to be collected and evaluated by using single line statements with minimal pollution of the 
+code. 
 
 # Installation
 
