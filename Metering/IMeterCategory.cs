@@ -15,6 +15,8 @@ namespace NDiagnostics.Metering
 
         IMeter this[T meterName, string instanceName] { get; }
 
-        void CreateInstance(string instanceName);
+        void CreateInstance(string instanceName, InstanceLifetime lifetime = InstanceLifetime.Global);
+
+        void RemoveInstance(string instanceName);
     }
 }

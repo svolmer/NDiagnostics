@@ -75,6 +75,26 @@ public enum ProcessMeterCategory
 }
 ~~~
 
+## Install
+
+~~~c#
+MeterCategory.Install<SystemMeterCategory>();
+~~~
+or
+~~~c#
+MeterCategory.Install<ProcessMeterCategory>();
+~~~
+
+## Uninstall
+
+~~~c#
+MeterCategory.Uninstall<SystemMeterCategory>();
+~~~
+or
+~~~c#
+MeterCategory.Uninstall<ProcessMeterCategory>();
+~~~
+
 # Meter Types
 
 ~~~c#

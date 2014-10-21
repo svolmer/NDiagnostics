@@ -14,11 +14,6 @@ namespace NDiagnostics.Metering
 
         public static IMeterCategory<T> Create<T>()
         {
-            return Create<T>(null);
-        }
-
-        public static IMeterCategory<T> Create<T>(IEnumerable<string> instanceNames)
-        {
             var typeT = typeof(T).ThrowIfNotEnum();
 
             var meterCategoryAttribute = typeT.GetMeterCategoryAttribute()
@@ -36,12 +31,7 @@ namespace NDiagnostics.Metering
                 meterAttributes.Add(value, meterAttribute);
             }
 
-            if (meterCategoryAttribute.MeterCategoryType == MeterCategoryType.SingleInstance && instanceNames != null)
-            {
-                throw new NotSupportedException(string.Format("Enum '{0}' is of type 'SingleInstance' and must be created without an instance name.", typeT.ToName()), null);
-            }
-
-            return new MeterCategory<T>(meterCategoryAttribute, meterAttributes, instanceNames);
+            return new MeterCategory<T>(meterCategoryAttribute, meterAttributes);
         }
 
         public static void Install<T>()
@@ -134,7 +124,7 @@ namespace NDiagnostics.Metering
 
         #region Constructors and Destructors
 
-        internal MeterCategory(MeterCategoryAttribute meterCategoryAttribute, IDictionary<T, MeterAttribute> meterAttributes, IEnumerable<string> instanceNames)
+        internal MeterCategory(MeterCategoryAttribute meterCategoryAttribute, IDictionary<T, MeterAttribute> meterAttributes)
         {
             this.meters = new Dictionary<string, IDictionary<T, IMeter>>();
             this.CategoryName = meterCategoryAttribute.Name;
@@ -143,24 +133,8 @@ namespace NDiagnostics.Metering
 
             if(meterCategoryAttribute.MeterCategoryType == MeterCategoryType.SingleInstance)
             {
-                var instanceMeters = CreateInstanceMeters(meterCategoryAttribute.Name, meterCategoryAttribute.MeterCategoryType, meterAttributes, SingleInstance.DefaultInstanceName);
+                var instanceMeters = CreateMeters(meterCategoryAttribute.Name, meterCategoryAttribute.MeterCategoryType, meterAttributes, SingleInstance.DefaultInstanceName);
                 this.meters.Add(SingleInstance.DefaultInstanceName, instanceMeters);
-            }
-            else
-            {
-                if(instanceNames == null)
-                {
-                    var instanceMeters = CreateInstanceMeters(meterCategoryAttribute.Name, meterCategoryAttribute.MeterCategoryType, meterAttributes, MultiInstance.DefaultInstanceName);
-                    this.meters.Add(MultiInstance.DefaultInstanceName, instanceMeters);
-                }
-                else
-                {
-                    foreach(var instanceName in instanceNames)
-                    {
-                        var instanceMeters = CreateInstanceMeters(meterCategoryAttribute.Name, meterCategoryAttribute.MeterCategoryType, meterAttributes, instanceName);
-                        this.meters.Add(instanceName, instanceMeters);
-                    }
-                }
             }
         }
 
@@ -191,15 +165,30 @@ namespace NDiagnostics.Metering
             get { return this.GetMeter(meterName, instanceName); }
         }
 
-        public void CreateInstance(string instanceName)
+        public void CreateInstance(string instanceName, InstanceLifetime lifetime = InstanceLifetime.Global)
         {
             if (this.CategoryType == MeterCategoryType.SingleInstance)
             {
                 throw new InvalidOperationException(string.Format("Instances cannot be created on meter categories of type 'SingleInstance'."), null);
             }
 
-            var instanceMeters = CreateInstanceMeters(this.CategoryName, this.CategoryType, this.meterAttributes, instanceName, InstanceLifetime.Process);
+            var instanceMeters = CreateMeters(this.CategoryName, this.CategoryType, this.meterAttributes, instanceName, lifetime);
             this.meters.Add(instanceName, instanceMeters);
+        }
+
+        public void RemoveInstance(string instanceName)
+        {
+            var instances = this.meters[instanceName];
+            if(instances == null)
+            {
+                return;
+            }
+
+            this.meters.Remove(instanceName);
+            foreach(var instance in instances.Values)
+            {
+                instance.TryDispose();
+            }
         }
 
         #endregion
@@ -226,7 +215,7 @@ namespace NDiagnostics.Metering
             }
         }
 
-        private static IDictionary<T, IMeter> CreateInstanceMeters(string meterCategoryName, MeterCategoryType meterCategoryType, IEnumerable<KeyValuePair<T, MeterAttribute>> meterAttributes, string instanceName, InstanceLifetime instanceLifetime = InstanceLifetime.Global)
+        private static IDictionary<T, IMeter> CreateMeters(string meterCategoryName, MeterCategoryType meterCategoryType, IEnumerable<KeyValuePair<T, MeterAttribute>> meterAttributes, string instanceName, InstanceLifetime instanceLifetime = InstanceLifetime.Global)
         {
             var instanceMeters = new Dictionary<T, IMeter>();
 
