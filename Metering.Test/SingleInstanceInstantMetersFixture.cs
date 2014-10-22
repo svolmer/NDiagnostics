@@ -35,7 +35,7 @@ namespace NDiagnostics.Metering.Test
             using(var category = MeterCategory.Create<InstantSingleInstance>())
             {
                 category.Should().NotBeNull();
-                category.InstanceNames.ShouldBeEquivalentTo(new[] {SingleInstance.DefaultInstanceName});
+                category.InstanceNames.ShouldBeEquivalentTo(new[] {SingleInstance.DefaultName});
 
                 var instantCount = category[InstantSingleInstance.InstantCount32].As<IInstantValue>();
                 instantCount.Should().NotBeNull();

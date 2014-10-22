@@ -10,6 +10,8 @@
 
         InstanceLifetime InstanceLifetime { get; }
 
+        bool IsReadOnly { get; }
+
         long RawValue { get; set; }
 
         long Increment();

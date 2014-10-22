@@ -133,8 +133,8 @@ namespace NDiagnostics.Metering
 
             if(meterCategoryAttribute.MeterCategoryType == MeterCategoryType.SingleInstance)
             {
-                var instanceMeters = CreateMeters(meterCategoryAttribute.Name, meterCategoryAttribute.MeterCategoryType, meterAttributes, SingleInstance.DefaultInstanceName);
-                this.meters.Add(SingleInstance.DefaultInstanceName, instanceMeters);
+                var instanceMeters = CreateMeters(meterCategoryAttribute.Name, meterCategoryAttribute.MeterCategoryType, meterAttributes, SingleInstance.DefaultName, InstanceLifetime.Global);
+                this.meters.Add(SingleInstance.DefaultName, instanceMeters);
             }
         }
 
@@ -220,7 +220,7 @@ namespace NDiagnostics.Metering
             }
         }
 
-        private static IDictionary<T, IMeter> CreateMeters(string meterCategoryName, MeterCategoryType meterCategoryType, IEnumerable<KeyValuePair<T, MeterAttribute>> meterAttributes, string instanceName, InstanceLifetime instanceLifetime = InstanceLifetime.Global)
+        private static IDictionary<T, IMeter> CreateMeters(string meterCategoryName, MeterCategoryType meterCategoryType, IEnumerable<KeyValuePair<T, MeterAttribute>> meterAttributes, string instanceName, InstanceLifetime instanceLifetime)
         {
             var instanceMeters = new Dictionary<T, IMeter>();
 
@@ -229,68 +229,68 @@ namespace NDiagnostics.Metering
             {
                 var meterAttribute = enumerator.Current.Value;
 
-                var meter = CreateMeter(meterCategoryName, meterCategoryType, meterAttribute.Name, meterAttribute.MeterType, instanceName, instanceLifetime);
+                var meter = CreateMeter(meterCategoryName, meterCategoryType, meterAttribute.Name, meterAttribute.MeterType, instanceName, instanceLifetime, meterAttribute.IsReadOnly);
 
                 instanceMeters.Add(enumerator.Current.Key, meter);
             }
             return instanceMeters;
         }
 
-        private static IMeter CreateMeter(string meterCategoryName, MeterCategoryType meterCategoryType, string meterName, MeterType meterType, string instanceName, InstanceLifetime instanceLifetime)
+        private static IMeter CreateMeter(string meterCategoryName, MeterCategoryType meterCategoryType, string meterName, MeterType meterType, string instanceName, InstanceLifetime instanceLifetime, bool isReadOnly)
         {
             IMeter meter = null;
             switch(meterType)
             {
                     // Instant Meters
                 case MeterType.InstantValue:
-                    meter = new InstantValueMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
+                    meter = new InstantValueMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly);
                     break;
                 case MeterType.InstantPercentage:
-                    meter = new InstantPercentageMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
+                    meter = new InstantPercentageMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly);
                     break;
                     // Average Meters
                 case MeterType.AverageValue:
-                    meter = new AverageValueMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
+                    meter = new AverageValueMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly);
                     break;
                 case MeterType.AverageTime:
-                    meter = new AverageTimeMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
+                    meter = new AverageTimeMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly);
                     break;
                     // Difference Meters
                 case MeterType.DifferentialValue:
-                    meter = new DifferentialValueMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
+                    meter = new DifferentialValueMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly);
                     break;
                 case MeterType.InstantTime:
-                    meter = new InstantTimeMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
+                    meter = new InstantTimeMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly);
                     break;
                 case MeterType.SampleRate:
-                    meter = new SampleRateMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
+                    meter = new SampleRateMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly);
                     break;
                 case MeterType.SamplePercentage:
-                    meter = new SamplePercentageMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
+                    meter = new SamplePercentageMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly);
                     break;
                 case MeterType.Timer:
-                    meter = new TimerMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
+                    meter = new TimerMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly);
                     break;
                 case MeterType.TimerInverse:
-                    meter = new TimerInverseMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
+                    meter = new TimerInverseMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly);
                     break;
                 case MeterType.Timer100Ns:
-                    meter = new Timer100nsMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
+                    meter = new Timer100nsMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly);
                     break;
                 case MeterType.Timer100NsInverse:
-                    meter = new Timer100nsInverseMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
+                    meter = new Timer100nsInverseMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly);
                     break;
                 case MeterType.MultiTimer:
-                    meter = new MultiTimerMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
+                    meter = new MultiTimerMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly);
                     break;
                 case MeterType.MultiTimerInverse:
-                    meter = new MultiTimerInverseMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
+                    meter = new MultiTimerInverseMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly);
                     break;
                 case MeterType.MultiTimer100Ns:
-                    meter = new MultiTimer100NsMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
+                    meter = new MultiTimer100NsMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly);
                     break;
                 case MeterType.MultiTimer100NsInverse:
-                    meter = new MultiTimer100NsInverseMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime);
+                    meter = new MultiTimer100NsInverseMeter(meterCategoryName, meterCategoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly);
                     break;
             }
             return meter;
@@ -298,7 +298,7 @@ namespace NDiagnostics.Metering
 
         private IMeter GetMeter(T meterName, string instanceName = null)
         {
-            instanceName = instanceName ?? (this.CategoryType == MeterCategoryType.SingleInstance ? SingleInstance.DefaultInstanceName : MultiInstance.DefaultInstanceName);
+            instanceName = instanceName ?? (this.CategoryType == MeterCategoryType.SingleInstance ? SingleInstance.DefaultName : MultiInstance.DefaultName);
             if(this.meters.ContainsKey(instanceName) && this.meters[instanceName].ContainsKey(meterName))
             {
                 return this.meters[instanceName][meterName];

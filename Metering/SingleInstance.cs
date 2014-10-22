@@ -2,6 +2,6 @@
 {
     public static class SingleInstance
     {
-        public static readonly string DefaultInstanceName = string.Empty;
+        public static readonly string DefaultName = string.Empty;
     }
 }

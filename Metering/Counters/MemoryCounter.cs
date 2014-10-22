@@ -10,6 +10,7 @@
             this.CounterName = counterName;
             this.InstanceName = instanceName;
             this.InstanceLifetime = instanceLifetime;
+            this.IsReadOnly = false;
         }
 
         #endregion
@@ -23,6 +24,8 @@
         public string InstanceName { get; private set; }
 
         public InstanceLifetime InstanceLifetime { get; private set; }
+
+        public bool IsReadOnly { get; private set; }
 
         public abstract long RawValue { get; set; }
 

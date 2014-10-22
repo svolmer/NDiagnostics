@@ -103,7 +103,7 @@ var systemCategory = MeterCategory.Create<SystemMeterCategory>();
 or
 ~~~c#
 var processCategory = MeterCategory.Create<ProcessMeterCategory>();
-processCategory.CreateInstance(MultiInstance.DefaultInstanceName);
+processCategory.CreateInstance(MultiInstance.DefaultName);
 processCategory.CreateInstance(processName, InstanceLifetime.Process);
 ~~~
 
@@ -114,7 +114,7 @@ var systemUpTime = systemCategory[SystemMeterCategory.SystemUpTime].As<IInstantT
 ~~~
 or
 ~~~c#
-var threadCountGlobal = processCategory[ProcessMeterCategory.ThreadCount, MultiInstance.DefaultInstanceName].As<IInstantValue>();
+var threadCountGlobal = processCategory[ProcessMeterCategory.ThreadCount, MultiInstance.DefaultName].As<IInstantValue>();
 var threadCountInstance = processCategory[ProcessMeterCategory.ThreadCount, processName].As<IInstantValue>();
 ~~~
 

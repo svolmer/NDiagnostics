@@ -9,6 +9,21 @@ namespace NDiagnostics.Metering.Attributes
         #region Constructors and Destructors
 
         public MeterAttribute(string name, string description, MeterType meterType)
+            : this(name, description, meterType, MeterDataType.Int64, false)
+        {
+        }
+
+        public MeterAttribute(string name, string description, MeterType meterType, bool isReadOnly)
+            : this(name, description, meterType, MeterDataType.Int64, isReadOnly)
+        {
+        }
+
+        public MeterAttribute(string name, string description, MeterType meterType, MeterDataType dataType)
+            : this(name, description, meterType, dataType, false)
+        {
+        }
+
+        public MeterAttribute(string name, string description, MeterType meterType, MeterDataType dataType, bool isReadOnly)
         {
             name.ThrowIfNullOrWhiteSpace("name");
             description.ThrowIfNullOrWhiteSpace("description");
@@ -16,13 +31,8 @@ namespace NDiagnostics.Metering.Attributes
             this.Name = name;
             this.Description = description;
             this.MeterType = meterType;
-            this.DataType = MeterDataType.Int64;
-        }
-
-        public MeterAttribute(string name, string description, MeterType meterType, MeterDataType dataType)
-            : this(name, description, meterType)
-        {
             this.DataType = dataType;
+            this.IsReadOnly = isReadOnly;
         }
 
         #endregion
@@ -36,6 +46,8 @@ namespace NDiagnostics.Metering.Attributes
         public MeterType MeterType { get; private set; }
 
         public MeterDataType DataType { get; private set; }
+
+        public bool IsReadOnly { get; private set; }
 
         #endregion
     }

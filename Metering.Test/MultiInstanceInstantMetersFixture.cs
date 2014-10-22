@@ -36,7 +36,7 @@ namespace NDiagnostics.Metering.Test
             using (var category = MeterCategory.Create<InstantMultiInstance>())
             {
                 category.Should().NotBeNull();
-                category.CreateInstance(MultiInstance.DefaultInstanceName);
+                category.CreateInstance(MultiInstance.DefaultName);
                 category.CreateInstance("0");
                 category.CreateInstance("1");
 
@@ -102,7 +102,7 @@ namespace NDiagnostics.Metering.Test
             using (var category = MeterCategory.Create<InstantMultiInstance>())
             {
                 category.Should().NotBeNull();
-                category.CreateInstance(MultiInstance.DefaultInstanceName);
+                category.CreateInstance(MultiInstance.DefaultName);
                 category.CreateInstance("0");
                 category.CreateInstance("1");
 
@@ -168,7 +168,7 @@ namespace NDiagnostics.Metering.Test
             using (var category = MeterCategory.Create<InstantMultiInstance>())
             {
                 category.Should().NotBeNull();
-                category.CreateInstance(MultiInstance.DefaultInstanceName);
+                category.CreateInstance(MultiInstance.DefaultName);
                 category.CreateInstance("0");
                 category.CreateInstance("1");
 
@@ -247,7 +247,7 @@ namespace NDiagnostics.Metering.Test
             using (var category = MeterCategory.Create<InstantMultiInstance>())
             {
                 category.Should().NotBeNull();
-                category.CreateInstance(MultiInstance.DefaultInstanceName);
+                category.CreateInstance(MultiInstance.DefaultName);
                 category.CreateInstance("0");
                 category.CreateInstance("1");
 

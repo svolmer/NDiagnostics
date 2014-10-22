@@ -4,12 +4,13 @@
     {
         #region Constructors and Destructors
 
-        protected SystemCounter(string categoryName, string counterName, string instanceName, InstanceLifetime instanceLifetime)
+        protected SystemCounter(string categoryName, string counterName, string instanceName, InstanceLifetime instanceLifetime, bool isReadOnly)
         {
             this.CategoryName = categoryName;
             this.CounterName = counterName;
             this.InstanceName = instanceName;
             this.InstanceLifetime = instanceLifetime;
+            this.IsReadOnly = isReadOnly;
         }
 
         #endregion
@@ -23,6 +24,8 @@
         public string InstanceName { get; private set; }
 
         public InstanceLifetime InstanceLifetime { get; private set; }
+
+        public bool IsReadOnly { get; private set; }
 
         public abstract long RawValue { get; set; }
 

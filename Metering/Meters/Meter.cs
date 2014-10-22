@@ -9,13 +9,13 @@ namespace NDiagnostics.Metering.Meters
     {
         #region Constructors and Destructors
 
-        protected Meter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName, InstanceLifetime instanceLifetime, bool createBase)
+        protected Meter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName, InstanceLifetime instanceLifetime, bool isReadOnly, bool createBase)
         {
             categoryName.ThrowIfNullOrEmpty("categoryName");
             meterName.ThrowIfNullOrEmpty("meterName");
             instanceName.ThrowIfNull("instanceName").ThrowIfExceedsMaxSize("instanceName", 127);
 
-            if (categoryType == MeterCategoryType.SingleInstance && instanceName != SingleInstance.DefaultInstanceName)
+            if (categoryType == MeterCategoryType.SingleInstance && instanceName != SingleInstance.DefaultName)
             {
                 throw new ArgumentException("The meter categories is single-instance and requires the meter to be created without an instance name.");
             }
@@ -34,9 +34,10 @@ namespace NDiagnostics.Metering.Meters
             this.MeterType = meterType;
             this.InstanceName = instanceName;
             this.InstanceLifetime = instanceLifetime;
+            this.IsReadOnly = isReadOnly;
 
-            this.BaseCounter = createBase ? Counters.BaseCounter.Create(categoryName, meterName, instanceName, instanceLifetime) : null;
-            this.ValueCounter = Counters.ValueCounter.Create(categoryName, meterName, instanceName, instanceLifetime, this.BaseCounter);
+            this.BaseCounter = createBase ? Counters.BaseCounter.Create(categoryName, meterName, instanceName, instanceLifetime, isReadOnly) : null;
+            this.ValueCounter = Counters.ValueCounter.Create(categoryName, meterName, instanceName, instanceLifetime, isReadOnly, this.BaseCounter);
         }
 
         #endregion
@@ -62,6 +63,8 @@ namespace NDiagnostics.Metering.Meters
         public string InstanceName { get; private set; }
 
         public InstanceLifetime InstanceLifetime { get; private set; }
+
+        public bool IsReadOnly { get; private set; }
 
         public abstract Sample Current { get; }
 

@@ -8,10 +8,9 @@ namespace NDiagnostics.Metering.Meters
     {
         #region Constructors and Destructors
 
-        public MultiTimer100NsInverseMeter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName, InstanceLifetime instanceLifetime)
-            : base(categoryName, categoryType, meterName, meterType, instanceName, instanceLifetime, true)
+        public MultiTimer100NsInverseMeter(string categoryName, MeterCategoryType categoryType, string meterName, MeterType meterType, string instanceName, InstanceLifetime instanceLifetime, bool isReadOnly)
+            : base(categoryName, categoryType, meterName, meterType, instanceName, instanceLifetime, isReadOnly, true)
         {
-            this.Reset();
         }
 
         #endregion

@@ -49,10 +49,13 @@
     <Compile Include="..\AssemblyInfo.global.cs">
       <Link>Properties\AssemblyInfo.global.cs</Link>
     </Compile>
+    <Compile Include="Counters\CounterExtensions.cs" />
     <Compile Include="Counters\IBaseCounter.cs" />
     <Compile Include="Counters\ICounter.cs" />
     <Compile Include="Counters\IValueCounter.cs" />
     <Compile Include="Counters\MemoryCounter.cs" />
+    <Compile Include="Counters\ReadOnlyBaseCounter.cs" />
+    <Compile Include="Counters\ReadOnlyValueCounter.cs" />
     <Compile Include="DisposableObject.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Extensions\MeteringExtensions.cs" />

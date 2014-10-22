@@ -13,10 +13,10 @@ namespace NDiagnostics.Metering.Counters
 
         #region Constructors and Destructors
 
-        internal SystemBaseCounter(string categoryName, string counterName, string instanceName, InstanceLifetime instanceLifetime)
-            : base(categoryName, counterName, instanceName, instanceLifetime)
+        internal SystemBaseCounter(string categoryName, string counterName, string instanceName, InstanceLifetime instanceLifetime, bool isReadOnly)
+            : base(categoryName, counterName, instanceName, instanceLifetime, isReadOnly)
         {
-            this.performanceCounter = new PerformanceCounter(categoryName, counterName, instanceName, false);
+            this.performanceCounter = new PerformanceCounter(categoryName, counterName, instanceName, isReadOnly);
         }
 
         #endregion

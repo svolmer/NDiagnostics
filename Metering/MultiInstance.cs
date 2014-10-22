@@ -2,6 +2,6 @@
 {
     public static class MultiInstance
     {
-        public static readonly string DefaultInstanceName = "_Total";
+        public static readonly string DefaultName = "_Total";
     }
 }

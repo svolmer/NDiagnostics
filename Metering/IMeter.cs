@@ -16,6 +16,8 @@ namespace NDiagnostics.Metering
 
         InstanceLifetime InstanceLifetime { get; }
 
+        bool IsReadOnly { get; }
+
         Sample Current { get; }
 
         void Reset();

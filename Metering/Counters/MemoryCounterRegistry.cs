@@ -33,7 +33,7 @@ namespace NDiagnostics.Metering.Counters
 
         #region Public Methods
 
-        public T Get<T>(string categoryName, string counterName, string instanceName, InstanceLifetime instanceLifetime, IBaseCounter baseCounter = null) 
+        public T Get<T>(string categoryName, string counterName, string instanceName, InstanceLifetime instanceLifetime, bool isReadOnly, IBaseCounter baseCounter = null)
             where T : class, ICounter
         {
             if(!counters.ContainsKey(categoryName))
@@ -55,7 +55,13 @@ namespace NDiagnostics.Metering.Counters
                     counters[categoryName][instanceName].Add(counterName, new MemoryValueCounter(categoryName, counterName, instanceName, instanceLifetime, baseCounter));
                 }
             }
-            return counters[categoryName][instanceName][counterName] as T;
+
+            var counter = counters[categoryName][instanceName][counterName];
+            if(isReadOnly)
+            {
+                counter = counter.ReadOnly();
+            }
+            return counter as T;
         }
 
         public void Remove(string categoryName, string counterName, string instanceName)

@@ -7,19 +7,20 @@ namespace NDiagnostics.Metering.Counters
     {
         #region Methods
 
-        internal static IValueCounter Create(string categoryName, string counterName, string instanceName, InstanceLifetime instanceLifetime, IBaseCounter baseCounter = null)
+        internal static IValueCounter Create(string categoryName, string counterName, string instanceName, InstanceLifetime instanceLifetime, bool isReadOnly, IBaseCounter baseCounter = null)
         {
             try
             {
                 if(PerformanceCounterCategory.Exists(categoryName) && PerformanceCounterCategory.CounterExists(counterName, categoryName))
                 {
-                    return new SystemValueCounter(categoryName, counterName, instanceName, instanceLifetime, baseCounter);
+                    return new SystemValueCounter(categoryName, counterName, instanceName, instanceLifetime, isReadOnly, baseCounter);
                 }
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                Trace.WriteLine(ex.Message);
             }
-            return MemoryCounterRegistry.Instance.Get<MemoryValueCounter>(categoryName, counterName, instanceName, instanceLifetime, baseCounter);
+            return MemoryCounterRegistry.Instance.Get<MemoryValueCounter>(categoryName, counterName, instanceName, instanceLifetime, isReadOnly, baseCounter);
         }
 
         #endregion
