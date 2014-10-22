@@ -178,6 +178,11 @@ namespace NDiagnostics.Metering
 
         public void RemoveInstance(string instanceName)
         {
+            if (this.CategoryType == MeterCategoryType.SingleInstance)
+            {
+                throw new InvalidOperationException(string.Format("Instances cannot be removed on meter categories of type 'SingleInstance'."), null);
+            }
+
             var instances = this.meters[instanceName];
             if(instances == null)
             {
