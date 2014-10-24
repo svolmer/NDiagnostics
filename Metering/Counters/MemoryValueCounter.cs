@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using NDiagnostics.Metering.Types;
 
 namespace NDiagnostics.Metering.Counters
@@ -58,7 +59,8 @@ namespace NDiagnostics.Metering.Counters
                 var rawValue = this.RawValue;
                 var baseValue = (this.BaseCounter != null) ? this.BaseCounter.RawValue : 0L;
                 var timeStamp = TimeStamp.Now;
-                return new RawSample(rawValue, baseValue, timeStamp);
+                var timeStamp100Ns = TimeStamp100Ns.Now;
+                return new RawSample(rawValue, baseValue, timeStamp, timeStamp100Ns);
             }
         }
 

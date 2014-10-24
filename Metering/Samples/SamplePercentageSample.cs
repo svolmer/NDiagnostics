@@ -6,8 +6,8 @@ namespace NDiagnostics.Metering.Samples
     {
         #region Constructors and Destructors
 
-        internal SamplePercentageSample(long numerator, long denominator, TimeStamp timeStamp)
-            : base(timeStamp)
+        internal SamplePercentageSample(long numerator, long denominator, TimeStamp timeStamp, TimeStamp100Ns timeStamp100Ns)
+            : base(timeStamp, timeStamp100Ns)
         {
             this.Numerator = numerator;
             this.Denominator = denominator;

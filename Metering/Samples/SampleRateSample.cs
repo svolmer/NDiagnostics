@@ -6,8 +6,8 @@ namespace NDiagnostics.Metering.Samples
     {
         #region Constructors and Destructors
 
-        internal SampleRateSample(long count, TimeStamp timeStamp)
-            : base(timeStamp)
+        internal SampleRateSample(long count, TimeStamp timeStamp, TimeStamp100Ns timeStamp100Ns)
+            : base(timeStamp, timeStamp100Ns)
         {
             this.Count = count;
         }

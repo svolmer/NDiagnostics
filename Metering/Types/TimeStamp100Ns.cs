@@ -15,10 +15,10 @@ namespace NDiagnostics.Metering.Types
             this.Ticks = ticks;
         }
 
-        internal TimeStamp100Ns(float seconds)
+        internal TimeStamp100Ns(DateTime dateTime)
             : this()
         {
-            this.Ticks = (seconds * 10000000).Round();
+            this.Ticks = dateTime.ToFileTime();
         }
 
         #endregion
@@ -27,15 +27,10 @@ namespace NDiagnostics.Metering.Types
 
         public static TimeStamp100Ns Now
         {
-            get { return new TimeStamp100Ns(DateTime.Now.Ticks); }
+            get { return new TimeStamp100Ns(DateTime.Now); }
         }
 
         internal long Ticks { [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")] get; private set; }
-
-        private float Seconds
-        {
-            get { return (float) this.Ticks / 10000000; }
-        }
 
         #endregion
 
@@ -71,29 +66,29 @@ namespace NDiagnostics.Metering.Types
             return left.Ticks <= right.Ticks;
         }
 
-        public static Time operator -(TimeStamp100Ns left, TimeStamp100Ns right)
+        public static Time100Ns operator -(TimeStamp100Ns left, TimeStamp100Ns right)
         {
-            return new Time(left.Subtract(right.Ticks));
+            return new Time100Ns(left.Subtract(right.Ticks));
         }
 
-        public static TimeStamp100Ns operator -(TimeStamp100Ns left, Time right)
+        public static TimeStamp100Ns operator -(TimeStamp100Ns left, Time100Ns right)
         {
             return new TimeStamp100Ns(left.Subtract(right.Ticks));
         }
 
-        public static TimeStamp100Ns operator +(TimeStamp100Ns left, Time right)
+        public static TimeStamp100Ns operator +(TimeStamp100Ns left, Time100Ns right)
         {
             return new TimeStamp100Ns(left.Add(right.Ticks));
-        }
-
-        public static implicit operator TimeStamp(TimeStamp100Ns timeStamp)
-        {
-            return new TimeStamp(timeStamp.Seconds);
         }
 
         #endregion
 
         #region Public Methods
+
+        public static TimeStamp100Ns FromDateTime(DateTime dateTime)
+        {
+            return new TimeStamp100Ns(dateTime);
+        }
 
         public static bool Equals(TimeStamp100Ns left, TimeStamp100Ns right)
         {

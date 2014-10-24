@@ -81,6 +81,7 @@
     <Compile Include="SingleInstanceInstantMetersFixture.cs" />
     <Compile Include="SampleMetersFixture.cs" />
     <Compile Include="SystemMetersFixture.cs" />
+    <Compile Include="TypesFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Metering\Metering.csproj">

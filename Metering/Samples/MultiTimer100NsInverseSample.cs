@@ -6,8 +6,8 @@ namespace NDiagnostics.Metering.Samples
     {
         #region Constructors and Destructors
 
-        internal MultiTimer100NsInverseSample(Time100Ns elapsedTimeOfInactivity, long count, TimeStamp100Ns timeStamp100Ns)
-            : base(timeStamp100Ns)
+        internal MultiTimer100NsInverseSample(Time100Ns elapsedTimeOfInactivity, long count, TimeStamp timeStamp, TimeStamp100Ns timeStamp100Ns)
+            : base(timeStamp, timeStamp100Ns)
         {
             this.ElapsedTimeOfInactivity = elapsedTimeOfInactivity;
             this.Count = count;

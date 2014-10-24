@@ -261,11 +261,11 @@ namespace NDiagnostics.Metering.Test
                 instantTimeOne.Should().NotBeNull();
                 instantTimeOne.Reset();
 
-                instantTimeTotal.Set(TimeStamp.Now);
+                instantTimeTotal.Start();
                 Thread.Sleep(TimeSpan.FromSeconds(1.0));
-                instantTimeZero.Set(TimeStamp.Now);
+                instantTimeZero.Start();
                 Thread.Sleep(TimeSpan.FromSeconds(1.0));
-                instantTimeOne.Set(TimeStamp.Now);
+                instantTimeOne.Start();
 
                 instantTimeTotal.Current.Value().Should().BeGreaterThan(1.9F);
                 instantTimeZero.Current.Value().Should().BeGreaterThan(0.9F);

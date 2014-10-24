@@ -1,4 +1,5 @@
-﻿using NDiagnostics.Metering.Extensions;
+﻿using System;
+using NDiagnostics.Metering.Extensions;
 using NDiagnostics.Metering.Samples;
 using NDiagnostics.Metering.Types;
 
@@ -22,10 +23,16 @@ namespace NDiagnostics.Metering.Meters
             get { return this.GetCurrentSample(); }
         }
 
-        public void Set(TimeStamp start)
+        public void Start()
         {
             this.ThrowIfDisposed();
-            this.ValueCounter.RawValue = start.Ticks;
+            this.ValueCounter.RawValue = TimeStamp100Ns.Now.Ticks;
+        }
+
+        public void Start(DateTime timeStamp)
+        {
+            this.ThrowIfDisposed();
+            this.ValueCounter.RawValue = TimeStamp100Ns.FromDateTime(timeStamp).Ticks;
         }
 
         #endregion
@@ -40,7 +47,7 @@ namespace NDiagnostics.Metering.Meters
         public override void Reset()
         {
             this.ThrowIfDisposed();
-            this.ValueCounter.RawValue = TimeStamp.Now.Ticks;
+            this.ValueCounter.RawValue = TimeStamp100Ns.Now.Ticks;
         }
 
         #endregion
@@ -50,7 +57,7 @@ namespace NDiagnostics.Metering.Meters
         private InstantTimeSample GetCurrentSample()
         {
             var sample = this.ValueCounter.RawSample;
-            return new InstantTimeSample(new TimeStamp(sample.Value), sample.TimeStamp);
+            return new InstantTimeSample(new TimeStamp100Ns(sample.Value), sample.TimeStamp, sample.TimeStamp100Ns);
         }
 
         #endregion

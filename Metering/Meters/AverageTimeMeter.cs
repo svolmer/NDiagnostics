@@ -52,7 +52,7 @@ namespace NDiagnostics.Metering.Meters
         private AverageTimeSample GetCurrentSample()
         {
             var sample = this.ValueCounter.RawSample;
-            return new AverageTimeSample(new Time(sample.Value), sample.BaseValue, sample.TimeStamp);
+            return new AverageTimeSample(new Time(sample.Value), sample.BaseValue, sample.TimeStamp, sample.TimeStamp100Ns);
         }
 
         #endregion

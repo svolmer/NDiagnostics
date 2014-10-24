@@ -57,7 +57,7 @@ namespace NDiagnostics.Metering.Meters
         private SamplePercentageSample GetCurrentSample()
         {
             var sample = this.ValueCounter.RawSample;
-            return new SamplePercentageSample(sample.Value, sample.BaseValue, sample.TimeStamp);
+            return new SamplePercentageSample(sample.Value, sample.BaseValue, sample.TimeStamp, sample.TimeStamp100Ns);
         }
 
         #endregion

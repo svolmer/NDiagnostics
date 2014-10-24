@@ -139,7 +139,7 @@ namespace NDiagnostics.Metering.Test
                 instantTime.Should().NotBeNull();
                 instantTime.Reset();
 
-                instantTime.Set(TimeStamp.Now);
+                instantTime.Start();
                 instantTime.Current.Value().Should().BeLessThan(0.1F);
 
                 Thread.Sleep(new TimeSpan(0, 0, 0, 1)); // 1 second

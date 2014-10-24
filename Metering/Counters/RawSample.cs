@@ -6,15 +6,6 @@ namespace NDiagnostics.Metering.Counters
     {
         #region Constructors and Destructors
 
-        internal RawSample(long value, long baseValue, TimeStamp timeStamp)
-            : this()
-        {
-            this.Value = value;
-            this.BaseValue = baseValue;
-            this.TimeStamp = timeStamp;
-            this.TimeStamp100Ns = timeStamp;
-        }
-
         internal RawSample(long value, long baseValue, TimeStamp timeStamp, TimeStamp100Ns timeStamp100Ns)
             : this()
         {
@@ -28,13 +19,13 @@ namespace NDiagnostics.Metering.Counters
 
         #region Properties
 
-        public long Value { get; private set; }
+        internal long Value { get; private set; }
 
-        public long BaseValue { get; private set; }
+        internal long BaseValue { get; private set; }
 
-        public TimeStamp TimeStamp { get; private set; }
+        internal TimeStamp TimeStamp { get; private set; }
 
-        public TimeStamp100Ns TimeStamp100Ns { get; private set; }
+        internal TimeStamp100Ns TimeStamp100Ns { get; private set; }
 
         #endregion
     }

@@ -104,7 +104,7 @@ namespace NDiagnostics.Metering.Meters
         private InstantPercentageSample GetCurrentSample()
         {
             var sample = this.ValueCounter.RawSample;
-            return new InstantPercentageSample(sample.Value, sample.BaseValue, sample.TimeStamp);
+            return new InstantPercentageSample(sample.Value, sample.BaseValue, sample.TimeStamp, sample.TimeStamp100Ns);
         }
 
         #endregion

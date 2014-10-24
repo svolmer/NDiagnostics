@@ -7,15 +7,9 @@ namespace NDiagnostics.Metering.Samples
     {
         #region Constructors and Destructors
 
-        protected Sample(TimeStamp timeStamp)
+        protected Sample(TimeStamp timeStamp, TimeStamp100Ns timeStamp100Ns)
         {
             this.TimeStamp = timeStamp;
-            this.TimeStamp100Ns = timeStamp;
-        }
-
-        protected Sample(TimeStamp100Ns timeStamp100Ns)
-        {
-            this.TimeStamp = timeStamp100Ns;
             this.TimeStamp100Ns = timeStamp100Ns;
         }
 
@@ -42,7 +36,7 @@ namespace NDiagnostics.Metering.Samples
         public static float ComputeValue(InstantTimeSample sample)
         {
             sample.ThrowIfNull("sample");
-            return (sample.TimeStamp - sample.StartTime).Seconds;
+            return (float)(sample.TimeStamp100Ns - sample.StartTime).Seconds;
         }
 
         public static float ComputeValue(InstantPercentageSample sample)
@@ -78,11 +72,11 @@ namespace NDiagnostics.Metering.Samples
             sample1.ThrowIfNull("sample1");
             if(sample0.TimeStamp > sample1.TimeStamp && sample0.Count != sample1.Count)
             {
-                return (sample0.ElapsedTime - sample1.ElapsedTime).Seconds / (sample0.Count - sample1.Count);
+                return (float)(sample0.ElapsedTime - sample1.ElapsedTime).Seconds / (sample0.Count - sample1.Count);
             }
             if(sample1.TimeStamp > sample0.TimeStamp && sample1.Count != sample0.Count)
             {
-                return (sample1.ElapsedTime - sample0.ElapsedTime).Seconds / (sample1.Count - sample0.Count);
+                return (float)(sample1.ElapsedTime - sample0.ElapsedTime).Seconds / (sample1.Count - sample0.Count);
             }
             return 0.0F;
         }
@@ -93,11 +87,11 @@ namespace NDiagnostics.Metering.Samples
             sample1.ThrowIfNull("sample1");
             if(sample0.TimeStamp > sample1.TimeStamp)
             {
-                return (sample0.Count - sample1.Count) / (sample0.TimeStamp - sample1.TimeStamp).Seconds;
+                return (sample0.Count - sample1.Count) / (float)(sample0.TimeStamp - sample1.TimeStamp).Seconds;
             }
             if(sample1.TimeStamp > sample0.TimeStamp)
             {
-                return (sample1.Count - sample0.Count) / (sample1.TimeStamp - sample0.TimeStamp).Seconds;
+                return (sample1.Count - sample0.Count) / (float)(sample1.TimeStamp - sample0.TimeStamp).Seconds;
             }
             return 0.0F;
         }

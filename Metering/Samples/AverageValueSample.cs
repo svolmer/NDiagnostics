@@ -6,8 +6,8 @@ namespace NDiagnostics.Metering.Samples
     {
         #region Constructors and Destructors
 
-        internal AverageValueSample(long value, long count, TimeStamp timeStamp)
-            : base(timeStamp)
+        internal AverageValueSample(long value, long count, TimeStamp timeStamp, TimeStamp100Ns timeStamp100Ns)
+            : base(timeStamp, timeStamp100Ns)
         {
             this.Value = value;
             this.Count = count;

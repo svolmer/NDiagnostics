@@ -73,7 +73,7 @@ namespace NDiagnostics.Metering.Meters
         private InstantValueSample GetCurrentSample()
         {
             var sample = this.ValueCounter.RawSample;
-            return new InstantValueSample(sample.Value, sample.TimeStamp);
+            return new InstantValueSample(sample.Value, sample.TimeStamp, sample.TimeStamp100Ns);
         }
 
         #endregion

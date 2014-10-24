@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NDiagnostics.Metering.Attributes;
@@ -34,20 +30,20 @@ namespace NDiagnostics.Metering.Test
         [TestMethod]
         public void CanReadValuesFromSystemCategory()
         {
-            using (var category = MeterCategory.Create<SystemCategory>())
+            using(var category = MeterCategory.Create<SystemCategory>())
             {
                 category.Should().NotBeNull();
 
-                var processes = category[SystemCategory.Processes].As<IInstantValue>();
                 var systemUpTime = category[SystemCategory.SystemUpTime].As<IInstantTime>();
+                var processes = category[SystemCategory.Processes].As<IInstantValue>();
                 var contextSwitches = category[SystemCategory.ContextSwitches].As<ISampleRate>();
 
-                processes.Should().NotBeNull();
                 systemUpTime.Should().NotBeNull();
+                processes.Should().NotBeNull();
                 contextSwitches.Should().NotBeNull();
 
-                var currentProcesses = processes.Current.Value();
                 var currentSystemUpTime = systemUpTime.Current.Value();
+                var currentProcesses = processes.Current.Value();
 
                 var sample0 = contextSwitches.Current;
                 Thread.Sleep(TimeSpan.FromSeconds(1));
@@ -57,9 +53,30 @@ namespace NDiagnostics.Metering.Test
                 Trace.WriteLine("System Up Time : " + currentSystemUpTime);
                 Trace.WriteLine("Processes : " + currentProcesses);
                 Trace.WriteLine("Context Switches/sec : " + currentContextSwitches);
-
             }
         }
+
+        [TestMethod]
+        public void CanReadValuesFromPhysicalDiskCategory()
+        {
+            using (var category = MeterCategory.Create<PhysicalDiskCategory>())
+            {
+                category.Should().NotBeNull();
+                category.CreateInstance(MultiInstance.DefaultName);
+
+                var averageTransferTime = category[PhysicalDiskCategory.AverageTransferTime, MultiInstance.DefaultName].As<IAverageTime>();
+
+                averageTransferTime.Should().NotBeNull();
+
+                var sample0 = averageTransferTime.Current;
+                Thread.Sleep(TimeSpan.FromSeconds(5));
+                var sample1 = averageTransferTime.Current;
+                var value = Sample.ComputeValue(sample0, sample1);
+
+                Trace.WriteLine("Avg. Disk sec/Transfer : " + value);
+            }
+        }
+
 
         #endregion
 
@@ -74,6 +91,13 @@ namespace NDiagnostics.Metering.Test
 
             [Meter("Context Switches/sec", "Context Switches/sec Description", MeterType.SampleRate, MeterDataType.Int32, true)]
             ContextSwitches
+        }
+
+        [MeterCategory("PhysicalDisk", "PhysicalDisk Description", MeterCategoryType.MultiInstance)]
+        public enum PhysicalDiskCategory
+        {
+            [Meter("Avg. Disk sec/Transfer", "Avg. Disk sec/Transfer Description", MeterType.AverageTime, true)]
+            AverageTransferTime
         }
     }
 }

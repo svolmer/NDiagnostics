@@ -16,12 +16,6 @@ namespace NDiagnostics.Metering.Types
             this.Ticks = ticks;
         }
 
-        internal TimeStamp(float seconds)
-            : this()
-        {
-            this.Ticks = (seconds * Stopwatch.Frequency).Round();
-        }
-
         #endregion
 
         #region Properties
@@ -32,11 +26,6 @@ namespace NDiagnostics.Metering.Types
         }
 
         internal long Ticks { [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")] get; private set; }
-
-        private float Seconds
-        {
-            get { return (float) this.Ticks / Stopwatch.Frequency; }
-        }
 
         #endregion
 
@@ -85,11 +74,6 @@ namespace NDiagnostics.Metering.Types
         public static TimeStamp operator +(TimeStamp left, Time right)
         {
             return new TimeStamp(left.Add(right.Ticks));
-        }
-
-        public static implicit operator TimeStamp100Ns(TimeStamp timeStamp)
-        {
-            return new TimeStamp100Ns(timeStamp.Seconds);
         }
 
         #endregion

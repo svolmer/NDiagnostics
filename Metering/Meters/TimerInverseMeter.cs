@@ -50,7 +50,7 @@ namespace NDiagnostics.Metering.Meters
         private TimerInverseSample GetCurrentSample()
         {
             var sample = this.ValueCounter.RawSample;
-            return new TimerInverseSample(new Time(sample.Value), sample.TimeStamp);
+            return new TimerInverseSample(new Time(sample.Value), sample.TimeStamp, sample.TimeStamp100Ns);
         }
 
         #endregion

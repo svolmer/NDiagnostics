@@ -6,8 +6,8 @@ namespace NDiagnostics.Metering.Samples
     {
         #region Constructors and Destructors
 
-        internal InstantTimeSample(TimeStamp startTime, TimeStamp timeStamp)
-            : base(timeStamp)
+        internal InstantTimeSample(TimeStamp100Ns startTime, TimeStamp timeStamp, TimeStamp100Ns timeStamp100Ns)
+            : base(timeStamp, timeStamp100Ns)
         {
             this.StartTime = startTime;
         }
@@ -16,7 +16,7 @@ namespace NDiagnostics.Metering.Samples
 
         #region Properties
 
-        public TimeStamp StartTime { get; private set; }
+        public TimeStamp100Ns StartTime { get; private set; }
 
         #endregion
     }

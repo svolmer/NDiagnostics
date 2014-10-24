@@ -50,7 +50,7 @@ namespace NDiagnostics.Metering.Meters
         private TimerSample GetCurrentSample()
         {
             var sample = this.ValueCounter.RawSample;
-            return new TimerSample(new Time(sample.Value), sample.TimeStamp);
+            return new TimerSample(new Time(sample.Value), sample.TimeStamp, sample.TimeStamp100Ns);
         }
 
         #endregion

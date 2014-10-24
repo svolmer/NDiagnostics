@@ -73,7 +73,7 @@ namespace NDiagnostics.Metering.Meters
         private DifferentialValueSample GetCurrentSample()
         {
             var sample = this.ValueCounter.RawSample;
-            return new DifferentialValueSample(sample.Value, sample.TimeStamp);
+            return new DifferentialValueSample(sample.Value, sample.TimeStamp, sample.TimeStamp100Ns);
         }
 
         #endregion

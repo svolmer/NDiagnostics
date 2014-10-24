@@ -52,7 +52,7 @@ namespace NDiagnostics.Metering.Meters
         private MultiTimer100NsInverseSample GetCurrentSample()
         {
             var sample = this.ValueCounter.RawSample;
-            return new MultiTimer100NsInverseSample(new Time(sample.Value), sample.BaseValue, sample.TimeStamp);
+            return new MultiTimer100NsInverseSample(new Time100Ns(sample.Value), sample.BaseValue, sample.TimeStamp, sample.TimeStamp100Ns);
         }
 
         #endregion

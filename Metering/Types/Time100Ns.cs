@@ -15,10 +15,10 @@ namespace NDiagnostics.Metering.Types
             this.Ticks = ticks;
         }
 
-        internal Time100Ns(float seconds)
+        internal Time100Ns(double seconds)
             : this()
         {
-            this.Ticks = (seconds * 10000000).Round();
+            this.Ticks = (seconds * 10000000.0).Round();
         }
 
         #endregion
@@ -27,9 +27,9 @@ namespace NDiagnostics.Metering.Types
 
         internal long Ticks { [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")] get; private set; }
 
-        internal float Seconds
+        internal double Seconds
         {
-            get { return (float) this.Ticks / 10000000; }
+            get { return this.Ticks / 10000000.0; }
         }
 
         #endregion
@@ -91,16 +91,11 @@ namespace NDiagnostics.Metering.Types
             return new Time100Ns(left.Subtract(right.Ticks));
         }
 
-        public static implicit operator Time(Time100Ns time)
-        {
-            return new Time(time.Seconds);
-        }
-
         #endregion
 
         #region Public Methods
 
-        public static Time100Ns FromSeconds(float seconds)
+        public static Time100Ns FromSeconds(double seconds)
         {
             return new Time100Ns(seconds);
         }

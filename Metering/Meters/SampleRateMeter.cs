@@ -49,7 +49,7 @@ namespace NDiagnostics.Metering.Meters
         private SampleRateSample GetCurrentSample()
         {
             var sample = this.ValueCounter.RawSample;
-            return new SampleRateSample(sample.Value, sample.TimeStamp);
+            return new SampleRateSample(sample.Value, sample.TimeStamp, sample.TimeStamp100Ns);
         }
 
         #endregion

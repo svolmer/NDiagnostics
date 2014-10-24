@@ -6,8 +6,8 @@ namespace NDiagnostics.Metering.Samples
     {
         #region Constructors and Destructors
 
-        internal TimerSample(Time elapsedTimeOfActivity, TimeStamp timeStamp)
-            : base(timeStamp)
+        internal TimerSample(Time elapsedTimeOfActivity, TimeStamp timeStamp, TimeStamp100Ns timeStamp100Ns)
+            : base(timeStamp, timeStamp100Ns)
         {
             this.ElapsedTimeOfActivity = elapsedTimeOfActivity;
         }
