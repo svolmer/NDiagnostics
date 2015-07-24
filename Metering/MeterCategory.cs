@@ -167,6 +167,7 @@ namespace NDiagnostics.Metering
 
         public void CreateInstance(string instanceName, InstanceLifetime lifetime = InstanceLifetime.Global)
         {
+            this.ThrowIfDisposed();
             if (this.CategoryType == MeterCategoryType.SingleInstance)
             {
                 throw new InvalidOperationException(string.Format("Instances cannot be created on meter categories of type 'SingleInstance'."), null);
@@ -178,6 +179,7 @@ namespace NDiagnostics.Metering
 
         public void RemoveInstance(string instanceName)
         {
+            this.ThrowIfDisposed();
             if (this.CategoryType == MeterCategoryType.SingleInstance)
             {
                 throw new InvalidOperationException(string.Format("Instances cannot be removed on meter categories of type 'SingleInstance'."), null);
