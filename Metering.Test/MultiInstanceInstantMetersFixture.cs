@@ -278,9 +278,9 @@ namespace NDiagnostics.Metering.Test
                 instantTimeZero.Reset();
                 instantTimeOne.Reset();
 
-                instantTimeTotal.Current.Value().Should().BeGreaterThan(0.0F);
-                instantTimeZero.Current.Value().Should().BeGreaterThan(0.0F);
-                instantTimeOne.Current.Value().Should().BeGreaterThan(0.0F);
+                instantTimeTotal.Current.Value().Should().BeGreaterOrEqualTo(0.0F);
+                instantTimeZero.Current.Value().Should().BeGreaterOrEqualTo(0.0F);
+                instantTimeOne.Current.Value().Should().BeGreaterOrEqualTo(0.0F);
                 instantTimeTotal.Current.Value().Should().BeLessThan(0.1F);
                 instantTimeZero.Current.Value().Should().BeLessThan(0.1F);
                 instantTimeOne.Current.Value().Should().BeLessThan(0.1F);
