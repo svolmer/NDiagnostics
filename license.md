@@ -1,4 +1,4 @@
-Copyright (c) 2014, Stephan Volmer
+Copyright (c) 2017, Stephan Volmer
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
