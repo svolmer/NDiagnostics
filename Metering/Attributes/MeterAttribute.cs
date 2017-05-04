@@ -3,7 +3,7 @@ using NDiagnostics.Metering.Extensions;
 
 namespace NDiagnostics.Metering.Attributes
 {
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class MeterAttribute : Attribute
     {
         #region Constructors and Destructors
@@ -39,15 +39,15 @@ namespace NDiagnostics.Metering.Attributes
 
         #region Properties
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public string Description { get; private set; }
+        public string Description { get; }
 
-        public MeterType MeterType { get; private set; }
+        public MeterType MeterType { get; }
 
-        public MeterDataType DataType { get; private set; }
+        public MeterDataType DataType { get; }
 
-        public bool IsReadOnly { get; private set; }
+        public bool IsReadOnly { get; }
 
         #endregion
     }

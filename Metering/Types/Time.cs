@@ -26,12 +26,9 @@ namespace NDiagnostics.Metering.Types
 
         #region Properties
 
-        internal long Ticks { [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")] get; private set; }
+        internal long Ticks { [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")] get; }
 
-        internal double Seconds
-        {
-            get { return ((double) this.Ticks) / Stopwatch.Frequency; }
-        }
+        internal double Seconds => ((double) this.Ticks) / Stopwatch.Frequency;
 
         #endregion
 
@@ -139,7 +136,7 @@ namespace NDiagnostics.Metering.Types
 
             if(!(obj is Time))
             {
-                throw new ArgumentException("Object is not a Time.", "obj");
+                throw new ArgumentException("Object is not a Time.", nameof(obj));
             }
 
             return this.CompareTo((Time) obj);

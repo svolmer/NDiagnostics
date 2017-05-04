@@ -16,10 +16,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IDifferentialValue
 
-        DifferentialValueSample IDifferentialValue.Current
-        {
-            get { return this.GetCurrentSample(); }
-        }
+        DifferentialValueSample IDifferentialValue.Current => this.GetCurrentSample();
 
         public long Increment()
         {
@@ -55,10 +52,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IMeter
 
-        public override Sample Current
-        {
-            get { return this.GetCurrentSample(); }
-        }
+        public override Sample Current => this.GetCurrentSample();
 
         public override void Reset()
         {

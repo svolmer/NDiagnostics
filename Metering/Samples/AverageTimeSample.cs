@@ -17,9 +17,9 @@ namespace NDiagnostics.Metering.Samples
 
         #region Properties
 
-        public Time ElapsedTime { get; private set; }
+        public Time ElapsedTime { get; }
 
-        public long Count { get; private set; }
+        public long Count { get; }
 
         #endregion
     }

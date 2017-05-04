@@ -17,9 +17,9 @@ namespace NDiagnostics.Metering.Samples
 
         #region Properties
 
-        public long Numerator { get; private set; }
+        public long Numerator { get; }
 
-        public long Denominator { get; private set; }
+        public long Denominator { get; }
 
         #endregion
     }

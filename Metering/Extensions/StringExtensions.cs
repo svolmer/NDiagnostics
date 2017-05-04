@@ -13,7 +13,7 @@ namespace NDiagnostics.Metering.Extensions
             self.ThrowIfNull(name);
             if(string.IsNullOrEmpty(self))
             {
-                throw new ArgumentException(string.Format("{0} '{1}' is empty.", self.Type().ToName(), name));
+                throw new ArgumentException($"{self.Type().ToName()} '{name}' is empty.");
             }
             return self;
         }
@@ -23,7 +23,7 @@ namespace NDiagnostics.Metering.Extensions
             self.ThrowIfNullOrEmpty(name);
             if(string.IsNullOrWhiteSpace(self))
             {
-                throw new ArgumentException(string.Format("{0} '{1}' consists only of white-space characters.", self.Type().ToName(), name));
+                throw new ArgumentException($"{self.Type().ToName()} '{name}' consists only of white-space characters.");
             }
             return self;
         }
@@ -32,7 +32,7 @@ namespace NDiagnostics.Metering.Extensions
         {
             if(self != null && self.Length > maxSize)
             {
-                throw new ArgumentException(string.Format("{0} '{1}' exceeds the maximum length of {2} characters.", self.Type().ToName(), name, maxSize));
+                throw new ArgumentException($"{self.Type().ToName()} '{name}' exceeds the maximum length of {maxSize} characters.");
             }
             return self;
         }

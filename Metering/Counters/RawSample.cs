@@ -19,13 +19,13 @@ namespace NDiagnostics.Metering.Counters
 
         #region Properties
 
-        internal long Value { get; private set; }
+        internal long Value { get; }
 
-        internal long BaseValue { get; private set; }
+        internal long BaseValue { get; }
 
-        internal TimeStamp TimeStamp { get; private set; }
+        internal TimeStamp TimeStamp { get; }
 
-        internal TimeStamp100Ns TimeStamp100Ns { get; private set; }
+        internal TimeStamp100Ns TimeStamp100Ns { get; }
 
         #endregion
     }

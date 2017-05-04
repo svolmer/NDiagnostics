@@ -24,8 +24,8 @@ namespace NDiagnostics.Metering.Counters
 
         public override long RawValue
         {
-            get { return Interlocked.Read(ref this.n); }
-            set { Interlocked.Exchange(ref this.n, value); }
+            get => Interlocked.Read(ref this.n);
+            set => Interlocked.Exchange(ref this.n, value);
         }
 
         public override long Increment()

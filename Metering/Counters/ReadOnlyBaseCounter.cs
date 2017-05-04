@@ -21,35 +21,20 @@ namespace NDiagnostics.Metering.Counters
 
         #region ICounter
 
-        public string CategoryName
-        {
-            get { return this.baseCounter.CategoryName; }
-        }
+        public string CategoryName => this.baseCounter.CategoryName;
 
-        public string CounterName
-        {
-            get { return this.baseCounter.CounterName; }
-        }
+        public string CounterName => this.baseCounter.CounterName;
 
-        public string InstanceName
-        {
-            get { return this.baseCounter.InstanceName; }
-        }
+        public string InstanceName => this.baseCounter.InstanceName;
 
-        public InstanceLifetime InstanceLifetime
-        {
-            get { return this.baseCounter.InstanceLifetime; }
-        }
+        public InstanceLifetime InstanceLifetime => this.baseCounter.InstanceLifetime;
 
-        public bool IsReadOnly
-        {
-            get { return true; }
-        }
+        public bool IsReadOnly => true;
 
         public long RawValue
         {
-            get { return this.baseCounter.RawValue; }
-            set { throw new InvalidOperationException("Cannot update BaseCounter, this object has been initialized as ReadOnly."); }
+            get => this.baseCounter.RawValue;
+            set => throw new InvalidOperationException("Cannot update BaseCounter, this object has been initialized as ReadOnly.");
         }
 
         public long Increment()

@@ -32,7 +32,7 @@ namespace NDiagnostics.Metering.Extensions
         {
             if(self.IsNull())
             {
-                throw new NullReferenceException(string.Format("{0} is null.", self.Type().ToName()));
+                throw new NullReferenceException($"{self.Type().ToName()} is null.");
             }
             return self;
         }
@@ -42,7 +42,7 @@ namespace NDiagnostics.Metering.Extensions
         {
             if(self.IsNull())
             {
-                throw new ArgumentNullException(string.Format("{0} '{1}' is null.", self.Type().ToName(), name), (Exception) null);
+                throw new ArgumentNullException($"{self.Type().ToName()} '{name}' is null.", (Exception) null);
             }
             return self;
         }
@@ -64,7 +64,7 @@ namespace NDiagnostics.Metering.Extensions
             var disposable = self as IDisposableObject;
             if (disposable != null && disposable.IsDisposed)
             {
-                throw new ObjectDisposedException(String.Format("{0} is already disposed.", self.Type().ToName()), (Exception)null);
+                throw new ObjectDisposedException($"{self.Type().ToName()} is already disposed.", (Exception)null);
             }
             return self;
         }
@@ -75,7 +75,7 @@ namespace NDiagnostics.Metering.Extensions
             var disposable = self as IDisposableObject;
             if (disposable != null && disposable.IsDisposed)
             {
-                throw new ObjectDisposedException(String.Format("{0} '{1}' is already disposed.", self.Type().ToName(), name), (Exception)null);
+                throw new ObjectDisposedException($"{self.Type().ToName()} '{name}' is already disposed.", (Exception)null);
             }
             return self;
         }

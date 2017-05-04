@@ -16,10 +16,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IAverageValue
 
-        AverageValueSample IAverageValue.Current
-        {
-            get { return this.GetCurrentSample(); }
-        }
+        AverageValueSample IAverageValue.Current => this.GetCurrentSample();
 
         public void Sample(long value)
         {
@@ -32,10 +29,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IMeter
 
-        public override Sample Current
-        {
-            get { return this.GetCurrentSample(); }
-        }
+        public override Sample Current => this.GetCurrentSample();
 
         public override void Reset()
         {

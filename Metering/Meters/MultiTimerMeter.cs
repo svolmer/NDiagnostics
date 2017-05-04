@@ -17,10 +17,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IMeter
 
-        public override Sample Current
-        {
-            get { return this.GetCurrentSample(); }
-        }
+        public override Sample Current => this.GetCurrentSample();
 
         public override void Reset()
         {
@@ -33,10 +30,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IMultiTimer
 
-        MultiTimerSample IMultiTimer.Current
-        {
-            get { return this.GetCurrentSample(); }
-        }
+        MultiTimerSample IMultiTimer.Current => this.GetCurrentSample();
 
         public void Sample(Time time)
         {

@@ -25,12 +25,9 @@ namespace NDiagnostics.Metering.Types
 
         #region Properties
 
-        public static TimeStamp100Ns Now
-        {
-            get { return new TimeStamp100Ns(DateTime.Now); }
-        }
+        public static TimeStamp100Ns Now => new TimeStamp100Ns(DateTime.Now);
 
-        internal long Ticks { [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")] get; private set; }
+        internal long Ticks { [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")] get; }
 
         #endregion
 
@@ -128,7 +125,7 @@ namespace NDiagnostics.Metering.Types
 
             if(!(obj is TimeStamp100Ns))
             {
-                throw new ArgumentException("Object is not a TimeStamp100Ns.", "obj");
+                throw new ArgumentException("Object is not a TimeStamp100Ns.", nameof(obj));
             }
 
             return this.CompareTo((TimeStamp100Ns) obj);

@@ -15,7 +15,7 @@ namespace NDiagnostics.Metering.Extensions
         {
             if(!type.IsEnum)
             {
-                throw new NotSupportedException(string.Format("Type '{0}' must be an enum.", type.ToName()));
+                throw new NotSupportedException($"Type '{type.ToName()}' must be an enum.");
             }
             return type;
         }
@@ -27,7 +27,7 @@ namespace NDiagnostics.Metering.Extensions
             if(type.IsGenericType)
             {
                 var typeArguments = type.GetGenericArguments();
-                var c = typeArguments.Count().ToString(CultureInfo.InvariantCulture).Length + 1;
+                var c = typeArguments.Length.ToString(CultureInfo.InvariantCulture).Length + 1;
                 typeName = typeName.Remove(typeName.Length - c, c);
                 typeName += "<";
                 typeName = typeArguments.Aggregate(typeName, (current, typeArgument) => current + (typeArgument.Name + ","));

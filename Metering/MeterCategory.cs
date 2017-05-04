@@ -17,16 +17,16 @@ namespace NDiagnostics.Metering
             var typeT = typeof(T).ThrowIfNotEnum();
 
             var meterCategoryAttribute = typeT.GetMeterCategoryAttribute()
-                .ThrowIfNull(new NotSupportedException(string.Format("Enum '{0}' must be decorated by a MeterCategory attribute.", typeT.ToName()), null));
+                .ThrowIfNull(new NotSupportedException($"Enum '{typeT.ToName()}' must be decorated by a MeterCategory attribute.", null));
 
             var values = Enum.GetValues(typeT)
-                .ThrowIfEmpty(new NotSupportedException(string.Format("Enum '{0}' must contain at least one value.", typeT.ToName()), null));
+                .ThrowIfEmpty(new NotSupportedException($"Enum '{typeT.ToName()}' must contain at least one value.", null));
 
             var meterAttributes = new Dictionary<T, MeterAttribute>();
             foreach(T value in values)
             {
                 var meterAttribute = typeT.GetMeterAttribute(value)
-                    .ThrowIfNull(new NotSupportedException(string.Format("Value '{0}' of enum '{1}' must de decorated by a Meter attribute.", value, typeT.ToName()), null));
+                    .ThrowIfNull(new NotSupportedException($"Value '{value}' of enum '{typeT.ToName()}' must de decorated by a Meter attribute.", null));
 
                 meterAttributes.Add(value, meterAttribute);
             }
@@ -39,16 +39,16 @@ namespace NDiagnostics.Metering
             var typeT = typeof(T).ThrowIfNotEnum();
 
             var meterCategoryAttribute = typeT.GetMeterCategoryAttribute()
-                .ThrowIfNull(new NotSupportedException(string.Format("Enum '{0}' must be decorated by a MeterCategory attribute.", typeT.ToName()), null));
+                .ThrowIfNull(new NotSupportedException($"Enum '{typeT.ToName()}' must be decorated by a MeterCategory attribute.", null));
 
             var values = Enum.GetValues(typeT)
-                .ThrowIfEmpty(new NotSupportedException(string.Format("Enum '{0}' must contain at least one value.", typeT.ToName()), null));
+                .ThrowIfEmpty(new NotSupportedException($"Enum '{typeT.ToName()}' must contain at least one value.", null));
 
             var meterAttributes = new List<MeterAttribute>();
             foreach(T value in values)
             {
                 var meterAttribute = typeT.GetMeterAttribute(value)
-                    .ThrowIfNull(new NotSupportedException(string.Format("Value '{0}' of enum '{1}' must de decorated by a Meter attribute.", value, typeT.ToName()), null));
+                    .ThrowIfNull(new NotSupportedException($"Value '{value}' of enum '{typeT.ToName()}' must de decorated by a Meter attribute.", null));
 
                 meterAttributes.Add(meterAttribute);
             }
@@ -69,7 +69,7 @@ namespace NDiagnostics.Metering
                     var baseType = counterCreationData.CounterType.GetBaseType();
                     if(baseType.HasValue)
                     {
-                        counterCreationDataCollection.Add(new CounterCreationData(meterAttribute.Name.GetNameForBaseType(), string.Format("Base for {0}", meterAttribute.Name), baseType.Value));
+                        counterCreationDataCollection.Add(new CounterCreationData(meterAttribute.Name.GetNameForBaseType(), $"Base for {meterAttribute.Name}", baseType.Value));
                     }
                 }
             }
@@ -82,15 +82,15 @@ namespace NDiagnostics.Metering
             var typeT = typeof(T).ThrowIfNotEnum();
 
             var meterCategoryAttribute = typeT.GetMeterCategoryAttribute()
-                .ThrowIfNull(new NotSupportedException(string.Format("Enum '{0}' must be decorated by a MeterCategory attribute.", typeT.ToName()), null));
+                .ThrowIfNull(new NotSupportedException($"Enum '{typeT.ToName()}' must be decorated by a MeterCategory attribute.", null));
 
             var values = Enum.GetValues(typeT)
-                .ThrowIfEmpty(new NotSupportedException(string.Format("Enum '{0}' must contain at least one value.", typeT.ToName()), null));
+                .ThrowIfEmpty(new NotSupportedException($"Enum '{typeT.ToName()}' must contain at least one value.", null));
 
             foreach (T value in values)
             {
                 typeT.GetMeterAttribute(value)
-                    .ThrowIfNull(new NotSupportedException(string.Format("Value '{0}' of enum '{1}' must de decorated by a Meter attribute.", value, typeT.ToName()), null));
+                    .ThrowIfNull(new NotSupportedException($"Value '{value}' of enum '{typeT.ToName()}' must de decorated by a Meter attribute.", null));
             }
 
             if (PerformanceCounterCategory.Exists(meterCategoryAttribute.Name))
@@ -142,35 +142,26 @@ namespace NDiagnostics.Metering
 
         #region IMeterCategory
 
-        public string CategoryName { get; private set; }
+        public string CategoryName { get; }
 
-        public MeterCategoryType CategoryType { get; private set; }
+        public MeterCategoryType CategoryType { get; }
 
-        public string[] InstanceNames
-        {
-            get { return this.meters.Keys.ToArray(); }
-        }
+        public string[] InstanceNames => this.meters.Keys.ToArray();
 
         #endregion
 
         #region IMeterCategory<T>
 
-        public IMeter this[T meterName]
-        {
-            get { return this.GetMeter(meterName); }
-        }
+        public IMeter this[T meterName] => this.GetMeter(meterName);
 
-        public IMeter this[T meterName, string instanceName]
-        {
-            get { return this.GetMeter(meterName, instanceName); }
-        }
+        public IMeter this[T meterName, string instanceName] => this.GetMeter(meterName, instanceName);
 
         public void CreateInstance(string instanceName, InstanceLifetime lifetime = InstanceLifetime.Global)
         {
             this.ThrowIfDisposed();
             if (this.CategoryType == MeterCategoryType.SingleInstance)
             {
-                throw new InvalidOperationException(string.Format("Instances cannot be created on meter categories of type 'SingleInstance'."), null);
+                throw new InvalidOperationException("Instances cannot be created on meter categories of type \'SingleInstance\'.", null);
             }
 
             var instanceMeters = CreateMeters(this.CategoryName, this.CategoryType, this.meterAttributes, instanceName, lifetime);
@@ -182,7 +173,7 @@ namespace NDiagnostics.Metering
             this.ThrowIfDisposed();
             if (this.CategoryType == MeterCategoryType.SingleInstance)
             {
-                throw new InvalidOperationException(string.Format("Instances cannot be removed on meter categories of type 'SingleInstance'."), null);
+                throw new InvalidOperationException("Instances cannot be removed on meter categories of type \'SingleInstance\'.", null);
             }
 
             var instances = this.meters[instanceName];

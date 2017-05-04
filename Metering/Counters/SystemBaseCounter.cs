@@ -25,8 +25,8 @@ namespace NDiagnostics.Metering.Counters
 
         public override long RawValue
         {
-            get { return this.performanceCounter.RawValue; }
-            set { this.performanceCounter.RawValue = value; }
+            get => this.performanceCounter.RawValue;
+            set => this.performanceCounter.RawValue = value;
         }
 
         public override long Increment()

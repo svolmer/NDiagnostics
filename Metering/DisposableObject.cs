@@ -38,10 +38,7 @@ namespace NDiagnostics.Metering
 
         #region IDisposableObject
 
-        public bool IsDisposed
-        {
-            get { return this.isDisposed; }
-        }
+        public bool IsDisposed => this.isDisposed;
 
         #endregion
 

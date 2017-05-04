@@ -24,10 +24,7 @@ namespace NDiagnostics.Metering.Counters
 
         #region Properties
 
-        public static MemoryCounterRegistry Instance
-        {
-            get { return instance.Value; }
-        }
+        public static MemoryCounterRegistry Instance => instance.Value;
 
         #endregion
 

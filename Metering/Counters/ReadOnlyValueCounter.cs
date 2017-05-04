@@ -21,35 +21,20 @@ namespace NDiagnostics.Metering.Counters
 
         #region ICounter
 
-        public string CategoryName
-        {
-            get { return this.valueCounter.CategoryName; }
-        }
+        public string CategoryName => this.valueCounter.CategoryName;
 
-        public string CounterName
-        {
-            get { return this.valueCounter.CounterName; }
-        }
+        public string CounterName => this.valueCounter.CounterName;
 
-        public string InstanceName
-        {
-            get { return this.valueCounter.InstanceName; }
-        }
+        public string InstanceName => this.valueCounter.InstanceName;
 
-        public InstanceLifetime InstanceLifetime
-        {
-            get { return this.valueCounter.InstanceLifetime; }
-        }
+        public InstanceLifetime InstanceLifetime => this.valueCounter.InstanceLifetime;
 
-        public bool IsReadOnly
-        {
-            get { return true; }
-        }
+        public bool IsReadOnly => true;
 
         public long RawValue
         {
-            get { return this.valueCounter.RawValue; }
-            set { throw new InvalidOperationException("Cannot update ValueCounter, this object has been initialized as ReadOnly."); }
+            get => this.valueCounter.RawValue;
+            set => throw new InvalidOperationException("Cannot update ValueCounter, this object has been initialized as ReadOnly.");
         }
 
         public long Increment()
@@ -71,15 +56,9 @@ namespace NDiagnostics.Metering.Counters
 
         #region IValueCounter
 
-        public IBaseCounter BaseCounter
-        {
-            get { return this.valueCounter.BaseCounter.ReadOnly(); }
-        }
+        public IBaseCounter BaseCounter => this.valueCounter.BaseCounter.ReadOnly();
 
-        public RawSample RawSample
-        {
-            get { return this.valueCounter.RawSample; }
-        }
+        public RawSample RawSample => this.valueCounter.RawSample;
 
         #endregion
     }

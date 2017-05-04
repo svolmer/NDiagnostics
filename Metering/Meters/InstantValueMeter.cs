@@ -16,10 +16,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IInstantValue
 
-        InstantValueSample IInstantValue.Current
-        {
-            get { return this.GetCurrentSample(); }
-        }
+        InstantValueSample IInstantValue.Current => this.GetCurrentSample();
 
         public void Set(long value)
         {
@@ -55,10 +52,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IMeter
 
-        public override Sample Current
-        {
-            get { return this.GetCurrentSample(); }
-        }
+        public override Sample Current => this.GetCurrentSample();
 
         public override void Reset()
         {

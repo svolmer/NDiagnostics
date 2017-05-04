@@ -16,7 +16,7 @@ namespace NDiagnostics.Metering.Samples
 
         #region Properties
 
-        public TimeStamp100Ns StartTime { get; private set; }
+        public TimeStamp100Ns StartTime { get; }
 
         #endregion
     }

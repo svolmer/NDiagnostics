@@ -16,7 +16,7 @@ namespace NDiagnostics.Metering.Samples
 
         #region Properties
 
-        public long Count { get; private set; }
+        public long Count { get; }
 
         #endregion
     }

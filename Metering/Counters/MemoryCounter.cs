@@ -19,13 +19,13 @@
 
         public string CategoryName { get; protected set; }
 
-        public string CounterName { get; private set; }
+        public string CounterName { get; }
 
-        public string InstanceName { get; private set; }
+        public string InstanceName { get; }
 
-        public InstanceLifetime InstanceLifetime { get; private set; }
+        public InstanceLifetime InstanceLifetime { get; }
 
-        public bool IsReadOnly { get; private set; }
+        public bool IsReadOnly { get; }
 
         public abstract long RawValue { get; set; }
 

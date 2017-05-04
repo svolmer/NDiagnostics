@@ -27,8 +27,8 @@ namespace NDiagnostics.Metering.Counters
 
         public override long RawValue
         {
-            get { return Interlocked.Read(ref this.n); }
-            set { Interlocked.Exchange(ref this.n, value); }
+            get => Interlocked.Read(ref this.n);
+            set => Interlocked.Exchange(ref this.n, value);
         }
 
         public override long Increment()
@@ -50,14 +50,14 @@ namespace NDiagnostics.Metering.Counters
 
         #region IValueCounter
 
-        public IBaseCounter BaseCounter { get; private set; }
+        public IBaseCounter BaseCounter { get; }
 
         public RawSample RawSample
         {
             get
             {
                 var rawValue = this.RawValue;
-                var baseValue = (this.BaseCounter != null) ? this.BaseCounter.RawValue : 0L;
+                var baseValue = BaseCounter?.RawValue ?? 0L;
                 var timeStamp = TimeStamp.Now;
                 var timeStamp100Ns = TimeStamp100Ns.Now;
                 return new RawSample(rawValue, baseValue, timeStamp, timeStamp100Ns);

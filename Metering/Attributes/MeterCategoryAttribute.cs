@@ -3,7 +3,7 @@ using NDiagnostics.Metering.Extensions;
 
 namespace NDiagnostics.Metering.Attributes
 {
-    [AttributeUsage(AttributeTargets.Enum, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Enum)]
     public sealed class MeterCategoryAttribute : Attribute
     {
         #region Constructors and Destructors
@@ -22,11 +22,11 @@ namespace NDiagnostics.Metering.Attributes
 
         #region Properties
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public string Description { get; private set; }
+        public string Description { get; }
 
-        public MeterCategoryType MeterCategoryType { get; private set; }
+        public MeterCategoryType MeterCategoryType { get; }
 
         #endregion
     }

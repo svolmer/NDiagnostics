@@ -44,27 +44,27 @@ namespace NDiagnostics.Metering.Meters
 
         #region Properties
 
-        protected IValueCounter ValueCounter { get; private set; }
+        protected IValueCounter ValueCounter { get; }
 
-        protected IBaseCounter BaseCounter { get; private set; }
+        protected IBaseCounter BaseCounter { get; }
 
         #endregion
 
         #region IMeter
 
-        public string CategoryName { get; private set; }
+        public string CategoryName { get; }
 
-        public MeterCategoryType CategoryType { get; private set; }
+        public MeterCategoryType CategoryType { get; }
 
-        public string MeterName { get; private set; }
+        public string MeterName { get; }
 
-        public MeterType MeterType { get; private set; }
+        public MeterType MeterType { get; }
 
-        public string InstanceName { get; private set; }
+        public string InstanceName { get; }
 
-        public InstanceLifetime InstanceLifetime { get; private set; }
+        public InstanceLifetime InstanceLifetime { get; }
 
-        public bool IsReadOnly { get; private set; }
+        public bool IsReadOnly { get; }
 
         public abstract Sample Current { get; }
 

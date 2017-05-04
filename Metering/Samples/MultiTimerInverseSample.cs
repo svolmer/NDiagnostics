@@ -17,9 +17,9 @@ namespace NDiagnostics.Metering.Samples
 
         #region Properties
 
-        public Time ElapsedTimeOfInactivity { get; private set; }
+        public Time ElapsedTimeOfInactivity { get; }
 
-        public long Count { get; private set; }
+        public long Count { get; }
 
         #endregion
     }

@@ -17,9 +17,9 @@ namespace NDiagnostics.Metering.Samples
 
         #region Properties
 
-        internal TimeStamp TimeStamp { get; private set; }
+        internal TimeStamp TimeStamp { get; }
 
-        internal TimeStamp100Ns TimeStamp100Ns { get; private set; }
+        internal TimeStamp100Ns TimeStamp100Ns { get; }
 
         #endregion
 

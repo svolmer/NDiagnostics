@@ -16,10 +16,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IInstantPercentage
 
-        InstantPercentageSample IInstantPercentage.Current
-        {
-            get { return this.GetCurrentSample(); }
-        }
+        InstantPercentageSample IInstantPercentage.Current => this.GetCurrentSample();
 
         public long IncrementNumerator()
         {
@@ -85,10 +82,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IMeter
 
-        public override Sample Current
-        {
-            get { return this.GetCurrentSample(); }
-        }
+        public override Sample Current => this.GetCurrentSample();
 
         public override void Reset()
         {
