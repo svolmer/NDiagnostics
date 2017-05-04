@@ -12,9 +12,9 @@ namespace NDiagnostics.Metering
     {
         #region Public Methods
 
-        public static IMeterCategory<T> Create<T>()
+        public static IMeterCategory<TEnum> Create<TEnum>() where TEnum : struct, IConvertible, IComparable, IFormattable
         {
-            var typeT = typeof(T).ThrowIfNotEnum();
+            var typeT = typeof(TEnum).ThrowIfNotEnum();
 
             var meterCategoryAttribute = typeT.GetMeterCategoryAttribute()
                 .ThrowIfNull(new NotSupportedException($"Enum '{typeT.ToName()}' must be decorated by a MeterCategory attribute.", null));
@@ -22,8 +22,8 @@ namespace NDiagnostics.Metering
             var values = Enum.GetValues(typeT)
                 .ThrowIfEmpty(new NotSupportedException($"Enum '{typeT.ToName()}' must contain at least one value.", null));
 
-            var meterAttributes = new Dictionary<T, MeterAttribute>();
-            foreach(T value in values)
+            var meterAttributes = new Dictionary<TEnum, MeterAttribute>();
+            foreach(TEnum value in values)
             {
                 var meterAttribute = typeT.GetMeterAttribute(value)
                     .ThrowIfNull(new NotSupportedException($"Value '{value}' of enum '{typeT.ToName()}' must de decorated by a Meter attribute.", null));
@@ -31,12 +31,12 @@ namespace NDiagnostics.Metering
                 meterAttributes.Add(value, meterAttribute);
             }
 
-            return new MeterCategory<T>(meterCategoryAttribute, meterAttributes);
+            return new MeterCategory<TEnum>(meterCategoryAttribute, meterAttributes);
         }
 
-        public static void Install<T>()
+        public static void Install<TEnum>() where TEnum : struct, IConvertible, IComparable, IFormattable
         {
-            var typeT = typeof(T).ThrowIfNotEnum();
+            var typeT = typeof(TEnum).ThrowIfNotEnum();
 
             var meterCategoryAttribute = typeT.GetMeterCategoryAttribute()
                 .ThrowIfNull(new NotSupportedException($"Enum '{typeT.ToName()}' must be decorated by a MeterCategory attribute.", null));
@@ -45,7 +45,7 @@ namespace NDiagnostics.Metering
                 .ThrowIfEmpty(new NotSupportedException($"Enum '{typeT.ToName()}' must contain at least one value.", null));
 
             var meterAttributes = new List<MeterAttribute>();
-            foreach(T value in values)
+            foreach(TEnum value in values)
             {
                 var meterAttribute = typeT.GetMeterAttribute(value)
                     .ThrowIfNull(new NotSupportedException($"Value '{value}' of enum '{typeT.ToName()}' must de decorated by a Meter attribute.", null));
@@ -77,9 +77,9 @@ namespace NDiagnostics.Metering
             PerformanceCounterCategory.Create(meterCategoryAttribute.Name, meterCategoryAttribute.Description, (PerformanceCounterCategoryType) meterCategoryAttribute.MeterCategoryType, counterCreationDataCollection);
         }
 
-        public static void Uninstall<T>()
+        public static void Uninstall<TEnum>() where TEnum : struct, IConvertible, IComparable, IFormattable
         {
-            var typeT = typeof(T).ThrowIfNotEnum();
+            var typeT = typeof(TEnum).ThrowIfNotEnum();
 
             var meterCategoryAttribute = typeT.GetMeterCategoryAttribute()
                 .ThrowIfNull(new NotSupportedException($"Enum '{typeT.ToName()}' must be decorated by a MeterCategory attribute.", null));
@@ -87,7 +87,7 @@ namespace NDiagnostics.Metering
             var values = Enum.GetValues(typeT)
                 .ThrowIfEmpty(new NotSupportedException($"Enum '{typeT.ToName()}' must contain at least one value.", null));
 
-            foreach (T value in values)
+            foreach (TEnum value in values)
             {
                 typeT.GetMeterAttribute(value)
                     .ThrowIfNull(new NotSupportedException($"Value '{value}' of enum '{typeT.ToName()}' must de decorated by a Meter attribute.", null));
@@ -112,21 +112,21 @@ namespace NDiagnostics.Metering
         #endregion
     }
 
-    internal sealed class MeterCategory<T> : DisposableObject, IMeterCategory<T>
+    internal sealed class MeterCategory<TEnum> : DisposableObject, IMeterCategory<TEnum> where TEnum : struct, IConvertible, IComparable, IFormattable
     {
         #region Constants and Fields
 
-        private readonly IDictionary<string, IDictionary<T, IMeter>> meters;
+        private readonly IDictionary<string, IDictionary<TEnum, IMeter>> meters;
 
-        private readonly IDictionary<T, MeterAttribute> meterAttributes;
+        private readonly IDictionary<TEnum, MeterAttribute> meterAttributes;
 
         #endregion
 
         #region Constructors and Destructors
 
-        internal MeterCategory(MeterCategoryAttribute meterCategoryAttribute, IDictionary<T, MeterAttribute> meterAttributes)
+        internal MeterCategory(MeterCategoryAttribute meterCategoryAttribute, IDictionary<TEnum, MeterAttribute> meterAttributes)
         {
-            this.meters = new Dictionary<string, IDictionary<T, IMeter>>();
+            this.meters = new Dictionary<string, IDictionary<TEnum, IMeter>>();
             this.CategoryName = meterCategoryAttribute.Name;
             this.CategoryType = meterCategoryAttribute.MeterCategoryType;
             this.meterAttributes = meterAttributes;
@@ -152,9 +152,9 @@ namespace NDiagnostics.Metering
 
         #region IMeterCategory<T>
 
-        public IMeter this[T meterName] => this.GetMeter(meterName);
+        public IMeter this[TEnum meterName] => this.GetMeter(meterName);
 
-        public IMeter this[T meterName, string instanceName] => this.GetMeter(meterName, instanceName);
+        public IMeter this[TEnum meterName, string instanceName] => this.GetMeter(meterName, instanceName);
 
         public void CreateInstance(string instanceName, InstanceLifetime lifetime = InstanceLifetime.Global)
         {
@@ -213,9 +213,9 @@ namespace NDiagnostics.Metering
             }
         }
 
-        private static IDictionary<T, IMeter> CreateMeters(string meterCategoryName, MeterCategoryType meterCategoryType, IEnumerable<KeyValuePair<T, MeterAttribute>> meterAttributes, string instanceName, InstanceLifetime instanceLifetime)
+        private static IDictionary<TEnum, IMeter> CreateMeters(string meterCategoryName, MeterCategoryType meterCategoryType, IEnumerable<KeyValuePair<TEnum, MeterAttribute>> meterAttributes, string instanceName, InstanceLifetime instanceLifetime)
         {
-            var instanceMeters = new Dictionary<T, IMeter>();
+            var instanceMeters = new Dictionary<TEnum, IMeter>();
 
             var enumerator = meterAttributes.GetEnumerator();
             while(enumerator.MoveNext())
@@ -289,7 +289,7 @@ namespace NDiagnostics.Metering
             return meter;
         }
 
-        private IMeter GetMeter(T meterName, string instanceName = null)
+        private IMeter GetMeter(TEnum meterName, string instanceName = null)
         {
             instanceName = instanceName ?? (this.CategoryType == MeterCategoryType.SingleInstance ? SingleInstance.DefaultName : MultiInstance.DefaultName);
             if(this.meters.ContainsKey(instanceName) && this.meters[instanceName].ContainsKey(meterName))

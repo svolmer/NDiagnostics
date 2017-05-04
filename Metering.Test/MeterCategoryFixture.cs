@@ -10,13 +10,6 @@ namespace NDiagnostics.Metering.Test
     public class MeterCategoryFixture
     {
         [TestMethod]
-        public void MeterCategoryInstallThrowsIfNotAnEnum()
-        {
-            Action action = MeterCategory.Install<CategoryNotAnEnum>;
-            action.ShouldThrow<NotSupportedException>().WithMessage("Type 'CategoryNotAnEnum' must be an enum.");
-        }
-
-        [TestMethod]
         public void MeterCategoryInstallThrowsIfNotDecorated()
         {
             Action action = MeterCategory.Install<CategoryNotDecorated>;
@@ -51,10 +44,6 @@ namespace NDiagnostics.Metering.Test
             {
                 MeterCategory.Uninstall<Category>();
             }
-        }
-
-        public class CategoryNotAnEnum
-        {            
         }
 
         public enum CategoryNotDecorated
