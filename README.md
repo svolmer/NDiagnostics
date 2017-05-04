@@ -177,7 +177,7 @@ Instant meters measure the most recent absolute values. Any value can be obtaine
 Measures an integer. Substitutes performance counters of type `NumberOfItems32`, `NumberOfItems64`, `NumberOfItemsHEX32`, `NumberOfItemsHEX64`.
 #### Interface 
 ~~~c#
-public interface IInstantValue : IMeter
+public interface IInstantValue : IMeter<InstantValueSample>
 {
     long Increment();
 
@@ -188,8 +188,6 @@ public interface IInstantValue : IMeter
     long DecrementBy(long value);
 
     void Set(long value);
-
-    new InstantValueSample Current { get; }
 }
 ~~~
 #### Example
@@ -200,11 +198,9 @@ Total number of web requests.
 Measures a period of time in seconds. Substitutes performance counters of type `ElapsedTime`.
 #### Interface 
 ~~~c#
-public interface IInstantTime : IMeter
+public interface IInstantTime : IMeter<InstantTimeSample>
 {
     void Set(TimeStamp start);
-
-    new InstantTimeSample Current { get; }
 }
 ~~~
 #### Example
@@ -215,7 +211,7 @@ Total elapsed time since application start.
 Measures a percentage as a fraction of integers. Substitutes performance counters of type `RawFraction`.
 #### Interface 
 ~~~c#
-public interface IInstantPercentage : IMeter
+public interface IInstantPercentage : IMeter<InstantPercentageSample>
 {
     long IncrementNumerator();
 
@@ -236,8 +232,6 @@ public interface IInstantPercentage : IMeter
     long DecrementDenominatorBy(long value);
 
     void SetDenominator(long value);
-
-    new InstantPercentageSample Current { get; }
 }
 ~~~
 #### Example
@@ -251,11 +245,9 @@ Average meters measure the average of values within a given time frame. Any valu
 Measures the average of an integer. Substitutes performance counters of type `AverageCount64`.
 #### Interface 
 ~~~c#
-public interface IAverageValue : IMeter
+public interface IAverageValue : IMeter<AverageValueSample>
 {
     void Sample(long value);
-
-    new AverageValueSample Current { get; }
 }
 ~~~
 #### Example
@@ -266,11 +258,9 @@ Average queue length.
 Measures the average of a period of time in seconds. Substitutes performance counters of type `AverageTimer32`.
 #### Interface 
 ~~~c#
-public interface IAverageTime : IMeter
+public interface IAverageTime : IMeter<AverageTimeSample>
 {
     void Sample(Time elapsedTime);
-
-    new AverageTimeSample Current { get; }
 }
 ~~~
 #### Example
@@ -284,11 +274,9 @@ Sample meters measure the occurrence of events per time frame. Any value can be 
 Measures the rate of occurrences of events per time frame. Substitutes performance counters of type `SampleCounter`, `RateOfCountsPerSecond32`, `RateOfCountsPerSecond64`.
 #### Interface 
 ~~~c#
-public interface ISampleRate : IMeter
+public interface ISampleRate : IMeter<SampleRateSample>
 {
     void Sample();
-
-    new SampleRateSample Current { get; }
 }
 ~~~
 #### Example
@@ -299,13 +287,11 @@ Number of messages processed per time frame.
 Measures the percentage of occurrences of type A events (e.g. success) vs. type B events (e.g. failure) per time frame. Substitutes performance counters of type `SampleFraction`.
 #### Interface 
 ~~~c#
-public interface ISamplePercentage : IMeter
+public interface ISamplePercentage : IMeter<SamplePercentageSample>
 {
     void SampleA();
 
     void SampleB();
-
-    new SamplePercentageSample Current { get; }
 }
 ~~~
 #### Example
@@ -319,7 +305,7 @@ Differential meters measure the difference between values at the beginning and t
 Measures the average rate of items per second. Substitutes performance counters of type `CounterDelta32`, `CounterDelta64`.
 #### Interface 
 ~~~c#
-public interface IDifferentialValue : IMeter
+public interface IDifferentialValue : IMeter<DifferentialValueSample>
 {
     long Increment();
 
@@ -330,8 +316,6 @@ public interface IDifferentialValue : IMeter
     long DecrementBy(long value);
 
     void Set(long value);
-
-    new DifferentialValueSample Current { get; }
 }
 ~~~
 #### Example
@@ -345,11 +329,9 @@ Percentage of time meters measure the difference between values at the beginning
 Measures the percentage of elapsed time of activity. Uses `Stopwatch.ElapsedTicks`. Substitutes performance counters of type `CounterTimer`.
 #### Interface 
 ~~~c#
-public interface ITimer : IMeter
+public interface ITimer : IMeter<TimerSample>
 {
     void Sample(Time elapsedTimeOfActivity);
-
-    new TimerSample Current { get; }
 }
 ~~~
 #### Example
@@ -360,11 +342,9 @@ Percentage of elapsed time that a method has spent executing.
 Measures the percentage of elapsed time of inactivity. Uses `Stopwatch.ElapsedTicks`. Substitutes performance counters of type `CounterTimerInverse`.
 #### Interface 
 ~~~c#
-public interface ITimerInverse : IMeter
+public interface ITimerInverse : IMeter<TimerInverseSample>
 {
     void Sample(Time elapsedTimeOfInactivity);
-
-    new TimerInverseSample Current { get; }
 }
 ~~~
 #### Example
@@ -375,11 +355,9 @@ Percentage of idle time that a method has spent waiting.
 Measures the percentage of elapsed time of activity. Uses high precision `DateTime.Ticks`. Substitutes performance counters of type `Timer100Ns`.
 #### Interface 
 ~~~c#
-public interface ITimer100Ns : IMeter
+public interface ITimer100Ns : IMeter<Timer100NsSample>
 {
     void Sample(Time100Ns elapsedTimeOfActivity);
-
-    new Timer100NsSample Current { get; }
 }
 ~~~
 #### Example
@@ -390,11 +368,9 @@ Percentage of elapsed time for a processor executing instructions in user mode.
 Measures the percentage of elapsed time of inactivity. Uses high precision `DateTime.Ticks`. Substitutes performance counters of type `Timer100NsInverse`.
 #### Interface 
 ~~~c#
-public interface ITimer100NsInverse : IMeter
+public interface ITimer100NsInverse : IMeter<Timer100NsInverseSample>
 {
     void Sample(Time100Ns elapsedTimeOfInactivity);
-
-    new Timer100NsInverseSample Current { get; }
 }
 ~~~
 #### Example
