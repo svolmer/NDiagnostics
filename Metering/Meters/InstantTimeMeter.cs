@@ -5,7 +5,7 @@ using NDiagnostics.Metering.Types;
 
 namespace NDiagnostics.Metering.Meters
 {
-    internal sealed class InstantTimeMeter : Meter, IInstantTime
+    internal sealed class InstantTimeMeter : Meter<InstantTimeSample>, IInstantTime
     {
         #region Constructors and Destructors
 
@@ -17,8 +17,6 @@ namespace NDiagnostics.Metering.Meters
         #endregion
 
         #region IInstantTime
-
-        InstantTimeSample IInstantTime.Current => this.GetCurrentSample();
 
         public void Start()
         {
@@ -36,7 +34,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IMeter
 
-        public override Sample Current => this.GetCurrentSample();
+        public override InstantTimeSample Current => this.GetCurrentSample();
 
         public override void Reset()
         {

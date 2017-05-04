@@ -2,12 +2,10 @@
 
 namespace NDiagnostics.Metering
 {
-    public interface ISamplePercentage : IMeter
+    public interface ISamplePercentage : IMeter<SamplePercentageSample>
     {
         void SampleA();
 
         void SampleB();
-
-        new SamplePercentageSample Current { get; }
     }
 }

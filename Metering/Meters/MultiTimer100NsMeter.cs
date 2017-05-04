@@ -4,7 +4,7 @@ using NDiagnostics.Metering.Types;
 
 namespace NDiagnostics.Metering.Meters
 {
-    internal sealed class MultiTimer100NsMeter : Meter, IMultiTimer100Ns
+    internal sealed class MultiTimer100NsMeter : Meter<MultiTimer100NsSample>, IMultiTimer100Ns
     {
         #region Constructors and Destructors
 
@@ -17,7 +17,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IMeter
 
-        public override Sample Current => this.GetCurrentSample();
+        public override MultiTimer100NsSample Current => this.GetCurrentSample();
 
         public override void Reset()
         {
@@ -29,8 +29,6 @@ namespace NDiagnostics.Metering.Meters
         #endregion
 
         #region IMultiTimer100Ns
-
-        MultiTimer100NsSample IMultiTimer100Ns.Current => this.GetCurrentSample();
 
         public void Sample(Time100Ns time)
         {

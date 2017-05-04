@@ -4,7 +4,7 @@ using NDiagnostics.Metering.Types;
 
 namespace NDiagnostics.Metering.Meters
 {
-    internal sealed class Timer100nsMeter : Meter, ITimer100Ns
+    internal sealed class Timer100nsMeter : Meter<Timer100NsSample>, ITimer100Ns
     {
         #region Constructors and Destructors
 
@@ -17,7 +17,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IMeter
 
-        public override Sample Current => this.GetCurrentSample();
+        public override Timer100NsSample Current => this.GetCurrentSample();
 
         public override void Reset()
         {
@@ -28,8 +28,6 @@ namespace NDiagnostics.Metering.Meters
         #endregion
 
         #region ITimer100Ns
-
-        Timer100NsSample ITimer100Ns.Current => this.GetCurrentSample();
 
         public void Sample(Time100Ns elapsedTimeOfActivity)
         {

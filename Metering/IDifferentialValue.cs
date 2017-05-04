@@ -2,7 +2,7 @@
 
 namespace NDiagnostics.Metering
 {
-    public interface IDifferentialValue : IMeter
+    public interface IDifferentialValue : IMeter<DifferentialValueSample>
     {
         long Increment();
 
@@ -13,7 +13,5 @@ namespace NDiagnostics.Metering
         long DecrementBy(long value);
 
         void Set(long value);
-
-        new DifferentialValueSample Current { get; }
     }
 }

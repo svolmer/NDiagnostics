@@ -3,7 +3,7 @@ using NDiagnostics.Metering.Samples;
 
 namespace NDiagnostics.Metering.Meters
 {
-    internal sealed class InstantPercentageMeter : Meter, IInstantPercentage
+    internal sealed class InstantPercentageMeter : Meter<InstantPercentageSample>, IInstantPercentage
     {
         #region Constructors and Destructors
 
@@ -15,8 +15,6 @@ namespace NDiagnostics.Metering.Meters
         #endregion
 
         #region IInstantPercentage
-
-        InstantPercentageSample IInstantPercentage.Current => this.GetCurrentSample();
 
         public long IncrementNumerator()
         {
@@ -82,7 +80,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IMeter
 
-        public override Sample Current => this.GetCurrentSample();
+        public override InstantPercentageSample Current => this.GetCurrentSample();
 
         public override void Reset()
         {

@@ -4,7 +4,7 @@ using NDiagnostics.Metering.Types;
 
 namespace NDiagnostics.Metering.Meters
 {
-    internal sealed class AverageTimeMeter : Meter, IAverageTime
+    internal sealed class AverageTimeMeter : Meter<AverageTimeSample>, IAverageTime
     {
         #region Constructors and Destructors
 
@@ -17,8 +17,6 @@ namespace NDiagnostics.Metering.Meters
 
         #region IAverageTime
 
-        AverageTimeSample IAverageTime.Current => this.GetCurrentSample();
-
         public void Sample(Time elapsedTime)
         {
             this.ThrowIfDisposed();
@@ -30,7 +28,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IMeter
 
-        public override Sample Current => this.GetCurrentSample();
+        public override AverageTimeSample Current => this.GetCurrentSample();
 
         public override void Reset()
         {

@@ -3,7 +3,7 @@ using NDiagnostics.Metering.Samples;
 
 namespace NDiagnostics.Metering.Meters
 {
-    internal sealed class SamplePercentageMeter : Meter, ISamplePercentage
+    internal sealed class SamplePercentageMeter : Meter<SamplePercentageSample>, ISamplePercentage
     {
         #region Constructors and Destructors
 
@@ -16,7 +16,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IMeter
 
-        public override Sample Current => this.GetCurrentSample();
+        public override SamplePercentageSample Current => this.GetCurrentSample();
 
         public override void Reset()
         {
@@ -28,8 +28,6 @@ namespace NDiagnostics.Metering.Meters
         #endregion
 
         #region ISamplePercentage
-
-        SamplePercentageSample ISamplePercentage.Current => this.GetCurrentSample();
 
         public void SampleA()
         {

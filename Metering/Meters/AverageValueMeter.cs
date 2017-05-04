@@ -3,7 +3,7 @@ using NDiagnostics.Metering.Samples;
 
 namespace NDiagnostics.Metering.Meters
 {
-    internal sealed class AverageValueMeter : Meter, IAverageValue
+    internal sealed class AverageValueMeter : Meter<AverageValueSample>, IAverageValue
     {
         #region Constructors and Destructors
 
@@ -16,8 +16,6 @@ namespace NDiagnostics.Metering.Meters
 
         #region IAverageValue
 
-        AverageValueSample IAverageValue.Current => this.GetCurrentSample();
-
         public void Sample(long value)
         {
             this.ThrowIfDisposed();
@@ -29,7 +27,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IMeter
 
-        public override Sample Current => this.GetCurrentSample();
+        public override AverageValueSample Current => this.GetCurrentSample();
 
         public override void Reset()
         {

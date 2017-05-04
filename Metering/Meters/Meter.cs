@@ -5,7 +5,7 @@ using NDiagnostics.Metering.Samples;
 
 namespace NDiagnostics.Metering.Meters
 {
-    internal abstract class Meter : DisposableObject, IMeter
+    internal abstract class Meter<TSample> : DisposableObject, IMeter<TSample> where TSample : Sample
     {
         #region Constructors and Destructors
 
@@ -66,7 +66,7 @@ namespace NDiagnostics.Metering.Meters
 
         public bool IsReadOnly { get; }
 
-        public abstract Sample Current { get; }
+        public abstract TSample Current { get; }
 
         public abstract void Reset();
 

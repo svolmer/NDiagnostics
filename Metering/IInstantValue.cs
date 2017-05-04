@@ -2,7 +2,7 @@
 
 namespace NDiagnostics.Metering
 {
-    public interface IInstantValue : IMeter
+    public interface IInstantValue : IMeter<InstantValueSample>
     {
         long Increment();
 
@@ -13,7 +13,5 @@ namespace NDiagnostics.Metering
         long DecrementBy(long value);
 
         void Set(long value);
-
-        new InstantValueSample Current { get; }
     }
 }

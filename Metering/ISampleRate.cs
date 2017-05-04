@@ -2,10 +2,8 @@
 
 namespace NDiagnostics.Metering
 {
-    public interface ISampleRate : IMeter
+    public interface ISampleRate : IMeter<SampleRateSample>
     {
         void Sample();
-
-        new SampleRateSample Current { get; }
     }
 }

@@ -18,8 +18,11 @@ namespace NDiagnostics.Metering
 
         bool IsReadOnly { get; }
 
-        Sample Current { get; }
-
         void Reset();
+    }
+
+    public interface IMeter<out TSample> : IMeter where TSample : Sample
+    {
+        TSample Current { get; }
     }
 }

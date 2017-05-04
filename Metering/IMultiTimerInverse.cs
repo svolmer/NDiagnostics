@@ -3,10 +3,8 @@ using NDiagnostics.Metering.Types;
 
 namespace NDiagnostics.Metering
 {
-    public interface IMultiTimerInverse : IMeter
+    public interface IMultiTimerInverse : IMeter<MultiTimerInverseSample>
     {
         void Sample(Time elapsedTimeOfInactivity);
-
-        new MultiTimerInverseSample Current { get; }
     }
 }

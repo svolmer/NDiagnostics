@@ -3,7 +3,7 @@ using NDiagnostics.Metering.Samples;
 
 namespace NDiagnostics.Metering.Meters
 {
-    internal sealed class InstantValueMeter : Meter, IInstantValue
+    internal sealed class InstantValueMeter : Meter<InstantValueSample>, IInstantValue
     {
         #region Constructors and Destructors
 
@@ -15,8 +15,6 @@ namespace NDiagnostics.Metering.Meters
         #endregion
 
         #region IInstantValue
-
-        InstantValueSample IInstantValue.Current => this.GetCurrentSample();
 
         public void Set(long value)
         {
@@ -52,7 +50,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IMeter
 
-        public override Sample Current => this.GetCurrentSample();
+        public override InstantValueSample Current => this.GetCurrentSample();
 
         public override void Reset()
         {

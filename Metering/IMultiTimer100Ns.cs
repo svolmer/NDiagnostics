@@ -3,10 +3,8 @@ using NDiagnostics.Metering.Types;
 
 namespace NDiagnostics.Metering
 {
-    public interface IMultiTimer100Ns : IMeter
+    public interface IMultiTimer100Ns : IMeter<MultiTimer100NsSample>
     {
         void Sample(Time100Ns elapsedTimeOfActivity);
-
-        new MultiTimer100NsSample Current { get; }
     }
 }

@@ -3,7 +3,7 @@ using NDiagnostics.Metering.Samples;
 
 namespace NDiagnostics.Metering.Meters
 {
-    internal sealed class DifferentialValueMeter : Meter, IDifferentialValue
+    internal sealed class DifferentialValueMeter : Meter<DifferentialValueSample>, IDifferentialValue
     {
         #region Constructors and Destructors
 
@@ -15,8 +15,6 @@ namespace NDiagnostics.Metering.Meters
         #endregion
 
         #region IDifferentialValue
-
-        DifferentialValueSample IDifferentialValue.Current => this.GetCurrentSample();
 
         public long Increment()
         {
@@ -52,7 +50,7 @@ namespace NDiagnostics.Metering.Meters
 
         #region IMeter
 
-        public override Sample Current => this.GetCurrentSample();
+        public override DifferentialValueSample Current => this.GetCurrentSample();
 
         public override void Reset()
         {
