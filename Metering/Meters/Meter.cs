@@ -50,7 +50,7 @@ namespace NDiagnostics.Metering.Meters
 
         #endregion
 
-        #region IMeter
+        #region IMeter<TSample>
 
         public string CategoryName { get; }
 
