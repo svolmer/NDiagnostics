@@ -69,17 +69,6 @@ namespace NDiagnostics.Metering.Extensions
             return self;
         }
 
-        [TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")]
-        internal static T ThrowIfDisposed<T>(this T self, string name)
-        {
-            var disposable = self as IDisposableObject;
-            if (disposable != null && disposable.IsDisposed)
-            {
-                throw new ObjectDisposedException($"{self.Type().ToName()} '{name}' is already disposed.", (Exception)null);
-            }
-            return self;
-        }
-
         internal static void TryDispose<T>(this T self)
         {
             var disposable = self as IDisposable;
